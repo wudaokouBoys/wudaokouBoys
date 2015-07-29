@@ -132,3 +132,126 @@ class IVideo():
         else:
             return 0
 
+class IComment():
+    def Insert(self, comment): #新建评论
+        comment.save()
+
+    def Delete(self, id): #删除评论
+        CComment.objects.filter(id=id).delete()
+
+    def SelectById(self, id): #用id选择评论
+        if len(CComment.objects.filter(id=id)) != 0:
+            return CComment.objects.get(id=id)
+        else:
+            return None
+
+    def ModifyUpper(self, id, newUpper): #修改评论者
+        CComment.objects.filter(id=id).update(upper=newUpper)
+
+    def ModifyTime(self, id, newTime): #修改评论时间
+        CComment.objects.filter(id=id).update(time=newTime)
+
+    def ModifyContent(self, id, newContent): #修改评论内容
+        CComment.objects.filter(id=id).update(content=newContent)
+
+    def ModifyVideo(self, id, newVideo): #修改所属视频
+        CComment.objects.filter(id=id).update(video=newVideo)
+
+
+class IBulletscreen():
+    def Insert(self, bscreen): #新建弹幕
+        bscreen.save()
+
+    def Delete(self, id): #删除弹幕
+        CBulletsreen.objects.filter(id=id).delete()
+
+    def SelectId(self, id): #用id选择弹幕
+        if len(CBulletsreen.objects.filter(id=id)) != 0:
+            return CBulletsreen.objects.get(id=id)
+        else:
+            return None
+
+    def ModifyVideo(self, id, newVideo): #修改所属视频
+        CBulletsreen.objects.filter(id=id).update(video=newVideo)
+
+    def ModifyTime(self, id, newTime): #修改弹幕时间
+        CBulletsreen.objects.filter(id=id).update(time=newTime)
+
+    def ModifyContent(self, id, newContent): #修改弹幕内容
+        CBulletsreen.objects.filter(id=id).update(content=newContent)
+
+class IType():
+    def Insert(self, itype): #新建类别
+        itype.save()
+
+    def Delete(self, id): #删除类别
+        CType.objects.filter(id=id).delete()
+
+    def SelectAllType(self): #获取类别列表
+        typelist = []
+        objlist = CType.objects.all()
+        for obj in objlist:
+            typelist.append(obj.content)
+        return typelist
+
+    def SelectById(self, id): #用id获取类别
+        if len(CType.objects.filter(id=id)) != 0:
+            return CType.objects.get(id=id)
+        else:
+            return None
+
+    def ModifyContent(self, id, newContent): #修改类别内容
+        CType.objects.filter(id=id).update(content=newContent)
+
+
+"""
+user = CUser(
+        id=3,
+        name='test',
+        password='',
+        likenum=1,
+        email='',
+        uphistory='',
+        image='',
+        viewhistory='',
+        follow='',
+        followme='',
+        admin='0',
+    )
+
+video = CVideo(
+        id=2,
+        title='asiaTube',
+        discribe='a short movie',
+        keyword='asia',
+        type=1,
+        upper=1,
+        path='/no/',
+        state=0,
+        comments='',
+        bsreen='',
+        likenum=0,
+        playnum=0,
+        time = str(datetime.datetime.now())[0:19],
+    )
+
+comment = CComment(
+        id = 2,
+        upper = 1,
+        time = str(datetime.datetime.now())[0:19],
+        content = 'wo ding',
+        video = 1,
+    )
+
+bsreen = CBulletsreen(
+        id = 2,
+        video = 1,
+        time = str(datetime.datetime.now())[0:19],
+        content = 'qian fang gao neng'
+    )
+
+ctype = CType(
+        id = 2,
+        content = 'news',
+    )
+"""
