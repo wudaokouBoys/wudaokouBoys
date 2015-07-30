@@ -15,7 +15,7 @@ from django.db import models
 class CBulletsreen(models.Model):
     id = models.IntegerField(db_column='BId', primary_key=True)  # Field name made lowercase.
     video = models.IntegerField(db_column='BVideo', blank=True, null=True)  # Field name made lowercase.
-    time = models.DateTimeField(db_column='BTime', blank=True, null=True)  # Field name made lowercase.
+    time = models.CharField(db_column='BTime', max_length=50, blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(db_column='BContent', max_length=100, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -26,7 +26,7 @@ class CBulletsreen(models.Model):
 class CComment(models.Model):
     id = models.IntegerField(db_column='CId', primary_key=True)  # Field name made lowercase.
     upper = models.IntegerField(db_column='CUpper', blank=True, null=True)  # Field name made lowercase.
-    time = models.DateTimeField(db_column='CTime', blank=True, null=True)  # Field name made lowercase.
+    time = models.CharField(db_column='CTime', max_length=50, blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(db_column='CContent', max_length=2000, blank=True, null=True)  # Field name made lowercase.
     video = models.IntegerField(db_column='CVideo', blank=True, null=True)  # Field name made lowercase.
 
@@ -79,7 +79,7 @@ class CVideo(models.Model):
     keyword = models.CharField(db_column='VKeyword', max_length=100, blank=True, null=True)  # Field name made lowercase.
     type = models.IntegerField(db_column='VType', blank=True, null=True)  # Field name made lowercase.
     upper = models.IntegerField(db_column='VUpper', blank=True, null=True)  # Field name made lowercase.
-    time = models.DateTimeField(db_column='VTime', blank=True, null=True)  # Field name made lowercase.
+    time = models.CharField(db_column='VTime', max_length=50, blank=True, null=True)  # Field name made lowercase.
     path = models.CharField(db_column='VPath', max_length=100, blank=True, null=True)  # Field name made lowercase.
     state = models.IntegerField(db_column='VState', blank=True, null=True)  # Field name made lowercase.
     comments = models.CharField(db_column='VComments', max_length=2000, blank=True, null=True)  # Field name made lowercase.
