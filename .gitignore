@@ -56,3 +56,6 @@ docs/_build/
 
 # PyBuilder
 target/
+
+AsiaTube/__pycache__/
+wudaokouBoys/__pycache__/
