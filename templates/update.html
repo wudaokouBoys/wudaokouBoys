@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Update Viedo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    body {
+    padding-top: 50px;
+    padding-left: 50px;
+    }
+    </style>
+    <!--[if lt IE 9]>
+      <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Asia Tube</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href = "#Home"><span class="glyphicon glyphicon-home">Home</span></a></li>
+            <li class="active"><a href="#"><span class="glyphicon glyphicon-upload">Update</span></a></li>
+            <li><a href="#User"><span class="glyphicon glyphicon-user">User</span>   <span class="label label-default">{{UserID}}</span></a></li>
+          </ul>
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+    </div>
+<form method=POST enctype="multipart/form-data" action="/upload/">
+    {{uf.as_p}}
+    {% csrf_token %}
+	<div class="form-group">
+      <label for="exampleInputFile">Upload Viedo</label>
+      <input type="file" id="exampleInputFile" name = "file" value = {{UploadFile}} >
+    </div>
+	<p><input type=submit value="Submit" class="btn btn-default"  name=action></p>
+</form>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
