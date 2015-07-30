@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="gb2312">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log In</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    
+</head>
+<body>
+<h3>User Log In</h3>
+<form method=POST action="/register/">
+	{% csrf_token %}
+	<table>
+		<tr><th><span class="glyphicon glyphicon-user"></span><b>name</b><td><input  type=text  name=nick-name placeholder="nick-name" value = {{oldname}}>
+		<tr><th><span class="glyphicon glyphicon-lock"></span><b>password</b><td><input  type=password  name=password placeholder="password">
+    </table>
+    <p><input type=submit value="Login" class="btn btn-default"  name=action></p>
+</form>
+</body>
+</html>
