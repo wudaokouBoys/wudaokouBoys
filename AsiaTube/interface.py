@@ -1,4 +1,5 @@
 from AsiaTube.models import *
+from .logic import AnalysisString
 
 class IUser():
     def Insert(self, user): #新建用户
@@ -33,11 +34,20 @@ class IUser():
             num = CUser.objects.get(id=id).likenum
             CUser.objects.filter(id=id).update(likenum=num+1)
 
-    def UpdateUphistory(self, id, newUp): #更新上传历史
+    def UpdateUphistory(self, id, newUp, operate): #更新上传历史
         if len(CUser.objects.filter(id=id)) != 0:
-            history = CUser.objects.get(id=id).uphistory
-            history += str(newUp) + ' '
-            CUser.objects.filter(id=id).update(uphistory=history)
+            if operate == 'add':
+                history = CUser.objects.get(id=id).uphistory
+                history += str(newUp) + ' '
+                CUser.objects.filter(id=id).update(uphistory=history)
+            elif operate == 'delete':
+                history = CUser.objects.get(id=id).uphistory
+                uplist = AnalysisString(history)
+                if newUp in uplist:
+                    del uplist[uplist.index(newUp)]
+                    newhistory = ' '.join(uplist) + ' '
+                    CUser.objects.filter(id=id).update(uphistory=newhistory)
+
 
     def UpdateViewhistory(self, id, newView): #更新观看历史
         if len(CUser.objects.filter(id=id)) != 0:
@@ -61,7 +71,7 @@ class IUser():
         if len(CUser.objects.order_by('-id')) != 0:
             return CUser.objects.order_by('-id')[0].id
         else:
-            return
+            return 0
 
 
 class IVideo():
@@ -104,7 +114,7 @@ class IVideo():
     def ModifyState(self, id, newState): #修改视频审核状态
         CVideo.objects.filter(id=id).update(state=newState)
 
-    def UpdateComments(self, id, newComments): #更新视频评论
+    def UpdateComments(self, id, newComments, operate): #更新视频评论
         if len(CVideo.objects.filter(id=id)) != 0:
             comment = CVideo.objects.get(id=id).comments
             comment += str(newComments) + ' '
@@ -157,6 +167,12 @@ class IComment():
     def ModifyVideo(self, id, newVideo): #修改所属视频
         CComment.objects.filter(id=id).update(video=newVideo)
 
+    def GetlastCommentId(self): #获取最大id
+        if len(CComment.objects.order_by('-id')) != 0:
+            return CComment.objects.order_by('-id')[0].id
+        else:
+            return 0
+
 
 class IBulletscreen():
     def Insert(self, bscreen): #新建弹幕
@@ -180,6 +196,12 @@ class IBulletscreen():
     def ModifyContent(self, id, newContent): #修改弹幕内容
         CBulletsreen.objects.filter(id=id).update(content=newContent)
 
+    def GetlastBsreenId(self): #获取最大id
+        if len(CBulletsreen.objects.order_by('-id')) != 0:
+            return CBulletsreen.objects.order_by('-id')[0].id
+        else:
+            return 0
+
 class IType():
     def Insert(self, itype): #新建类别
         itype.save()
@@ -202,6 +224,12 @@ class IType():
 
     def ModifyContent(self, id, newContent): #修改类别内容
         CType.objects.filter(id=id).update(content=newContent)
+
+    def GetlastTypeId(self): #获取最大id
+        if len(CType.objects.order_by('-id')) != 0:
+            return CType.objects.order_by('-id')[0].id
+        else:
+            return 0
 
 
 """
