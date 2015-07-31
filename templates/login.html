@@ -11,10 +11,10 @@
 </head>
 <body>
 <h3>User Log In</h3>
-<form method=POST action="/register/">
+<form method=POST action="/login/">
 	{% csrf_token %}
 	<table>
-		<tr><th><span class="glyphicon glyphicon-user"></span><b>name</b><td><input  type=text  name=nick-name placeholder="nick-name" value = {{oldname}}>
+		<tr><th><span class="glyphicon glyphicon-user"></span><b>id</b><td><input  type=text  name=id placeholder="id" value = {{oldid}}>
 		<tr><th><span class="glyphicon glyphicon-lock"></span><b>password</b><td><input  type=password  name=password placeholder="password">
     </table>
     <p><input type=submit value="Login" class="btn btn-default"  name=action></p>
