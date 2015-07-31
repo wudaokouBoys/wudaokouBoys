@@ -65,6 +65,8 @@ def uploadvideo(request):
     if request.method == 'GET':
         return render_to_response("update.html", context_instance=RequestContext(request))
     else:
+        if 'file' not in request.FILES:
+            return render_to_response("update.html", context_instance=RequestContext(request))
         a = request.FILES['file']
         x = request.COOKIES['id']
         handle_uploaded_file(a, x)
