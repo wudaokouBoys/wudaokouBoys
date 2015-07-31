@@ -103,6 +103,8 @@ def ModifyInfo(request):
         a = IUser()
         a.ModifyEmail(id, email)
         a.ModifyName(id, nick_name)
+        if 'file' not in request.FILES:
+            return HttpResponse("you have modified your information except for your image")
         a.ModifyImg(id, file.name)
         handle_uploaded_pic(file, id)
         return HttpResponse("You have modified successfully!1")
