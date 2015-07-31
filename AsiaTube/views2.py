@@ -8,7 +8,6 @@ from AsiaTube.interface import *
 def Login(request):  #用户登录
     if request.method == 'GET':
         print(request.COOKIES)
-        print(88)
         return render_to_response("login.html", context_instance=RequestContext(request))
     else:
         id = request.POST.get('id')
@@ -27,3 +26,28 @@ def Login(request):  #用户登录
             response.set_cookie('id', id)
             return response
             #return HttpResponse("Login successfully")
+
+def ModifyPassword(request):
+    if 'id' not in request.COOKIES:
+        return HttpResponse("You Haven't Log in!")
+    id = request.COOKIES['id']
+    iuser = IUser()
+    user = iuser.SelectById(id)
+    if user == None:
+        return HttpResponse("User doesn't exist")
+
+    if request.method == 'GET':
+        return render_to_response("modifypassword.html", context_instance=RequestContext(request))
+    else:
+        oldpassword = request.POST.get('password0')
+        if oldpassword != user.password:
+            return render_to_response("modifypassword.html", context_instance=RequestContext(request))
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        if password1 != password2:
+            return render_to_response("modifypassword.html",{
+                 'password0':oldpassword,
+            }, context_instance=RequestContext(request))
+        else:
+            iuser.ModifyPassword(id, password1)
+            return HttpResponse("modify password successfully")
