@@ -61,7 +61,7 @@ def handle_uploaded_pic(f, x):#'F:/AsiaTube/Video/'+ str(12) + '_' +
     return f
 def uploadvideo(request):
     if 'id' not in request.COOKIES:
-        return render_to_response("login.html")
+        return render_to_response("login.html", context_instance=RequestContext(request))
     if request.method == 'GET':
         return render_to_response("update.html", context_instance=RequestContext(request))
     else:
@@ -82,7 +82,7 @@ def uploadvideo(request):
 
 def ModifyInfo(request):
     if 'id' not in request.COOKIES:
-        return render_to_response("login.html")
+        return render_to_response("login.html", context_instance=RequestContext(request))
     id = request.COOKIES['id']
     iuser = IUser()
     user = iuser.SelectById(id)
