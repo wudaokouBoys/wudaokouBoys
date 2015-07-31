@@ -99,12 +99,12 @@ def ModifyInfo(request):
     else:
         nick_name = request.POST.get("nick-name")
         email = request.POST.get("e-mail")
-        file = request.FILES['file']
         a = IUser()
         a.ModifyEmail(id, email)
         a.ModifyName(id, nick_name)
         if 'file' not in request.FILES:
             return HttpResponse("you have modified your information except for your image")
+        file = request.FILES['file']
         a.ModifyImg(id, file.name)
         handle_uploaded_pic(file, id)
         return HttpResponse("You have modified successfully!1")
