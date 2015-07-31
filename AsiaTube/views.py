@@ -49,7 +49,7 @@ def register(request):
      #   p.save()
 
 def handle_uploaded_file(f):#'F:/AsiaTube/Video/'+ str(12) + '_' +
-    with open(f.name, 'wb+') as info:
+    with open('static'+ str(12) + '_'+ f.name, 'wb+') as info:
         for chunk in f.chunks():
             info.write(chunk)
     return f
