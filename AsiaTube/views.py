@@ -9,7 +9,7 @@ from .forms import UploadFileForm
 
 # Create your views here.
 
-def register(request):
+def SignUp(request):
     if request.method == 'GET':
         return render_to_response("register.html", context_instance=RequestContext(request))
     else:
@@ -31,7 +31,7 @@ def register(request):
             followme = "",
             admin = 0
         )
-        if (password == password1):
+        if (password == password1 and password != ''):
             a.Insert(person)
             return HttpResponse("You have registered successfully")
         else:
@@ -82,7 +82,7 @@ def uploadvideo(request):
 
 def ModifyInfo(request):
     if 'id' not in request.COOKIES:
-        return HttpResponse("How can you find this page!!!")
+        return render_to_response("login.html")
     id = request.COOKIES['id']
     iuser = IUser()
     user = iuser.SelectById(id)
@@ -96,7 +96,7 @@ def ModifyInfo(request):
         },context_instance=RequestContext(request))
     else:
         nick_name = request.POST.get("nick-name")
-        email = request.POST.get("email")
+        email = request.POST.get("e-mail")
         file = request.FILES['file']
         a = IUser()
         a.ModifyEmail(id, email)
