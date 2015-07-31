@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modify User Info</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<style>
+		body {
+			padding-top: 60px;
+			padding-left: 50px;
+			background:silver;
+		}
+    </style>
+</head>
+<body>
+	<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<div class="row">
+					<img src="image/AsiaTube.png" class="img-rounded">
+				</div>
+			</div>
+			<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li><a href = "#Home"><span class="glyphicon glyphicon-home">Home</span></a></li>
+				<li><a href="#Update"><span class="glyphicon glyphicon-upload">Update</span></a></li>
+				<li class="active"><a href="#"><span class="glyphicon glyphicon-user">User</span>   <span class="label label-default">{{UserID}}</span></a></li>
+			</ul>
+			</div><!-- /.nav-collapse -->
+		</div><!-- /.container -->
+    </div>
+	<div class="container">
+		<div class="col-lg-4" style="background:white; padding:20px; border-radius:5px; position:relative; left: 200px; height: 290px;">
+			<form method=POST enctype="multipart/form-data" action="/modifyinfo/">
+			<div class="panel panel-primary" >
+   				<div class="panel-heading">
+      				<h3 class="panel-title">Modify User Info</h3>
+   				</div>
+				<table class="table table-hover">
+					<tr><th><span class="glyphicon glyphicon-user"></span><b>nick-name</b><td><input  type=text name=nick-name value = {{oldname}}>
+					<tr><th><span class="glyphicon glyphicon-envelope"></span><b>e-mail</b><td><input  type=email name=e-mail value = {{oldemail}}>
+				</table>
+				<div class="form-group">
+					<label for="exampleInputFile">Modify New User Image</label>
+					<input type="file" id="exampleInputFile" name = "file" value = {{UploadFile}} >
+    			</div>
+				<p><input type=submit value="Submit" class="btn btn-default"  name=action></p>
+			</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
