@@ -111,4 +111,5 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     'F:/AsiaTube/Video/',
+    'F:/AsiaTube/Icon/',
 ]
