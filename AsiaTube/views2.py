@@ -1,11 +1,14 @@
+# -*- coding=utf-8 -*-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from AsiaTube.models import *
 from AsiaTube.interface import *
 
-def Login(request):  #用户登录
+def Login(request):  #鐢ㄦ埛鐧诲綍
     if request.method == 'GET':
+        print(request.COOKIES)
+        print(88)
         return render_to_response("login.html", context_instance=RequestContext(request))
     else:
         id = request.POST.get('id')
@@ -20,4 +23,7 @@ def Login(request):  #用户登录
                  'oldid':id,
             }, context_instance=RequestContext(request))
         else:
-            return HttpResponse("Login successfully")
+            response = HttpResponse()
+            response.set_cookie('id', id)
+            return response
+            #return HttpResponse("Login successfully")
