@@ -65,7 +65,7 @@ def GetViewHistory(user_id): #获取用户观看历史
     return viewhistory
 
 """
-    管理员操作
+    administrator operation
 """
 def DeleteUser(operator_id, user_id): #删除用户
     iuser = IUser()
