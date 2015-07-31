@@ -36,13 +36,16 @@
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->
     </div>
+<form method=POST enctype="multipart/form-data" action="/upload/">
+    {{uf.as_p}}
+    {% csrf_token %}
 	<div class="form-group">
       <label for="exampleInputFile">Upload Viedo</label>
-      <input type="file" id="exampleInputFile" value = {{UploadFile}}>
+      <input type="file" id="exampleInputFile" name = "file" value = {{UploadFile}} >
     </div>
-    <!-- jQuery (Bootstrap 插件需要引入) -->
+	<p><input type=submit value="Submit" class="btn btn-default"  name=action></p>
+</form>
     <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
-    <!-- 包含了所有编译插件 -->
     <script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   </body>
 </html>
