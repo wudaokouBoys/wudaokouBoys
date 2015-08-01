@@ -1,5 +1,8 @@
-from .interface import *
-from .models import *
+# -*- coding=utf-8 -*-
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
+from AsiaTube.interface import *
 
 """
     remain to do:
@@ -12,13 +15,15 @@ from .models import *
     CalculateInfo
 """
 
-def AnalysisString(string):  #½âÎö×Ö·û´®
+def AnalysisString(string):  #è§£æå­—ç¬¦ä¸²
+    if string == None:
+        return
     splitList = string.split(' ')
     if  len(splitList) != 0:
         splitList.pop()
     return splitList
 
-def DeleteVideo(user_id, video_id): #É¾³ıÉÏ´«ÊÓÆµ
+def DeleteVideo(user_id, video_id): #åˆ é™¤ä¸Šä¼ è§†é¢‘
     iuser = IUser()
     iuser.UpdateUphistory(user_id, video_id, 'delete')
     ivideo = IVideo()
@@ -34,7 +39,7 @@ def DeleteVideo(user_id, video_id): #É¾³ıÉÏ´«ÊÓÆµ
     ivideo.Delete(video_id)
     return True
 
-def FollowUser(user_id, leaeder_id): #¹Ø×¢Ä³ÈË
+def FollowUser(user_id, leaeder_id): #å…³æ³¨æŸäºº
     iuser = IUser()
     user = iuser.SelectById(user_id)
     list = AnalysisString(user.follow)
@@ -45,20 +50,20 @@ def FollowUser(user_id, leaeder_id): #¹Ø×¢Ä³ÈË
         iuser.UpdateFollowme(leaeder_id, user_id)
         return True
 
-def Likevideo(video_id): #µãÔŞÊÓÆµ¡¢ÓÃ»§
+def Likevideo(video_id): #ç‚¹èµè§†é¢‘ã€ç”¨æˆ·
     ivideo = IVideo()
     video =  ivideo.SelectById(video_id)
     ivideo.AddLikenum(video_id)
     iuser = IUser()
     iuser.AddLikenum(video.upper)
 
-def GetUpHistory(user_id): #»ñÈ¡ÓÃ»§ÉÏ´«ÀúÊ·
+def GetUpHistory(user_id): #è·å–ç”¨æˆ·ä¸Šä¼ å†å²
     iuser = IUser()
     user = iuser.SelectById(user_id)
     uphistoryList = AnalysisString(user.uphistory)
     return uphistoryList
 
-def GetViewHistory(user_id): #»ñÈ¡ÓÃ»§¹Û¿´ÀúÊ·
+def GetViewHistory(user_id): #è·å–ç”¨æˆ·è§‚çœ‹å†å²
     iuser = IUser()
     user = iuser.SelectById(user_id)
     viewhistory = AnalysisString(user.viewhistory)
@@ -67,16 +72,21 @@ def GetViewHistory(user_id): #»ñÈ¡ÓÃ»§¹Û¿´ÀúÊ·
 """
     administrator operation
 """
-def DeleteUser(operator_id, user_id): #É¾³ıÓÃ»§
+def DeleteUser(operator_id, user_id): #åˆ é™¤ç”¨æˆ·
     iuser = IUser()
     operator = iuser.SelectById(operator_id)
     if operator.admin == 0:
         return False
     else:
+        ivideo = IVideo()
+        user = iuser.SelectById(user_id)
+        videoList = AnalysisString(user.uphistory)
+        for video in videoList:
+            ivideo.Delete(video)
         iuser.Delete(user_id)
         return True
 
-def SetAdmin(operator_id, user_id):  #ÉèÖÃ¹ÜÀíÔ±
+def SetAdmin(operator_id, user_id):  #è®¾ç½®ç®¡ç†å‘˜
     iuser = IUser()
     operator = iuser.SelectById(operator_id)
     if operator.admin == 0:
@@ -85,7 +95,7 @@ def SetAdmin(operator_id, user_id):  #ÉèÖÃ¹ÜÀíÔ±
         iuser.ModifyAdmin(user_id, 1)
         return True
 
-def CheckVideo(operator_id, video_id): #ÉóºËÍ¨¹ıÊÓÆµ
+def CheckVideo(operator_id, video_id): #å®¡æ ¸é€šè¿‡è§†é¢‘
     iuser = IUser()
     operator = iuser.SelectById(operator_id)
     if operator.admin == 0:
@@ -95,7 +105,7 @@ def CheckVideo(operator_id, video_id): #ÉóºËÍ¨¹ıÊÓÆµ
         ivideo.ModifyState(video_id, 1)
         return True
 
-def AddType(operator_id, str_type): #Ìí¼ÓÀà±ğ
+def AddType(operator_id, str_type): #æ·»åŠ ç±»åˆ«
     iuser = IUser()
     operator = iuser.SelectById(operator_id)
     if operator.admin == 0:
@@ -113,7 +123,7 @@ def AddType(operator_id, str_type): #Ìí¼ÓÀà±ğ
             itype.Insert(newType)
             return True
 
-def DeleteType(operator_id, type_id): #É¾³ıÀà±ğ
+def DeleteType(operator_id, type_id): #åˆ é™¤ç±»åˆ«
     iuser = IUser()
     operator = iuser.SelectById(operator_id)
     if operator.admin == 0:
@@ -123,7 +133,7 @@ def DeleteType(operator_id, type_id): #É¾³ıÀà±ğ
         itype.Delete(type_id)
         return True
 
-def DeleteComment(operator_id, comment_id): #É¾³ıÆÀÂÛ
+def DeleteComment(operator_id, comment_id): #åˆ é™¤è¯„è®º
     iuser = IUser()
     operator = iuser.SelectById(operator_id)
     if operator.admin == 0:
@@ -137,7 +147,7 @@ def DeleteComment(operator_id, comment_id): #É¾³ıÆÀÂÛ
     video operation
 """
 
-def GetComment(video_id):  #»ñÈ¡ÊÓÆµÆÀÂÛ
+def GetComment(video_id):  #è·å–è§†é¢‘è¯„è®º
     commentLib = []
     ivideo = IVideo()
     video = ivideo.SelectById(video_id)
@@ -148,7 +158,7 @@ def GetComment(video_id):  #»ñÈ¡ÊÓÆµÆÀÂÛ
         commentLib.append(content)
     return commentLib
 
-def GetBsreen(video_id):  #»ñÈ¡ÊÓÆµµ¯Ä»
+def GetBsreen(video_id):  #è·å–è§†é¢‘å¼¹å¹•
     bscreenLib = []
     ivideo = IVideo()
     video = ivideo.SelectById(video_id)

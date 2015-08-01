@@ -1,40 +1,41 @@
+# -*- coding=utf-8 -*-
 from AsiaTube.models import *
-from .logic import AnalysisString
+from .logic import *
 
 class IUser():
-    def Insert(self, user): #ĞÂ½¨ÓÃ»§
+    def Insert(self, user): #æ–°å»ºç”¨æˆ·
         user.save()
 
-    def Delete(self, id): #É¾³ıÓÃ»§
+    def Delete(self, id): #åˆ é™¤ç”¨æˆ·
         CUser.objects.filter(id=id).delete()
 
-    def SelectById(self, id): #ÓÃidÑ¡ÔñÓÃ»§
+    def SelectById(self, id): #ç”¨idé€‰æ‹©ç”¨æˆ·
         if len(CUser.objects.filter(id=id)) != 0:
             return CUser.objects.get(id=id)
         else:
             return None
 
-    def ModifyName(self, id, newName): #ĞŞ¸ÄÓÃ»§Ãû
+    def ModifyName(self, id, newName): #ä¿®æ”¹ç”¨æˆ·å
         CUser.objects.filter(id=id).update(name=newName)
 
-    def ModifyPassword(self, id, newPassword): #ĞŞ¸ÄÃÜÂë
+    def ModifyPassword(self, id, newPassword): #ä¿®æ”¹å¯†ç 
         CUser.objects.filter(id=id).update(password=newPassword)
 
-    def ModifyEmail(self, id, newEmail): #ĞŞ¸ÄEmailµØÖ·
+    def ModifyEmail(self, id, newEmail): #ä¿®æ”¹Emailåœ°å€
         CUser.objects.filter(id=id).update(email=newEmail)
 
-    def ModifyImg(self, id, newImage): #ĞŞ¸ÄÍ·Ïñ
+    def ModifyImg(self, id, newImage): #ä¿®æ”¹å¤´åƒ
         CUser.objects.filter(id=id).update(image=newImage)
 
-    def ModifyAdmin(self, id, newAdmin): #ĞŞ¸Ä¹ÜÀíÔ±È¨ÏŞ
+    def ModifyAdmin(self, id, newAdmin): #ä¿®æ”¹ç®¡ç†å‘˜æƒé™
         CUser.objects.filter(id=id).update(admin=newAdmin)
 
-    def AddLikenum(self, id):  #Ôö¼ÓÔŞÊı
+    def AddLikenum(self, id):  #å¢åŠ èµæ•°
         if len(CUser.objects.filter(id=id)) != 0:
             num = CUser.objects.get(id=id).likenum
             CUser.objects.filter(id=id).update(likenum=num+1)
 
-    def UpdateUphistory(self, id, newUp, operate): #¸üĞÂÉÏ´«ÀúÊ·
+    def UpdateUphistory(self, id, newUp, operate): #æ›´æ–°ä¸Šä¼ å†å²
         if len(CUser.objects.filter(id=id)) != 0:
             if operate == 'add':
                 history = CUser.objects.get(id=id).uphistory
@@ -49,25 +50,25 @@ class IUser():
                     CUser.objects.filter(id=id).update(uphistory=newhistory)
 
 
-    def UpdateViewhistory(self, id, newView): #¸üĞÂ¹Û¿´ÀúÊ·
+    def UpdateViewhistory(self, id, newView): #æ›´æ–°è§‚çœ‹å†å²
         if len(CUser.objects.filter(id=id)) != 0:
             history = CUser.objects.get(id=id).viewhistory
             history += str(newView) + ' '
             CUser.objects.filter(id=id).update(viewhistory=history)
 
-    def UpdateFollow(self, id, leader): #¸üĞÂ¹Ø×¢ÁĞ±í
+    def UpdateFollow(self, id, leader): #æ›´æ–°å…³æ³¨åˆ—è¡¨
         if len(CUser.objects.filter(id=id)) != 0:
             leaders = CUser.objects.get(id=id).follow
             leaders += str(leader) + ' '
             CUser.objects.filter(id=id).update(follow=leaders)
 
-    def UpdateFollowme(self, id, follower): #¸üĞÂ¹Ø×¢ÁĞ±í
+    def UpdateFollowme(self, id, follower): #æ›´æ–°å…³æ³¨åˆ—è¡¨
         if len(CUser.objects.filter(id=id)) != 0:
             followers = CUser.objects.get(id=id).followme
             followers += str(follower) + ' '
             CUser.objects.filter(id=id).update(followme=followers)
 
-    def GetlastUserId(self): #»ñÈ¡×î´óid
+    def GetlastUserId(self): #è·å–æœ€å¤§id
         if len(CUser.objects.order_by('-id')) != 0:
             return CUser.objects.order_by('-id')[0].id
         else:
@@ -75,110 +76,111 @@ class IUser():
 
 
 class IVideo():
-    def Insert(self, video): #Ìí¼ÓÊÓÆµ
+    def Insert(self, video): #æ·»åŠ è§†é¢‘
         video.save()
 
-    def Delete(self, id):  #É¾³ıÊÓÆµ
+    def Delete(self, id):  #åˆ é™¤è§†é¢‘
         CVideo.objects.filter(id=id).delete()
 
-    def SelectById(self, id): #ÓÃidÑ¡ÔñÊÓÆµ
+    def SelectById(self, id): #ç”¨idé€‰æ‹©è§†é¢‘
         if len(CVideo.objects.filter(id=id)) != 0:
             return CVideo.objects.get(id=id)
         else:
             return None
 
-    def Search(self, condition): #ËÑË÷ÊÓÆµ
+    def Search(self, condition): #æœç´¢è§†é¢‘
         return
 
-    def ModifyTitle(self, id, newTitle): #ĞŞ¸ÄÊÓÆµ±êÌâ
+    def ModifyTitle(self, id, newTitle): #ä¿®æ”¹è§†é¢‘æ ‡é¢˜
         CVideo.objects.filter(id=id).update(title=newTitle)
 
-    def ModifyDiscribe(self, id, newDis): #ĞŞ¸ÄÊÓÆµÃèÊö
+    def ModifyDiscribe(self, id, newDis): #ä¿®æ”¹è§†é¢‘æè¿°
         CVideo.objects.filter(id=id).update(discribe=newDis)
 
-    def ModifyKeyword(self, id, newKeyword): #ĞŞ¸ÄÊÓÆµ¹Ø¼ü´Ê
+    def ModifyKeyword(self, id, newKeyword): #ä¿®æ”¹è§†é¢‘å…³é”®è¯
         CVideo.objects.filter(id=id).update(keyword=newKeyword)
 
-    def ModifyType(self, id, newType): #ĞŞ¸ÄÊÓÆµÀà±ğ
+    def ModifyType(self, id, newType): #ä¿®æ”¹è§†é¢‘ç±»åˆ«
         CVideo.objects.filter(id=id).update(type=newType)
 
-    def ModifyUpper(self, id, newUpper): #ĞŞ¸ÄÉÏ´«Õß
+    def ModifyUpper(self, id, newUpper): #ä¿®æ”¹ä¸Šä¼ è€…
         CVideo.objects.filter(id=id).update(upper=newUpper)
 
-    def ModifyTime(self, id, newTime): #ĞŞ¸ÄÉÏ´«Ê±¼ä
+    def ModifyTime(self, id, newTime): #ä¿®æ”¹ä¸Šä¼ æ—¶é—´
         CVideo.objects.filter(id=id).update(time=newTime)
 
-    def ModifyPath(self, id, newPath): #ĞŞ¸ÄÊÓÆµ±£´æÂ·¾¶
+    def ModifyPath(self, id, newPath): #ä¿®æ”¹è§†é¢‘ä¿å­˜è·¯å¾„
         CVideo.objects.filter(id=id).update(path=newPath)
 
-    def ModifyState(self, id, newState): #ĞŞ¸ÄÊÓÆµÉóºË×´Ì¬
+    def ModifyState(self, id, newState): #ä¿®æ”¹è§†é¢‘å®¡æ ¸çŠ¶æ€
         CVideo.objects.filter(id=id).update(state=newState)
 
-    def UpdateComments(self, id, newComments, operate): #¸üĞÂÊÓÆµÆÀÂÛ
+    def UpdateComments(self, id, newComments, operate): #æ›´æ–°è§†é¢‘è¯„è®º
         if len(CVideo.objects.filter(id=id)) != 0:
             comment = CVideo.objects.get(id=id).comments
             comment += str(newComments) + ' '
             CVideo.objects.filter(id=id).update(comments=comment)
 
-    def UpdateBsreen(self, id, newBsreen): #¸üĞÂÊÓÆµµ¯Ä»
+    def UpdateBsreen(self, id, newBsreen): #æ›´æ–°è§†é¢‘å¼¹å¹•
         if len(CVideo.objects.filter(id=id)) != 0:
             bsreens = CVideo.objects.get(id=id).bsreen
             bsreens += str(newBsreen) + ' '
             CVideo.objects.filter(id=id).update(bsreen=bsreens)
 
-    def AddLikenum(self, id): #Ôö¼ÓÊÓÆµÔŞÊı
+    def AddLikenum(self, id): #å¢åŠ è§†é¢‘èµæ•°
         if len(CVideo.objects.filter(id=id)) != 0:
             num = CVideo.objects.get(id=id).likenum
             CVideo.objects.filter(id=id).update(likenum=num+1)
 
-    def AddPlaynum(self, id): #Ôö¼ÓÊÓÆµ²¥·ÅÊı
+    def AddPlaynum(self, id): #å¢åŠ è§†é¢‘æ’­æ”¾æ•°
         if len(CVideo.objects.filter(id=id)) != 0:
             num = CVideo.objects.get(id=id).playnum
             CVideo.objects.filter(id=id).update(playnum=num+1)
 
-    def GetlastVideoId(self): #»ñÈ¡×î´óid
+    def GetlastVideoId(self): #è·å–æœ€å¤§id
         if len(CVideo.objects.order_by('-id')) != 0:
             return CVideo.objects.order_by('-id')[0].id
         else:
             return 0
 
-    def GetUnckeckVideo(self): #»ñÈ¡Ò»¸öÎ´ÉóºËÊÓÆµ
+    def GetUnckeckVideo(self): #è·å–ä¸€ä¸ªæœªå®¡æ ¸è§†é¢‘
         videos = CVideo.objects.order_by('id')
         for video in videos:
             if video.state == 0:
                 return video.id;
+        return -1
 
-    def GetUnckeckVideoNum(self): #»ñÈ¡Î´ÉóºËÊÓÆµÊıÁ¿
+    def GetUnckeckVideoNum(self): #è·å–æœªå®¡æ ¸è§†é¢‘æ•°é‡
         videos = CVideo.objects.filter(state=0)
         return len(videos)
 
 
 class IComment():
-    def Insert(self, comment): #ĞÂ½¨ÆÀÂÛ
+    def Insert(self, comment): #æ–°å»ºè¯„è®º
         comment.save()
 
-    def Delete(self, id): #É¾³ıÆÀÂÛ
+    def Delete(self, id): #åˆ é™¤è¯„è®º
         CComment.objects.filter(id=id).delete()
 
-    def SelectById(self, id): #ÓÃidÑ¡ÔñÆÀÂÛ
+    def SelectById(self, id): #ç”¨idé€‰æ‹©è¯„è®º
         if len(CComment.objects.filter(id=id)) != 0:
             return CComment.objects.get(id=id)
         else:
             return None
 
-    def ModifyUpper(self, id, newUpper): #ĞŞ¸ÄÆÀÂÛÕß
+    def ModifyUpper(self, id, newUpper): #ä¿®æ”¹è¯„è®ºè€…
         CComment.objects.filter(id=id).update(upper=newUpper)
 
-    def ModifyTime(self, id, newTime): #ĞŞ¸ÄÆÀÂÛÊ±¼ä
+    def ModifyTime(self, id, newTime): #ä¿®æ”¹è¯„è®ºæ—¶é—´
         CComment.objects.filter(id=id).update(time=newTime)
 
-    def ModifyContent(self, id, newContent): #ĞŞ¸ÄÆÀÂÛÄÚÈİ
+    def ModifyContent(self, id, newContent): #ä¿®æ”¹è¯„è®ºå†…å®¹
         CComment.objects.filter(id=id).update(content=newContent)
 
-    def ModifyVideo(self, id, newVideo): #ĞŞ¸ÄËùÊôÊÓÆµ
+    def ModifyVideo(self, id, newVideo): #ä¿®æ”¹æ‰€å±è§†é¢‘
         CComment.objects.filter(id=id).update(video=newVideo)
 
-    def GetlastCommentId(self): #»ñÈ¡×î´óid
+    def GetlastCommentId(self): #è·å–æœ€å¤§id
         if len(CComment.objects.order_by('-id')) != 0:
             return CComment.objects.order_by('-id')[0].id
         else:
@@ -186,57 +188,57 @@ class IComment():
 
 
 class IBulletscreen():
-    def Insert(self, bscreen): #ĞÂ½¨µ¯Ä»
+    def Insert(self, bscreen): #æ–°å»ºå¼¹å¹•
         bscreen.save()
 
-    def Delete(self, id): #É¾³ıµ¯Ä»
+    def Delete(self, id): #åˆ é™¤å¼¹å¹•
         CBulletsreen.objects.filter(id=id).delete()
 
-    def SelectId(self, id): #ÓÃidÑ¡Ôñµ¯Ä»
+    def SelectId(self, id): #ç”¨idé€‰æ‹©å¼¹å¹•
         if len(CBulletsreen.objects.filter(id=id)) != 0:
             return CBulletsreen.objects.get(id=id)
         else:
             return None
 
-    def ModifyVideo(self, id, newVideo): #ĞŞ¸ÄËùÊôÊÓÆµ
+    def ModifyVideo(self, id, newVideo): #ä¿®æ”¹æ‰€å±è§†é¢‘
         CBulletsreen.objects.filter(id=id).update(video=newVideo)
 
-    def ModifyTime(self, id, newTime): #ĞŞ¸Äµ¯Ä»Ê±¼ä
+    def ModifyTime(self, id, newTime): #ä¿®æ”¹å¼¹å¹•æ—¶é—´
         CBulletsreen.objects.filter(id=id).update(time=newTime)
 
-    def ModifyContent(self, id, newContent): #ĞŞ¸Äµ¯Ä»ÄÚÈİ
+    def ModifyContent(self, id, newContent): #ä¿®æ”¹å¼¹å¹•å†…å®¹
         CBulletsreen.objects.filter(id=id).update(content=newContent)
 
-    def GetlastBsreenId(self): #»ñÈ¡×î´óid
+    def GetlastBsreenId(self): #è·å–æœ€å¤§id
         if len(CBulletsreen.objects.order_by('-id')) != 0:
             return CBulletsreen.objects.order_by('-id')[0].id
         else:
             return 0
 
 class IType():
-    def Insert(self, itype): #ĞÂ½¨Àà±ğ
+    def Insert(self, itype): #æ–°å»ºç±»åˆ«
         itype.save()
 
-    def Delete(self, id): #É¾³ıÀà±ğ
+    def Delete(self, id): #åˆ é™¤ç±»åˆ«
         CType.objects.filter(id=id).delete()
 
-    def SelectAllType(self): #»ñÈ¡Àà±ğÁĞ±í
+    def SelectAllType(self): #è·å–ç±»åˆ«åˆ—è¡¨
         typelist = []
         objlist = CType.objects.all()
         for obj in objlist:
             typelist.append(obj.content)
         return typelist
 
-    def SelectById(self, id): #ÓÃid»ñÈ¡Àà±ğ
+    def SelectById(self, id): #ç”¨idè·å–ç±»åˆ«
         if len(CType.objects.filter(id=id)) != 0:
             return CType.objects.get(id=id)
         else:
             return None
 
-    def ModifyContent(self, id, newContent): #ĞŞ¸ÄÀà±ğÄÚÈİ
+    def ModifyContent(self, id, newContent): #ä¿®æ”¹ç±»åˆ«å†…å®¹
         CType.objects.filter(id=id).update(content=newContent)
 
-    def GetlastTypeId(self): #»ñÈ¡×î´óid
+    def GetlastTypeId(self): #è·å–æœ€å¤§id
         if len(CType.objects.order_by('-id')) != 0:
             return CType.objects.order_by('-id')[0].id
         else:

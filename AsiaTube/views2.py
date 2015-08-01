@@ -2,6 +2,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
+from AsiaTube.logic import *
 from AsiaTube.models import *
 from AsiaTube.interface import *
 
@@ -51,3 +52,73 @@ def ModifyPassword(request):
                 return render_to_response("modifypassword.html", context_instance=RequestContext(request))
             iuser.ModifyPassword(id, password1)
             return HttpResponse("modify password successfully")
+
+def manageUser(request):
+    if 'id' not in request.COOKIES:
+        return render_to_response("login.html", context_instance=RequestContext(request))
+    id = request.COOKIES['id']
+    iuser = IUser()
+    manager = iuser.SelectById(id)
+    if manager == None:
+        return HttpResponse("User doesn't exist")
+    if manager.admin != 1:
+        return HttpResponse("How can you find  this page!")
+
+    if request.method == 'GET':
+        return render_to_response("manageUser.html",{
+            'manager_image': manager.image,
+            'manager': manager.name,
+            'search_result':'none',
+        }, context_instance=RequestContext(request))
+    elif request.method == 'POST':
+        if 'search' in request.POST:
+            print(1)
+            user_id = request.POST.get('user_id')
+            if user_id == '':
+                return render_to_response("manageUser.html",{
+                'manager_image': manager.image,
+                'manager': manager.name,
+                'search_result':'none',
+            }, context_instance=RequestContext(request))
+            user = iuser.SelectById(user_id)
+            if user == None or user.admin == 1:
+                return render_to_response("manageUser.html",{
+                    'manager_image': manager.image,
+                    'manager': manager.name,
+                    'search_result':'none',
+                }, context_instance=RequestContext(request))
+            ivideo = IVideo()
+            videoList = AnalysisString(user.uphistory)
+            videos = []
+            for video in videoList:
+                videos.append(ivideo.SelectById(video))
+            response = render_to_response("manageUser.html",{
+            'manager_image': manager.image,
+            'manager': manager.name,
+            'search_result':'block',
+            'user_image':user.image,
+            'user_name': user.name,
+            'user_id':user.id,
+            'user_like':user.likenum,
+            'user_followme':len(AnalysisString(user.followme)),
+            'videos':videos,
+            }, context_instance=RequestContext(request))
+            response.set_cookie('manageUser', user.id)
+
+            return response
+        elif 'setAdmin' in request.POST:
+            user_id = int(request.COOKIES['manageUser'])
+            print(manager.id)
+            print(user_id)
+            print('fiywhfhaeughaweg')
+            SetAdmin(manager.id, user_id)
+        elif 'deleteUser' in request.POST:
+            print(3)
+            user_id = request.COOKIES['manageUser']
+            DeleteUser(manager.id, user_id)
+        return render_to_response("manageUser.html",{
+            'manager_image': manager.image,
+            'manager': manager.name,
+            'search_result':'none',
+        }, context_instance=RequestContext(request))
+
