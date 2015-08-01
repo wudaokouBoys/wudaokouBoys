@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿# -*- coding=utf-8 -*-
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +8,8 @@
     <title>Video Player</title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 	<style>
 		body {
 			padding-top: 60px;
@@ -25,9 +28,13 @@
 		}
 		#wrap{white-space:normal; word-wrap:break-word;}
     </style>
+	<!--[if lt IE 9]>
+		<script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <![endif]-->
 </head>
 <body>
 	<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+	<!--导航栏-->
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -42,20 +49,51 @@
 			</div>
 			<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				<li><a href = "#Home"><span class="glyphicon glyphicon-home">Home</span></a></li>
-				<li class="active"><a href="#"><span class="glyphicon glyphicon-upload">Update</span></a></li>
-				<li><a href="#User"><span class="glyphicon glyphicon-user">User</span>   <span class="label label-default">{{UserID}}</span></a></li>
+				<li class="active"><a href="#"><span class="glyphicon glyphicon-home">Home</span></a></li>
+				<li><a href = "#Game"><span class="glyphicon glyphicon-play">Game</span></a></li>
+				<li><a href = "#Movie"><span class="glyphicon glyphicon-film">Movie</span></a></li>
+				<li><a href = "#Sports"><span class="glyphicon glyphicon-star">Sports</span></a></li>
+				<li><a href = "#Others"><span class="glyphicon glyphicon-plus">Others</span></a></li>
 			</ul>
+			<form class="navbar-form nav navbar-nav navbar-right" role="search">
+				<div class="form-group">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="height:44px"><span class="glyphicon glyphicon-user">User<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Modify Info</a></li>
+							<li><a href="#">Modify Password</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Watch History</a></li>
+							<li><a href="#">Upload History</a></li>
+							<li class="divider"></li>
+							<li style="display:{{Display}}"><a href="#">Verify User</a></li>
+							<li style="display:{{Display}}"><a href="#">Verify Video</a></li>
+							<li style="display:{{Display}}"><a href="#">Administer Type</a></li>
+							<li class="divider" style="display:{{Display}}"></li>
+							<li><a href="#">Log Out</a></li>
+						</ul>
+					</li>
+				</div>
+				<span class="label label-default">{{UserID}}</span>
+			</form>  
+			<form class="navbar-form navbar-right" role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search">
+				</div>
+				<button type="submit" class="btn btn-default">Search</button>
+			</form>   
 			</div><!-- /.nav-collapse -->
 		</div><!-- /.container -->
     </div>
 	<div class = "container" >
+	<!--播放主界面-->
 		<div class="row">
 		<div class="col-lg-7">
+		<!--视频标题-->
 				<h3 class="text-center" id="banner-text">{{Video_title}}</h3>
 		</div>
 		<div class="col-lg-3" style="background:white; position:relative; border-radius:5px; height:90px; padding:6px;">
-			
+		<!--UP主信息-->	
 				<div  style="width:100%">
 					<div class="img-rounded">
 						<img src="{{UpperImage}}" style="width:80px; height:80px;">
@@ -64,12 +102,12 @@
 				<div  style = "position: absolute; top :7px; left: 90px;">
 					<h2>{{VideoUpper}}</h2>
 				</div>
-			
 		</div>
 		</div>
 		<hr/>
 		<div class="row">
 		<div class="col-lg-7" style="height:525px;">
+		<!--播放界面加弹幕输入-->
 			<div class="row" style="width:100%;">
 				<video src={{Video_src}} width="652" height="489" controls autobuffer></video>
 				<div class="input-group">
@@ -83,45 +121,35 @@
 			</div>
 		</div>
 		<div class="col-lg-3"  id="BulletScreen" style="height:525px; background:white; padding:10px; border-radius:5px; overflow:scroll; overflow-x:hidden">
+		<!--弹幕列表栏-->
 			<div class="panel panel-primary" >
-   						<div class="panel-heading">
-      						<h3 class="panel-title">BulletScreen</h3>
-   						</div>
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th>Time</th>
-									<th>Comment</th>
-									<th>Update Date</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>01:23</td>
-									<td>mai!mai!mai!</td>
-									<td>07-07</td>
-								</tr>
-								<tr>
-									<td>05:55</td>
-									<td>6666666</td>
-									<td>07-28</td>
-								</tr>
-								<tr>
-									<td>12:34</td>
-									<td>23333333!</td>
-									<td>08-08</td>
-								</tr>
-							</tbody>
-						</table>
-						
-					    <ul class="list-group" id="online-rooms">
-						
-						</ul>
+   				<div class="panel-heading">
+      				<h3 class="panel-title">BulletScreen</h3>
+   				</div>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Time</th>
+							<th>Comment</th>
+							<th>Update Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for BulletScreen in BulletScreens %}
+						<tr>
+							<td>{{ BulletScreens.time }}</td>
+							<td>{{ BulletScreens.comment }}</td>
+							<td>{{ BulletScreens.date }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 			</div>
 		</div>
 		
 		</div>
 		<div class="row" style="background:white; padding:8px; border-radius:5px; position:relative; top: 20px; height: 200px; width:800px">
+		<!--辅助功能栏-->	
 			<form class="form-inline" role="form" style="padding: 5px; border-bottom-color: silver; border-bottom-style:solid;">
 				<button class="btn btn-primary btn-nm" type="button">
 					<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;Good!
@@ -148,11 +176,11 @@
 			</div>
 		</div>
 		<div class="row" style="background:white; padding:8px; border-radius:5px; position:relative; top: 40px; height: 180px; width:800px">
-			
+		<!--输入评论-->
 			<form class="form-inline" role="form" style="padding: 5px;">
 				<div class="form-group">
 					<div class="img-circle">
-						<img src="{{UserImage}}" style="width:80px; height:80px;">
+						<img src="{{UserImage}}" class="circle" style="width:80px; height:80px;">
 					</div>
 				</div>
 				<div class="form-group" style="padding:5px; position:relative; top:10px;">
@@ -162,6 +190,73 @@
 					<h4>{{UserID}}</h4>
 				</div>
 				<button type="submit" class="btn btn-primary" style="float:right; position:relative; top:-30px; left:-10px;">Submit!</button>
+			</form>
+		</div>
+		<div class="row" style="background:white; padding:8px; border-radius:5px; position:relative; top: 40px; height: 500px; width:800px; overflow:scroll; overflow-x:hidden;">
+		<!--评论栏-->	
+			<form class="form-inline" role="form" style="padding: 5px; border-bottom-color: silver; border-bottom-style:solid;">
+				<div class="form-group">
+					<div class="img-circle">
+						<img src="{{Comment1Image}}" style="width:80px; height:80px;">
+					</div>
+				</div>
+				<div class="form-group" id="wrap" style="position:relative; top:30px; left:16px; height:100px; width:650px; border-color:silver; border-width:1px; border-style:solid;">
+					<div style="position:relative; top:-30px;">
+						<p>#{{Cmt1Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt1Time}}</p>
+						<p>1</p>
+					</div>
+				</div>
+				<div style="position:relative; top:-10px;">
+					<h4>{{Cmt1ID}}</h4>
+				</div>
+			</form>
+			<form class="form-inline" role="form" style="padding: 5px; border-bottom-color: silver; border-bottom-style:solid;">
+				<div class="form-group">
+					<div class="img-circle">
+						<img src="{{Comment2Image}}" style="width:80px; height:80px;">
+					</div>
+				</div>
+				<div class="form-group" id="wrap" style="position:relative; top:30px; left:16px; height:100px; width:650px; border-color:silver; border-width:1px; border-style:solid;">
+					<div style="position:relative; top:-30px;">
+						<p>#{{Cmt2Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt2Time}}</p>
+						<p>2</p>
+					</div>
+				</div>
+				<div style="position:relative; top:-10px;">
+					<h4>{{Cmt2ID}}</h4>
+				</div>
+			</form>
+			<form class="form-inline" role="form" style="padding: 5px; border-bottom-color: silver; border-bottom-style:solid;">
+				<div class="form-group">
+					<div class="img-circle">
+						<img src="{{Comment3Image}}" style="width:80px; height:80px;">
+					</div>
+				</div>
+				<div class="form-group" id="wrap" style="position:relative; top:30px; left:16px; height:100px; width:650px; border-color:silver; border-width:1px; border-style:solid;">
+					<div style="position:relative; top:-30px;">
+						<p>#{{Cmt3Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt3Time}}</p>
+						<p>3</p>
+					</div>
+				</div>
+				<div style="position:relative; top:-10px;">
+					<h4>{{Cmt3ID}}</h4>
+				</div>
+			</form>
+			<form class="form-inline" role="form" style="padding: 5px; border-bottom-color: silver; border-bottom-style:solid;">
+				<div class="form-group">
+					<div class="img-circle">
+						<img src="{{Comment4Image}}" style="width:80px; height:80px;">
+					</div>
+				</div>
+				<div class="form-group" id="wrap" style="position:relative; top:30px; left:16px; height:100px; width:650px; border-color:silver; border-width:1px; border-style:solid;">
+					<div style="position:relative; top:-30px;">
+						<p>#{{Cmt4Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt4Time}}</p>
+						<p>4</p>
+					</div>
+				</div>
+				<div style="position:relative; top:-10px;">
+					<h4>{{Cmt4ID}}</h4>
+				</div>
 			</form>
 		</div>
 	</div>
