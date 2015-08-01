@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+		<title>管理员审查视频</title>
+    </head>
+    <body>
+		<div style = "width:900px; margin:0px auto">
+			<div style = "display:block">
+				管理员你好，目前没有带审核的视频/管理员你好，这是下一个待审核的视频，共有{{x}}个待审核的视频
+			</div>
+			<div style = "display:block">
+				<video src = "http://127.0.0.1:8000/static/1.mp4"> </video>
+				<div>
+					<div>上传者：{{video_upper}}</div>
+					<div>视频标题：{{video_title}}</div>
+					<div>视频类别：{{video_type}}</div>
+					<div>视频简介：{{video_discription}}</div>
+					<div>
+						<button onclick = "m_accept()">接受</button>
+						<button onclick = "m_reject">拒绝</button>
+					</div>
+					<form method = POST enctype = "multipart/form-data" action = "/checkvideo/">
+						{% csrf_token %}
+						<div>如果你接受了这个视频，请上传一张图片文件作为此视频的缩略图</div>
+						<div><input type="file" name = "file"></div>
+						<div><input type="submit" value = "提交" name = "action"></div>
+					</form>
+					<button><a href="http://www.baidu.com">审查此视频上传者</a></button>
+				</div>
+			</div>
+		</div>
+	    
+    </body>
+</html>
+<script language = "javascript">
+function m_accept(){
+	document.cookies = "checkstate=1; path=/"
+}
+function m_reject(){
+	document.cookies = "checkstate=0; path=/"
+}
+</script>
