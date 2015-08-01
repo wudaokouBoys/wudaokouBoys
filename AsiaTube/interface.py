@@ -142,6 +142,17 @@ class IVideo():
         else:
             return 0
 
+    def GetUnckeckVideo(self): #获取一个未审核视频
+        videos = CVideo.objects.order_by('id')
+        for video in videos:
+            if video.state == 0:
+                return video.id;
+
+    def GetUnckeckVideoNum(self): #获取未审核视频数量
+        videos = CVideo.objects.filter(state=0)
+        return len(videos)
+
+
 class IComment():
     def Insert(self, comment): #新建评论
         comment.save()
