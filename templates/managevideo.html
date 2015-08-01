@@ -17,7 +17,7 @@
 					<div>视频类别：{{video_type}}</div>
 					<div>视频简介：{{video_discription}}</div>
 					<div>
-						<button onclick = "m_accept()">接受</button>
+						<button onclick = "m_accept">接受</button>
 						<button onclick = "m_reject">拒绝</button>
 					</div>
 					<form method = POST enctype = "multipart/form-data" action = "/checkvideo/">
@@ -35,9 +35,9 @@
 </html>
 <script language = "javascript">
 function m_accept(){
-	document.cookies = "checkstate=1; path=/"
+	document.cookie = "checkstate=1; path=/"
 }
 function m_reject(){
-	document.cookies = "checkstate=0; path=/"
+	document.cookie = "checkstate=0; path=/"
 }
 </script>
