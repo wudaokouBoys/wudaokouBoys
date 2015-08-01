@@ -108,7 +108,7 @@ def ModifyInfo(request):
         a.ModifyImg(id, file.name)
         handle_uploaded_pic(file, id)
         return HttpResponse("You have modified successfully!1")
-        #upload iamge
+        #upload image
 
 def manageVideo(request):#管理员审查视频界面
     if 'id' not in request.COOKIES:
@@ -128,51 +128,47 @@ def manageVideo(request):#管理员审查视频界面
     video = ivideo.SelectById(firstvideo_id)
     upper_id = video.upper
     upper = iuser.SelectById(upper_id)
+    response = render_to_response("managevideo.html" ,{
+        'video_title':video.title,
+        'video_discription':video.discribe,
+        'video_upper':upper.name,
+        'x':videonum,
+    }, context_instance=RequestContext(request))
     if request.method == 'GET':
-        return render_to_response("managevideo.html" ,{
-            'video_title':video.title,
-            'video_discription':video.discribe,
-            'video_upper':upper.name,
-            'x':videonum,
-        }, context_instance=RequestContext(request))
+        return response
     else:
-        if 'id' not in request.COOKIES:
-            return render_to_response("login.html", context_instance=RequestContext(request))
-        id = request.COOKIES['id']
-        iuser = IUser()
-        user = iuser.SelectById(id)
-        if user == None:
-            return HttpResponse("You have been deleted")
-        if user.admin == 0:
-            return HttpResponse("You have no right to visit this page!!!")
-        response = HttpResponse()
-        if request.COOKIES['checkstate'] == -1:
-            print("你没有检查视频！！")
-            return render_to_response("managevideo.html",{
-
-            },context_instance=RequestContext(request))
-        if request.COOKIES['checkstate'] == 1:
-            print("你允许了视频.")
-            ivideo.ModifyState(video.id, 1)#设置数据库里的数据
+        if request.method == 'POST':
+        #异常处理
+            if 'id' not in request.COOKIES:
+                return render_to_response("login.html", context_instance=RequestContext(request))
+            id = request.COOKIES['id']
             iuser = IUser()
-            videonum = ivideo.GetUnckeckVideoNum()
-            if (videonum == 0):
-                return HttpResponse("所有视频都审查结束了，你可以睡觉了")
-            firstvideo_id = ivideo.GetUnckeckVideo()
-            ivideo = IVideo()
-            video = ivideo.SelectById(firstvideo_id)
-            upper_id = video.upper
-            upper = iuser.SelectById(upper_id)
-            return render_to_response("managevideo.html" ,{
-                'video_title':video.title,
-                'video_discription':video.discribe,
-                'video_upper':upper.name,
-                'x':videonum,
-            }, context_instance=RequestContext(request))
-        if request.COOKIES['checkstate'] == 0:
-            print("你删除了视频！")
-            ivideo.Delete(video.id)
-        response.set_cookie('checkstate', -1)#check = -1 未检查 check = 1通过 check=0 拒绝
-        return render_to_response("managevideo.html",{
+            user = iuser.SelectById(id)
+            if user == None:
+                return HttpResponse("You have been deleted")
+            if user.admin == 0:
+                return HttpResponse("You have no right to visit this page!!!")
+            #异常处理
+            if request.COOKIES['checkstate'] == '-1':
+                print("你没有检查视频！！")
+                return response
+            if request.COOKIES['checkstate'] == '1':
+                print("你允许了视频.")
+                ivideo.ModifyState(video.id, 1)#设置数据库里的数据
 
-        },context_instance=RequestContext(request))
+                iuser = IUser()
+                videonum = ivideo.GetUnckeckVideoNum()
+                if (videonum == 0):
+                    return HttpResponse("所有视频都审查结束了，你可以睡觉了")
+                firstvideo_id = ivideo.GetUnckeckVideo()
+                ivideo = IVideo()
+                video = ivideo.SelectById(firstvideo_id)
+                upper_id = video.upper
+                upper = iuser.SelectById(upper_id)
+                response.set_cookie('checkstate', -1)#check = -1 未检查 check = 1通过 check=0 拒绝
+                return response
+            if request.COOKIES['checkstate'] == '0':
+                print("你删除了视频！")
+                ivideo.Delete(video.id)
+            response.set_cookie('checkstate', -1)#check = -1 未检查 check = 1通过 check=0 拒绝
+            return response
