@@ -9,7 +9,7 @@ from .forms import UploadFileForm
 
 # Create your views here.
 
-def register(request):
+def SignUp(request):
     if request.method == 'GET':
         return render_to_response("register.html", context_instance=RequestContext(request))
     else:
@@ -31,7 +31,7 @@ def register(request):
             followme = "",
             admin = 0
         )
-        if (password == password1):
+        if (password == password1 and password != ''):
             a.Insert(person)
             return HttpResponse("You have registered successfully")
         else:
@@ -61,10 +61,12 @@ def handle_uploaded_pic(f, x):#'F:/AsiaTube/Video/'+ str(12) + '_' +
     return f
 def uploadvideo(request):
     if 'id' not in request.COOKIES:
-        return render_to_response("login.html")
+        return render_to_response("login.html", context_instance=RequestContext(request))
     if request.method == 'GET':
         return render_to_response("update.html", context_instance=RequestContext(request))
     else:
+        if 'file' not in request.FILES:
+            return render_to_response("update.html", context_instance=RequestContext(request))
         a = request.FILES['file']
         x = request.COOKIES['id']
         handle_uploaded_file(a, x)
@@ -82,7 +84,7 @@ def uploadvideo(request):
 
 def ModifyInfo(request):
     if 'id' not in request.COOKIES:
-        return HttpResponse("How can you find this page!!!")
+        return render_to_response("login.html", context_instance=RequestContext(request))
     id = request.COOKIES['id']
     iuser = IUser()
     user = iuser.SelectById(id)
@@ -96,13 +98,33 @@ def ModifyInfo(request):
         },context_instance=RequestContext(request))
     else:
         nick_name = request.POST.get("nick-name")
-        email = request.POST.get("email")
-        file = request.FILES['file']
+        email = request.POST.get("e-mail")
         a = IUser()
         a.ModifyEmail(id, email)
         a.ModifyName(id, nick_name)
+        if 'file' not in request.FILES:
+            return HttpResponse("you have modified your information except for your image")
+        file = request.FILES['file']
         a.ModifyImg(id, file.name)
         handle_uploaded_pic(file, id)
         return HttpResponse("You have modified successfully!1")
         #upload iamge
 
+def manageVideo(request):
+    if request.method == 'GET':
+        return render_to_response("managevideo.html" ,{
+
+        }, context_instance=RequestContext(request))
+    else:
+        if 'id' not in request.COOKIES:
+            return render_to_response("login.html", context_instance=RequestContext(request))
+        id = request.COOKIES['id']
+        iuser = IUser()
+        user = iuser.SelectById(id)
+        if user == None:
+            return HttpResponse("You have been deleted")
+        if user.admin == 0:
+            return HttpResponse("You have no right to visit this page!!!")
+        response = HttpResponse()
+        response.set_cookie('checkstate', -1)#check = -1 未检查 check = 1通过 check=0 拒绝
+        return response

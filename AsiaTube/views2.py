@@ -29,7 +29,7 @@ def Login(request):  #用户登录
 
 def ModifyPassword(request):
     if 'id' not in request.COOKIES:
-        return HttpResponse("You Haven't Log in!")
+        return render_to_response("login.html", context_instance=RequestContext(request))
     id = request.COOKIES['id']
     iuser = IUser()
     user = iuser.SelectById(id)
@@ -45,9 +45,9 @@ def ModifyPassword(request):
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
         if password1 != password2:
-            return render_to_response("modifypassword.html",{
-                 'password0':oldpassword,
-            }, context_instance=RequestContext(request))
+            return render_to_response("modifypassword.html", context_instance=RequestContext(request))
         else:
+            if password1 == '':
+                return render_to_response("modifypassword.html", context_instance=RequestContext(request))
             iuser.ModifyPassword(id, password1)
             return HttpResponse("modify password successfully")

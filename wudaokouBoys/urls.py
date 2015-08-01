@@ -22,12 +22,13 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     #url(r'^admin/', include(admin.site.urls)),
-    url(r'^register/$', 'AsiaTube.views.register', name='register'),
+    url(r'^register/$', 'AsiaTube.views.SignUp', name='SignUp'),
     url(r'^upload/$', 'AsiaTube.views.uploadvideo', name = 'uploadvideo'),
-    url(r"^media/(?P<path>.*)$", "django.views.static.serve", {"document_root": settings.MEDIA_ROOT}),
     url(r'^login/$', 'AsiaTube.views2.Login', name='Login'),
     url(r'^modifyInfo/$', 'AsiaTube.views.ModifyInfo', name='ModifyInfo'),
     url(r'^modifyPassword/$', 'AsiaTube.views2.ModifyPassword', name='ModifyPassword'),
+    url(r'^manageUser/$', 'AsiaTube.views2.manageUser', name='manageUser'),
+    url(r'^manageVideo/$', 'AsiaTube.views.manageVideo', name='manageVideo'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
