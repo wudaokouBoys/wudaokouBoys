@@ -110,3 +110,7 @@ def ModifyInfo(request):
         return HttpResponse("You have modified successfully!1")
         #upload iamge
 
+def managevideo(request):
+     response = HttpResponse()
+     response.set_cookie('checkstate', 0)#check = 0 未检查 check = 1通过 check=2 拒绝
+     return response
