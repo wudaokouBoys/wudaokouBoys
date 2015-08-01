@@ -112,8 +112,19 @@ def ModifyInfo(request):
 
 def manageVideo(request):
     if request.method == 'GET':
-        return render_to_response("managevideo.html", context_instance=RequestContext(request))
+        return render_to_response("managevideo.html" ,{
+
+        }, context_instance=RequestContext(request))
     else:
-     response = HttpResponse()
-     response.set_cookie('checkstate', 0)#check = 0 未检查 check = 1通过 check=2 拒绝
-     return response
+        if 'id' not in request.COOKIES:
+            return render_to_response("login.html", context_instance=RequestContext(request))
+        id = request.COOKIES['id']
+        iuser = IUser()
+        user = iuser.SelectById(id)
+        if user == None:
+            return HttpResponse("You have been deleted")
+        if user.admin == 0:
+            return HttpResponse("You have no right to visit this page!!!")
+        response = HttpResponse()
+        response.set_cookie('checkstate', -1)#check = -1 未检查 check = 1通过 check=0 拒绝
+        return response
