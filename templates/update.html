@@ -27,7 +27,7 @@
 					<span class="icon-bar"></span>
 				</button>
 				<div class="row">
-					<img src="static/AsiaTube.png" class="img-rounded">
+					<img src="/static/AsiaTube.png" class="img-rounded">
 				</div>
 			</div>
 			<div class="collapse navbar-collapse">
@@ -89,18 +89,16 @@
 						<div class="btn-group">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Select Type<span class="caret"></span></button>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="#">Game</a></li>
-								<li><a href="#">Movie</a></li>
-								<li><a href="#">Sports</a></li>
-								<li class="divider"></li>
-								<li><a href="#">Others</a></li>
+							{% for VideoType in Types %}
+							<li><a href="#">VideoType</a></li>
+							{% endfor %}
 							</ul>
 						</div>
 						</span>
 					</div><!-- /input-group -->
 				</div>
 				<div class="form-group" style="position:relative; top:-40px; left:500px;">
-					<input type="file" id="exampleInputFile" name = "file" value = {{UploadFile}} >
+					<input type="file" id="exampleInputFile" name = "file" accept="video/*" value = {{UploadFile}} >
 				</div>
 				<p><input type=submit value="Submit" class="btn btn-default"  name=action></p>
 			</form>
