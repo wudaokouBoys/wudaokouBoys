@@ -85,7 +85,7 @@ def uploadvideo(request):
             time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
             path = a.name,
             state = 0,
-            comment = "",
+            comments = "",
             bsreen = "",
             likenum = 0,
             playnum = 0,
