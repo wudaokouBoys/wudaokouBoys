@@ -34,7 +34,10 @@ def SignUp(request):
         )
         if (password == password1 and password != ''):
             a.Insert(person)
-            return HttpResponse("You have registered successfully")
+            response = HttpResponse("You have registered successfully")
+            response.set_cookie()
+            response.set_cookie('id', id)
+            return response
         else:
             return render_to_response("register.html",{
                 'oldname':nick_name,
@@ -83,7 +86,7 @@ def uploadvideo(request):
             type = 1,
             upper = x,
             time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-            path = a.name,
+            path = m_video_id+"_"+a.name,
             state = 0,
             comments = "",
             bsreen = "",
@@ -91,6 +94,7 @@ def uploadvideo(request):
             playnum = 0,
         )
         ivideo.Insert(newvideo)
+        x = m_video_id
         handle_uploaded_file(a, x)
         #form = UploadFileForm(request.POST, request.FILES)
         #if form.is_valid():
