@@ -52,13 +52,13 @@ def SignUp(request):
      #   p.save()
 
 def handle_uploaded_file(f, x):#'F:/AsiaTube/Video/'+ str(12) + '_' +
-    with open('F:/AsiaTube/Video/'+ str(x) + '_'+ f.name, 'wb+') as info:
+    with open('F:/AsiaTube/Video/'+ str(x) + '_v.'+ f.name.split('.')[1], 'wb+') as info:
         for chunk in f.chunks():
             info.write(chunk)
     return f
 
 def handle_uploaded_pic(f, x):#'F:/AsiaTube/Video/'+ str(12) + '_' +
-    with open('F:/AsiaTube/Icon/'+ str(x) + '_v'+ f.name.split('.')[1], 'wb+') as info:
+    with open('F:/AsiaTube/Icon/'+ str(x) + '_'+ f.name, 'wb+') as info:
         for chunk in f.chunks():
             info.write(chunk)
     return f
@@ -85,7 +85,7 @@ def uploadvideo(request):
             type = 1,
             upper = x,
             time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-            path = str(m_video_id)+"_v"+a.name.split('.')[1],
+            path = str(m_video_id)+"_v."+a.name.split('.')[1],
             state = 0,
             comments = "",
             bsreen = "",
