@@ -5,6 +5,8 @@ from django.template import RequestContext
 from AsiaTube.logic import *
 from AsiaTube.models import *
 from AsiaTube.interface import *
+from django.http import JsonResponse
+import json
 
 def Login(request):  #用户登录
     if request.method == 'GET':
@@ -121,4 +123,20 @@ def manageUser(request):
             'manager': manager.name,
             'search_result':'none',
         }, context_instance=RequestContext(request))
+
+
+def videoPlayer(request):
+    if request.method == 'GET':
+        return render_to_response("video.html", {
+            'Playnum':1,
+            'Video_src':'/static/1.mp4',
+        }, context_instance=RequestContext(request))
+    else:
+        if 'likeit' in request.POST:
+            response_dict = {}
+            response_dict.update({'likenum':2})
+            return JsonResponse(response_dict)
+        else:
+            print('fuahfha')
+            return HttpResponse('haha')
 

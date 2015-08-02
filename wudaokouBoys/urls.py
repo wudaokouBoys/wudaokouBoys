@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^modifyPassword/$', 'AsiaTube.views2.ModifyPassword', name='ModifyPassword'),
     url(r'^manageUser/$', 'AsiaTube.views2.manageUser', name='manageUser'),
     url(r'^manageVideo/$', 'AsiaTube.views.manageVideo', name='manageVideo'),
+    url(r'^videoPlayer/$', 'AsiaTube.views2.videoPlayer', name='videoPlayer'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

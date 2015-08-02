@@ -59,8 +59,8 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<div class="row">
-					<img src="static/AsiaTube.png" class="img-rounded">
+				<div class="row" style="left:-20px; position: relative">
+					<img src="/static/AsiaTube.png" class="img-rounded">
 				</div>
 			</div>
 			<div class="collapse navbar-collapse">
@@ -166,114 +166,104 @@
 		</div>
 		<div class="row" style="background:white; padding:8px; border-radius:5px; position:relative; top: 20px; height: 200px; width:800px">
 		<!--辅助功能栏-->	
-			<form class="form-inline" role="form" style="padding: 5px; border-bottom-color: silver; border-bottom-style:solid;">
-				<button class="btn btn-primary btn-nm" type="button">
-					<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;Good!
+			<form class="form-inline" role="form" style="padding: 5px; border-bottom-color: silver; border-bottom-style:solid;"  method = POST action="/videoPlayer/">
+                {% csrf_token %}
+				<button class="btn btn-primary btn-nm" type="button" id="like">
+					<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;点赞
 				</button>
 				<div class="form-group" style="border-left-color:silver; border-right-color:silver; border-bottom-color:white; border-top-color:white; border-style:solid">
-					<h4>&nbsp;{{LikeNum}}&nbsp;</h4>
+					<h4 id="likenum">&nbsp;获赞数：{{LikeNum}}&nbsp;</h4>
 				</div>
 				<div class="form-group" style="border-left-color:white; border-right-color:silver; border-bottom-color:white; border-top-color:white; border-style:solid">
-					<h4>&nbsp;{{Video_uptime}}&nbsp;</h4>
-				</div>
-				<div class="form-group" style="border-left-color:white; border-right-color:silver; border-bottom-color:white; border-top-color:white; border-style:solid">
-					<h4>&nbsp;{{Playnum}}&nbsp;</h4>
+					<h4>&nbsp;播放数：{{Playnum}}&nbsp;</h4>
 				</div>
 				<div class="form-group">
-					<h4>&nbsp;Video Type:&nbsp;</h4>
+					<h4>&nbsp;视频类别:&nbsp;</h4>
 				</div>
 				<div class="form-group">
-					&nbsp;&nbsp;<span class="label label-info">Meng Jie</span>
-					&nbsp;&nbsp;<span class="label label-info">Da Fei Ji</span>
+					&nbsp;&nbsp;<span class="label label-info">{{ videoType }}</span>
+				</div>
+                <div class="form-group" style="border-left-color:white; border-right-color:silver; border-bottom-color:white; border-top-color:white; border-style:solid">
+					<h4>&nbsp;上传时间{{Video_uptime}}&nbsp;</h4>
 				</div>
 			</form>
 			<div id="wrap">
-				<p>{{VideoDiscription}}</p>
+				<textarea name="VideoDiscribe" rows="5" disabled style="width:100%; background-color:white;">{{VideoDiscription}}</textarea>
 			</div>
 		</div>
 		<div class="row" style="background:white; padding:8px; border-radius:5px; position:relative; top: 40px; height: 180px; width:800px">
 		<!--输入评论-->
-			<form class="form-inline" role="form" style="padding: 5px;">
-				<div class="form-group">
-					<div class="img-circle">
-						<img src="{{UserImage}}" class="circle" style="width:80px; height:80px;">
-					</div>
+			<div class="col-lg-2" style="height:160px; padding:15px;">
+				<div class="img-circle">
+					<img src="{{UserImage}}" class="circle" style="width:80px; height:80px;">
 				</div>
-				<div class="form-group" style="padding:5px; position:relative; top:10px;">
-					<textarea name="VideoDiscribe" cols="109" rows="5" placeholder="Please Enter Your Commit"></textarea>
-				</div>
-				<div style="position:relative; top:-18px;">
+				<div style="top:20px;">
 					<h4>{{UserID}}</h4>
 				</div>
-				<button type="submit" class="btn btn-primary" style="float:right; position:relative; top:-30px; left:-10px;">Submit!</button>
-			</form>
+			</div>
+			<div class="col-lg-10" style="height:160px; padding:15px;">
+				<textarea name="VideoDiscribe" rows="5" placeholder="Please Enter Your Commit" style="width:100%;"></textarea>
+				<button type="submit" class="btn btn-primary" style="float:right; position:relative; left:-10px;">Submit!</button>
+			</div>
 		</div>
-		<div class="row" style="background:white; padding:8px; border-radius:5px; position:relative; top: 40px; height: 500px; width:800px; overflow:scroll; overflow-x:hidden;">
-		<!--评论栏-->	
-			<form class="form-inline" role="form" style="padding: 5px; border-bottom-color: silver; border-bottom-style:solid;">
-				<div class="form-group">
+		<div class="row" style="background:white; padding:8px; border-radius:5px; position:relative; top: 60px; height: 500px; width:800px; overflow:scroll; overflow-x:hidden;">
+		<!--评论栏-->
+			<div class="row" style="border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;">
+				<div class="col-lg-2" style="height:160px; padding:15px; left:15px;">
 					<div class="img-circle">
-						<img src="{{Comment1Image}}" style="width:80px; height:80px;">
+						<img src="{{Cmt1Image}}" class="circle" style="width:80px; height:80px;">
+					</div>
+					<div style="top:20px;">
+						<h4>{{Cmt1ID}}</h4>
 					</div>
 				</div>
-				<div class="form-group" id="wrap" style="position:relative; top:30px; left:16px; height:100px; width:650px; border-color:silver; border-width:1px; border-style:solid;">
-					<div style="position:relative; top:-30px;">
-						<p>#{{Cmt1Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt1Time}}</p>
-						<p>1</p>
-					</div>
+				<div class="col-lg-10" style="height:160px; padding:15px;">
+					<textarea name="VideoDiscribe" rows="5" disabled style="width:100%; background-color:white;">1</textarea>
+					<p>#{{Cmt1Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt1Time}}</p>
 				</div>
-				<div style="position:relative; top:-10px;">
-					<h4>{{Cmt1ID}}</h4>
-				</div>
-			</form>
-			<form class="form-inline" role="form" style="padding: 5px; border-bottom-color: silver; border-bottom-style:solid;">
-				<div class="form-group">
+			</div>
+			<div class="row" style="border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;">
+				<div class="col-lg-2" style="height:160px; padding:15px; left:15px;">
 					<div class="img-circle">
-						<img src="{{Comment2Image}}" style="width:80px; height:80px;">
+						<img src="{{Cmt2Image}}" class="circle" style="width:80px; height:80px;">
+					</div>
+					<div style="top:20px;">
+						<h4>{{Cmt2ID}}</h4>
 					</div>
 				</div>
-				<div class="form-group" id="wrap" style="position:relative; top:30px; left:16px; height:100px; width:650px; border-color:silver; border-width:1px; border-style:solid;">
-					<div style="position:relative; top:-30px;">
-						<p>#{{Cmt2Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt2Time}}</p>
-						<p>2</p>
-					</div>
+				<div class="col-lg-10" style="height:160px; padding:15px;">
+					<textarea name="VideoDiscribe" rows="5" disabled style="width:100%; background-color:white;">2</textarea>
+					<p>#{{Cmt2Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt2Time}}</p>
 				</div>
-				<div style="position:relative; top:-10px;">
-					<h4>{{Cmt2ID}}</h4>
-				</div>
-			</form>
-			<form class="form-inline" role="form" style="padding: 5px; border-bottom-color: silver; border-bottom-style:solid;">
-				<div class="form-group">
+			</div>
+			<div class="row" style="border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;">
+				<div class="col-lg-2" style="height:160px; padding:15px; left:15px;">
 					<div class="img-circle">
-						<img src="{{Comment3Image}}" style="width:80px; height:80px;">
+						<img src="{{Cmt3Image}}" class="circle" style="width:80px; height:80px;">
+					</div>
+					<div style="top:20px;">
+						<h4>{{Cmt3ID}}</h4>
 					</div>
 				</div>
-				<div class="form-group" id="wrap" style="position:relative; top:30px; left:16px; height:100px; width:650px; border-color:silver; border-width:1px; border-style:solid;">
-					<div style="position:relative; top:-30px;">
-						<p>#{{Cmt3Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt3Time}}</p>
-						<p>3</p>
-					</div>
+				<div class="col-lg-10" style="height:160px; padding:15px;">
+					<textarea name="VideoDiscribe" rows="5" disabled style="width:100%; background-color:white;">3</textarea>
+					<p>#{{Cmt3Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt3Time}}</p>
 				</div>
-				<div style="position:relative; top:-10px;">
-					<h4>{{Cmt3ID}}</h4>
-				</div>
-			</form>
-			<form class="form-inline" role="form" style="padding: 5px; border-bottom-color: silver; border-bottom-style:solid;">
-				<div class="form-group">
+			</div>
+			<div class="row" style="border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;">
+				<div class="col-lg-2" style="height:160px; padding:15px; left:15px;">
 					<div class="img-circle">
-						<img src="{{Comment4Image}}" style="width:80px; height:80px;">
+						<img src="{{Cmt4Image}}" class="circle" style="width:80px; height:80px;">
+					</div>
+					<div style="top:20px;">
+						<h4>{{Cmt4ID}}</h4>
 					</div>
 				</div>
-				<div class="form-group" id="wrap" style="position:relative; top:30px; left:16px; height:100px; width:650px; border-color:silver; border-width:1px; border-style:solid;">
-					<div style="position:relative; top:-30px;">
-						<p>#{{Cmt4Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt4Time}}</p>
-						<p>4</p>
-					</div>
+				<div class="col-lg-10" style="height:160px; padding:15px;">
+					<textarea name="VideoDiscribe" rows="5" disabled style="width:100%; background-color:white;">4</textarea>
+					<p>#{{Cmt4Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt4Time}}</p>
 				</div>
-				<div style="position:relative; top:-10px;">
-					<h4>{{Cmt4ID}}</h4>
-				</div>
-			</form>
+			</div>
 		</div>
 	</div>
 	<div class="back2top" >
@@ -282,6 +272,26 @@
         </a>
 	</div>
 </object>
+<script>
+    $('#like').click(function(){
+        $.ajax({
+            url:'/videoPlayer/',
+            type : "POST",
+            dataType: "json",
+            data : {
+                likeit:true,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+            success : function(json) {
+                $('#likenum').html('获赞数：'+ json.likenum)
+                $('#like').attr('class', $('#like').attr('class') + ' disabled')
+            },
+            error : function(xhr,errmsg,err) {
+                alert(xhr.status + ": " + xhr.responseText);
+            }
+        })
+    })
+</script>
 </body>
 <script type="text/javascript" language="javascript">
 	jQuery(document).ready(function($) {
