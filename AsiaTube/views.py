@@ -92,6 +92,8 @@ def uploadvideo(request):
             likenum = 0,
             playnum = 0,
         )
+        print(newvideo.path)
+        print('asdfg')
         ivideo.Insert(newvideo)
         x = m_video_id
         handle_uploaded_file(a, x)
