@@ -17,7 +17,7 @@
   </head>
   <body>
     <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
-	<!--导航�?-->
+	<!--导航栏-->
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -67,19 +67,19 @@
     </div>
 	<div class="container">
 		<div class="col-lg-8" style="background:silver; padding:20px; border-radius:5px; position:relative; left: 150px; top:20px; height: 500px;">
-			<form method=POST enctype="multipart/form-data" action="/">
+			<form method=POST enctype="multipart/form-data" action="/upload/">
 				{{uf.as_p}}
 				{% csrf_token %}
 				<label for="exampleInputFile">Upload Viedo</label>
 				<hr/>
 				<div class="input-group">
 					<span class="input-group-addon">Title</span>
-					<input type="text" class="form-control">
+					<input type="text" class="form-control" name="VideoTitle">
 				</div>
 				<br>
 				<span class="label" style="font-size:20px;">Video Description:</span>
 				<div class="form-group" style="padding:5px; position:relative; top:10px;">
-					<textarea name="VideoDiscribe" cols="115" rows="5" placeholder="Please Enter Your Video Description:"></textarea>
+					<textarea name="VideoDiscribe" rows="5" placeholder="Please Enter Your Video Description:" style="width:100%;"></textarea>
 				</div>
 				<br>
 				<div class="form-group">
