@@ -35,7 +35,6 @@ def SignUp(request):
         if (password == password1 and password != ''):
             a.Insert(person)
             response = HttpResponse("You have registered successfully")
-            response.set_cookie()
             response.set_cookie('id', id)
             return response
         else:
