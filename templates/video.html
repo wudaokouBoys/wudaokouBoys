@@ -112,7 +112,7 @@
 		<!--UP主信息-->	
 				<div  style="width:100%">
 					<div class="img-rounded">
-						<img src="{{UpperImage}}" style="width:80px; height:80px;">
+						<img src="/static/{{UpperImage}}" style="width:80px; height:80px;">
 					</div>
 				</div>
 				<div  style = "position: absolute; top :7px; left: 90px;">
@@ -125,7 +125,7 @@
 		<div class="col-lg-7" style="height:525px;">
 		<!--播放界面加弹幕输入-->
 			<div class="row" style="width:100%;">
-				<video src={{Video_src}} width="652" height="489" controls autobuffer></video>
+				<video src="/static/{{Video_src}}" width="652" height="489" controls autobuffer></video>
 				<div class="input-group">
 					<input type="text" class="form-control">
 						<span class="input-group-btn">
@@ -147,15 +147,13 @@
 						<tr>
 							<th>Time</th>
 							<th>Comment</th>
-							<th>Update Date</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for BulletScreen in BulletScreens %}
 						<tr>
-							<td>{{ BulletScreens.time }}</td>
-							<td>{{ BulletScreens.comment }}</td>
-							<td>{{ BulletScreens.date }}</td>
+							<td>{{ BulletScreen.time }}</td>
+							<td>{{ BulletScreen.content }}</td>
 						</tr>
 						{% endfor %}
 					</tbody>
@@ -177,14 +175,14 @@
 				<div class="form-group" style="border-left-color:white; border-right-color:silver; border-bottom-color:white; border-top-color:white; border-style:solid">
 					<h4>&nbsp;播放数：{{Playnum}}&nbsp;</h4>
 				</div>
+                <div class="form-group" style="border-left-color:white; border-right-color:silver; border-bottom-color:white; border-top-color:white; border-style:solid">
+					<h4>&nbsp;上传时间{{Video_uptime}}&nbsp;</h4>
+				</div>
 				<div class="form-group">
 					<h4>&nbsp;视频类别:&nbsp;</h4>
 				</div>
 				<div class="form-group">
 					&nbsp;&nbsp;<span class="label label-info">{{ videoType }}</span>
-				</div>
-                <div class="form-group" style="border-left-color:white; border-right-color:silver; border-bottom-color:white; border-top-color:white; border-style:solid">
-					<h4>&nbsp;上传时间{{Video_uptime}}&nbsp;</h4>
 				</div>
 			</form>
 			<div id="wrap">

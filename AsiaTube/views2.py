@@ -25,8 +25,9 @@ def Login(request):  #用户登录
                  'oldid':id,
             }, context_instance=RequestContext(request))
         else:
-            response = HttpResponse()
+            response = render_to_response("video.html",{}, context_instance=RequestContext(request))
             response.set_cookie('id', id)
+            response.set_cookie('videoId', 1)
             return response
             #return HttpResponse("Login successfully")
 
@@ -126,15 +127,38 @@ def manageUser(request):
 
 
 def videoPlayer(request):
+    if 'videoId' not in request.COOKIES:
+        return HttpResponse('404 not found')
+    videoId = request.COOKIES['videoId']
+    ivideo = IVideo()
+    video = ivideo.SelectById(videoId)
+    if video == None:
+        return HttpResponse('404 not found')
+
+
     if request.method == 'GET':
+        iuser = IUser()
+        user = iuser.SelectById(video.upper)
+        ivideo.AddPlaynum(videoId)
+        print(video.discribe)
+        print(82923696)
         return render_to_response("video.html", {
-            'Playnum':1,
-            'Video_src':'/static/1.mp4',
+            'Video_title':video.title,
+            'VideoUpper':user.name,
+            'UpperImage':user.image,
+            'Video_uptime':video.time,
+            'Playnum':video.playnum,
+            'LikeNum':video.likenum,
+            'Video_src':video.path,
+            'VideoDiscription':video.discribe,
+            'BulletScreens':CBulletscreen.objects.filter(video=videoId),
+            'videoType':CType.objects.filter(id=video.type)[0].content,
         }, context_instance=RequestContext(request))
     else:
         if 'likeit' in request.POST:
             response_dict = {}
-            response_dict.update({'likenum':2})
+            response_dict.update({'likenum':video.likenum+1})
+            ivideo.AddLikenum(videoId)
             return JsonResponse(response_dict)
         else:
             print('fuahfha')

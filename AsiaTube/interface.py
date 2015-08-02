@@ -192,26 +192,26 @@ class IBulletscreen():
         bscreen.save()
 
     def Delete(self, id): #删除弹幕
-        CBulletsreen.objects.filter(id=id).delete()
+        CBulletscreen.objects.filter(id=id).delete()
 
     def SelectId(self, id): #用id选择弹幕
-        if len(CBulletsreen.objects.filter(id=id)) != 0:
-            return CBulletsreen.objects.get(id=id)
+        if len(CBulletscreen.objects.filter(id=id)) != 0:
+            return CBulletscreen.objects.get(id=id)
         else:
             return None
 
     def ModifyVideo(self, id, newVideo): #修改所属视频
-        CBulletsreen.objects.filter(id=id).update(video=newVideo)
+        CBulletscreen.objects.filter(id=id).update(video=newVideo)
 
     def ModifyTime(self, id, newTime): #修改弹幕时间
-        CBulletsreen.objects.filter(id=id).update(time=newTime)
+        CBulletscreen.objects.filter(id=id).update(time=newTime)
 
     def ModifyContent(self, id, newContent): #修改弹幕内容
-        CBulletsreen.objects.filter(id=id).update(content=newContent)
+        CBulletscreen.objects.filter(id=id).update(content=newContent)
 
     def GetlastBsreenId(self): #获取最大id
-        if len(CBulletsreen.objects.order_by('-id')) != 0:
-            return CBulletsreen.objects.order_by('-id')[0].id
+        if len(CBulletscreen.objects.order_by('-id')) != 0:
+            return CBulletscreen.objects.order_by('-id')[0].id
         else:
             return 0
 
@@ -284,7 +284,7 @@ comment = CComment(
         video = 1,
     )
 
-bsreen = CBulletsreen(
+bsreen = CBulletscreen(
         id = 2,
         video = 1,
         time = str(datetime.datetime.now())[0:19],

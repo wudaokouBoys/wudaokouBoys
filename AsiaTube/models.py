@@ -12,7 +12,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 
-class CBulletsreen(models.Model):
+class CBulletscreen(models.Model):
     id = models.IntegerField(db_column='BId', primary_key=True)  # Field name made lowercase.
     video = models.IntegerField(db_column='BVideo', blank=True, null=True)  # Field name made lowercase.
     time = models.CharField(db_column='BTime', max_length=50, blank=True, null=True)  # Field name made lowercase.
@@ -20,7 +20,7 @@ class CBulletsreen(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'bulletsreen'
+        db_table = 'bulletscreen'
 
 
 class CComment(models.Model):
