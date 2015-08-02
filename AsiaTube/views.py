@@ -123,6 +123,8 @@ def manageVideo(request):#管理员审查视频界面
     iuser = IUser()
     ivideo = IVideo()
     videonum = ivideo.GetUnckeckVideoNum()
+    if videonum == 0:
+        return HttpResponse("No video to be checked, go to sleep.")
     firstvideo_id = ivideo.GetUnckeckVideo()
     ivideo = IVideo()
     video = ivideo.SelectById(firstvideo_id)
@@ -170,5 +172,7 @@ def manageVideo(request):#管理员审查视频界面
             if request.COOKIES['checkstate'] == '0':
                 print("你删除了视频！")
                 ivideo.Delete(video.id)
-            response.set_cookie('checkstate', -1)#check = -1 未检查 check = 1通过 check=0 拒绝
-            return response
+                response.set_cookie('checkstate', -1)#check = -1 未检查 check = 1通过 check=0 拒绝
+                return response
+            print("asdfg")
+            return HttpResponse("shenmedongxi?")
