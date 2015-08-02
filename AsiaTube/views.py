@@ -86,7 +86,7 @@ def uploadvideo(request):
             path = a.name,
             state = 0,
             comment = "",
-            bscreen = "",
+            bsreen = "",
             likenum = 0,
             playnum = 0,
         )
