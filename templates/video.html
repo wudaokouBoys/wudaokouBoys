@@ -160,6 +160,7 @@
 						</tr>
 					</thead>
 					<tbody id = "bulletscreentable">
+                        {% csrf_token %}
 						{% for BulletScreen in BulletScreens %}
 						<tr>
 							<td>{{ BulletScreen.time }}</td>
