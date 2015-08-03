@@ -311,7 +311,7 @@
             dataType: "json",
             data : {
                 bullettime:document.getElementById('myvideo').currenttime+"",
-                buttletcontent:$("#mybulletcontent").val(),
+                buttletcontent:$("#mybulletcontent").val() + "",
                 csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
             success : function(json) {
