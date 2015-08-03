@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search Result</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="http://vjs.zencdn.net/4.12/video.js"></script>
+	<style>
+		body {
+			padding-top: 60px;
+			padding-left: 50px;
+			background:silver;
+		}
+		#banner-text { 
+			width: 100%; 
+			text-align:center;
+			position:relative;
+			font: 60px/1.1em 'opensans-bold', sans-serif;
+			color: black;
+			letter-spacing: -2px;
+			margin: 0 auto 18px auto;
+			text-shadow: 0px 1px 3px rgba(0, 0, 0, .8);
+		}
+		#wrap{white-space:normal; word-wrap:break-word;}
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		.back2top{
+			position: fixed;
+			bottom: 50px;
+			right: 50px;
+			width: 60px;
+			height: 60px;
+		}
+		.back2top a{
+			display: block;
+			width: 100%;
+		}
+		.back2top a img{width: 100%;}
+    </style>
+	<!--[if lt IE 9]>
+		<script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+	<!--导航栏-->
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<div class="row" style="left:-20px; position: relative">
+					<img src="/static/AsiaTube.png" class="img-rounded">
+				</div>
+			</div>
+			<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#"><span class="glyphicon glyphicon-home">Home</span></a></li>
+				<li><a href = "#Game"><span class="glyphicon glyphicon-play">Game</span></a></li>
+				<li><a href = "#Movie"><span class="glyphicon glyphicon-film">Movie</span></a></li>
+				<li><a href = "#Sports"><span class="glyphicon glyphicon-star">Sports</span></a></li>
+				<li><a href = "#Others"><span class="glyphicon glyphicon-plus">Others</span></a></li>
+			</ul>
+			<form class="navbar-form nav navbar-nav navbar-right" role="search">
+				<div class="form-group">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="height:44px"><span class="glyphicon glyphicon-user">User<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Modify Info</a></li>
+							<li><a href="#">Modify Password</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Watch History</a></li>
+							<li><a href="#">Upload History</a></li>
+							<li class="divider"></li>
+							<li style="display:{{Display}}"><a href="#">Verify User</a></li>
+							<li style="display:{{Display}}"><a href="#">Verify Video</a></li>
+							<li style="display:{{Display}}"><a href="#">Administer Type</a></li>
+							<li class="divider" style="display:{{Display}}"></li>
+							<li><a href="#">Log Out</a></li>
+						</ul>
+					</li>
+				</div>
+				<span class="label label-default">{{UserID}}</span>
+			</form>  
+			<form class="navbar-form navbar-right" role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search">
+				</div>
+				<button type="submit" class="btn btn-default">Search</button>
+			</form>   
+			</div><!-- /.nav-collapse -->
+		</div><!-- /.container -->
+    </div>
+	<div class="comtainer">
+		<div class="col-xs-8 col-md-offset-2" style="padding:10px;border-color:white; border-style:solid; border-radius:5px; height:60px;">
+		<!--搜索框-->
+			<div class="input-group">
+				<input type="text" class="form-control" value={{SearchTarget}}>
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">
+						搜索
+					</button>
+				</span>
+			</div><!-- /input-group -->
+		</div>
+		<div class="col-xs-8 col-md-offset-2" style="top:20px; padding:10px; background:white; border-radius:5px; height:500px; overflow:scroll; overflow-x:hidden">
+		<!--搜索结果界面-->
+			<h3>搜索结果：<h3/>
+			<div class="row" style=" padding:5px;border-color:silver; border-width:2px; border-style:solid; height:160px; width:100%; left:13px; position:relative">
+				<div class="col-lg-2" style="height:160px; padding:5px; left:5px;">
+					<div class="img-circle">
+						<img src={{Video1Image}} class="circle" style="width:120px; height:90px;">
+					</div>
+				</div>
+				<div class="col-lg-10" style="height:140px; padding:5px;">
+					<div>
+						<span class="badge">
+							<span class="glyphicon glyphicon-chevron-right" style="font-size:15px;" Title="类别">{{Video1Type}}</span>
+						</span>
+						<span><a href="#">&nbsp;{{Video1Title}}<!--em style="color:purple">legal</em--></a></span>
+					</div>
+					<form class="form-inline" role="form" style="color:grey; position:relative; top:-3px; border-bottom-color: silver; border-bottom-width:1px; border-bottom-style:solid;">
+						<span class="glyphicon glyphicon-user" style="font-size:10px;" Title="up主">{{Video1Upper}}&nbsp;</span>
+						<span class="glyphicon glyphicon-play-circle" style="font-size:10px;" Title="播放数">{{Video1Play}}&nbsp;</span>
+						<span class="glyphicon glyphicon-comment" style="font-size:10px;" Title="评论数">{{Video1Cmt}}&nbsp;</span>
+						<span class="glyphicon glyphicon-tasks" style="font-size:10px;" Title="弹幕数">{{Video1BScreen}}&nbsp;</span>
+						<span class="glyphicon glyphicon-time" style="font-size:10px;" Title="上传时间">{{Video1Time}}</span>
+					</form>
+					<textarea name="VideoDiscribe" rows="3" disabled style="width:100%; position:relative; top:5px; background-color:white;">{{Video1Discription}}</textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="back2top" >
+        <a href="javascript:;">
+            <img src="/static/back2top.jpg" alt="">
+        </a>
+	</div>
+</body>
+	<script type="text/javascript" language="javascript">
+	jQuery(document).ready(function($) {
+	// 回到顶部
+        $('.back2top').hide();
+        
+        $(window).scroll(function() {
+            if($(window).scrollTop()>100){
+                $('.back2top').fadeIn(1500);
+            }else{
+                $('.back2top').fadeOut(1500);
+            }
+        });
+        $('.back2top a').click(function() {
+            $('body,html').animate({scrollTop: 0}, 800);
+            return false;
+        });
+	});
+	</script>
+</html>
