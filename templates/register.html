@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="gb2312">
@@ -10,22 +10,45 @@
 	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
     <script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<script src="/static/navbar.js"></script>
+	<script src="/static/navbar.js"></script>
+	<script src="/static/navbar.js"></script>
 	<script src="/static/navbar_action.js"></script>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    
+    <style>
+		body {
+			padding-top: 60px;
+			padding-left: 50px;
+			background:silver;
+		}
+    </style>
 </head>
 <body>
-<h3>New User Register</h3>
-<form method=POST action="/register/">
-	{% csrf_token %}
-	<table>
-		<tr><th><span class="glyphicon glyphicon-user"></span><b>nick-name</b><td><input  type=text  name=nick-name placeholder="nick-name" value = {{oldname}}>
-		<tr><th><span class="glyphicon glyphicon-lock"></span><b>password</b><td><input  type=password  name=password placeholder="password">
-		<tr><th><span class="glyphicon glyphicon-lock"></span><b>commit password</b><td><input  type=password  name=password1 placeholder="password">
-		<tr><th><span class="glyphicon glyphicon-envelope"></span><b>E-mail</b><td><input  type=email  name=e-mail placeholder="xxx@xxx.xxx" value = {{oldemail}}>
-    </table>
-    <p><input type=submit value="Submit" class="btn btn-default" name=action></p>
-</form>
+<div class="container">
+		<div class="col-xs-4 col-md-offset-2" style="top:20px; padding:10px; background:white; border-radius:5px; height:380px;">
+			<form method=POST action="/register/">
+				{% csrf_token %}
+				<div class="panel panel-primary" >
+					<div class="panel-heading">
+						<h3 class="panel-title">新用户注册</h3>
+					</div>
+					<table class="table table-hover">
+						<tr><th><span class="glyphicon glyphicon-user"></span><b>nick-name</b><td><input  type=text  name=nick-name placeholder="nick-name" value = {{oldname}}>
+						<tr><th><span class="glyphicon glyphicon-lock"></span><b>password</b><td><input  type=password  name=password placeholder="password">
+						<tr><th><span class="glyphicon glyphicon-lock"></span><b>commit password</b><td><input  type=password  name=password1 placeholder="password">
+						<tr><th><span class="glyphicon glyphicon-envelope"></span><b>E-mail</b><td><input  type=email  name=e-mail placeholder="xxx@xxx.xxx" value = {{oldemail}}>
+					</table>
+					<br>
+					<div class="form-group">
+						<label for="exampleInputFile">选择用户头像</label>
+						<input type="file" id="exampleInputFile" name = "file" accept="image/*" value = {{UploadFile}} >
+					</div>
+
+					<p><input type=submit value="Submit" class="btn btn-default" name=action></p>
+				</div>
+			</form>
+		</div>
+	</div>
+
 </body>
 </html>

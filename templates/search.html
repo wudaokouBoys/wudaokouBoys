@@ -50,8 +50,7 @@
 	<!--[if lt IE 9]>
 		<script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
     <![endif]-->
-	<script src="/static/navbar.js"></script>
-	<script src="/static/navbar_action.js"></script>
+	<script src="navbar.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -70,27 +69,29 @@
 		<!--搜索结果界面-->
 			<h3>搜索结果：<h3/>
 			<div class="row" style=" padding:5px;border-color:silver; border-width:2px; border-style:solid; height:160px; width:100%; left:13px; position:relative">
+				{% for Video in Videos %}
 				<div class="col-lg-2" style="height:160px; padding:5px; left:5px;">
 					<div class="img-circle">
-						<img src={{Video1Image}} class="circle" style="width:100px; height:80px;">
+						<img src={{Video.image}} class="circle" style="width:100px; height:80px;">
 					</div>
 				</div>
 				<div class="col-lg-10" style="height:140px; padding:5px;">
 					<div>
 						<span class="badge">
-							<span class="glyphicon glyphicon-chevron-right" style="font-size:15px;" Title="类别">{{Video1Type}}</span>
+							<span class="glyphicon glyphicon-chevron-right" style="font-size:15px;" Title="类别">{{Video.type}}</span>
 						</span>
-						<span><a href="#">&nbsp;{{Video1Title}}<!--em style="color:purple">legal</em--></a></span>
+						<span><a href="#">&nbsp;{{Video.title}}<!--em style="color:purple">legal</em--></a></span>
 					</div>
 					<form class="form-inline" role="form" style="color:grey; position:relative; top:-3px; border-bottom-color: silver; border-bottom-width:1px; border-bottom-style:solid;">
-						<span class="glyphicon glyphicon-user" style="font-size:10px;" Title="up主">{{Video1Upper}}&nbsp;</span>
-						<span class="glyphicon glyphicon-play-circle" style="font-size:10px;" Title="播放数">{{Video1Play}}&nbsp;</span>
-						<span class="glyphicon glyphicon-comment" style="font-size:10px;" Title="评论数">{{Video1Cmt}}&nbsp;</span>
-						<span class="glyphicon glyphicon-tasks" style="font-size:10px;" Title="弹幕数">{{Video1BScreen}}&nbsp;</span>
-						<span class="glyphicon glyphicon-time" style="font-size:10px;" Title="上传时间">{{Video1Time}}</span>
+						<span class="glyphicon glyphicon-user" style="font-size:10px;" Title="up主">{{Video.upper}}&nbsp;</span>
+						<span class="glyphicon glyphicon-play-circle" style="font-size:10px;" Title="播放数">{{Video.playnum}}&nbsp;</span>
+						<span class="glyphicon glyphicon-comment" style="font-size:10px;" Title="评论数">{{Video.comment}}&nbsp;</span>
+						<span class="glyphicon glyphicon-tasks" style="font-size:10px;" Title="弹幕数">{{Video.BScreen}}&nbsp;</span>
+						<span class="glyphicon glyphicon-time" style="font-size:10px;" Title="上传时间">{{Video.uptime}}</span>
 					</form>
-					<textarea name="VideoDiscribe" rows="3" disabled style="width:100%; position:relative; top:5px; background-color:white;">{{Video1Discription}}</textarea>
+					<textarea name="VideoDiscribe" rows="3" disabled style="width:100%; position:relative; top:5px; background-color:white;">{{Video.discription}}</textarea>
 				</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>
