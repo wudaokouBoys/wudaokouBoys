@@ -217,62 +217,22 @@
 		</div>
 		<div class="row" style="background:white; padding:8px; border-radius:5px; position:relative; top: 60px; height: 500px; width:800px; overflow:scroll; overflow-x:hidden;">
 		<!--评论栏-->
+			{% for Comment in Comments %}
 			<div class="row" style="border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;">
 				<div class="col-lg-2" style="height:160px; padding:15px; left:15px;">
 					<div class="img-circle">
-						<img src="{{Cmt1Image}}" class="circle" style="width:80px; height:80px;">
+						<img src="{{Comment.image}}" class="circle" style="width:80px; height:80px;">
 					</div>
 					<div style="top:20px;">
-						<h4>{{Cmt1ID}}</h4>
+						<h4>{{Comment.ID}}</h4>
 					</div>
 				</div>
 				<div class="col-lg-10" style="height:160px; padding:15px;">
-					<textarea name="VideoDiscribe" rows="5" disabled style="width:100%; background-color:white;">1</textarea>
-					<p>#{{Cmt1Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt1Time}}</p>
+					<textarea name="VideoDiscribe" rows="5" disabled style="width:100%; background-color:white;">{{Comment.content}}</textarea>
+					<p>#{{Comment.layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Comment.time}}</p>
 				</div>
 			</div>
-			<div class="row" style="border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;">
-				<div class="col-lg-2" style="height:160px; padding:15px; left:15px;">
-					<div class="img-circle">
-						<img src="{{Cmt2Image}}" class="circle" style="width:80px; height:80px;">
-					</div>
-					<div style="top:20px;">
-						<h4>{{Cmt2ID}}</h4>
-					</div>
-				</div>
-				<div class="col-lg-10" style="height:160px; padding:15px;">
-					<textarea name="VideoDiscribe" rows="5" disabled style="width:100%; background-color:white;">2</textarea>
-					<p>#{{Cmt2Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt2Time}}</p>
-				</div>
-			</div>
-			<div class="row" style="border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;">
-				<div class="col-lg-2" style="height:160px; padding:15px; left:15px;">
-					<div class="img-circle">
-						<img src="{{Cmt3Image}}" class="circle" style="width:80px; height:80px;">
-					</div>
-					<div style="top:20px;">
-						<h4>{{Cmt3ID}}</h4>
-					</div>
-				</div>
-				<div class="col-lg-10" style="height:160px; padding:15px;">
-					<textarea name="VideoDiscribe" rows="5" disabled style="width:100%; background-color:white;">3</textarea>
-					<p>#{{Cmt3Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt3Time}}</p>
-				</div>
-			</div>
-			<div class="row" style="border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;">
-				<div class="col-lg-2" style="height:160px; padding:15px; left:15px;">
-					<div class="img-circle">
-						<img src="{{Cmt4Image}}" class="circle" style="width:80px; height:80px;">
-					</div>
-					<div style="top:20px;">
-						<h4>{{Cmt4ID}}</h4>
-					</div>
-				</div>
-				<div class="col-lg-10" style="height:160px; padding:15px;">
-					<textarea name="VideoDiscribe" rows="5" disabled style="width:100%; background-color:white;">4</textarea>
-					<p>#{{Cmt4Layer}}&nbsp;&nbsp;&nbsp;&nbsp;{{Cmt4Time}}</p>
-				</div>
-			</div>
+			{% endfor %}
 		</div>
 	</div>
 	<div class="back2top" >
