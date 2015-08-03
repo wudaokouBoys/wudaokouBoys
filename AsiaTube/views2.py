@@ -161,6 +161,8 @@ def videoPlayer(request):
             ivideo.AddLikenum(videoId)
             return JsonResponse(response_dict)
         else:
+            print(request.POST)
+            print("baba")
             if 'bullettime' in request.POST:
                 ibscreen = IBulletscreen()
                 newbscreen = CBulletscreen(
@@ -177,5 +179,6 @@ def videoPlayer(request):
                 return JsonResponse(response_dict)
             else:
                 return HttpResponse('传输中网络中断。。')
+            
 
 
