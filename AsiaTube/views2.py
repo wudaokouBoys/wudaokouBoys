@@ -172,10 +172,10 @@ def videoPlayer(request):
                 ibscreen.Insert(newbscreen)
                 ivideo.UpdateBsreen(request.COOKIES['videoId'], newbscreen)
                 allthebullets = CBulletscreen.objects.filter(video = request.COOKIES['videoId']).order_by('id')
-               # response_dict = {}
-               # response_dict.update({})
+                response_dict = {}
+                response_dict.update({})
 
-                return JsonResponse(allthebullets)
+                return JsonResponse(response_dict)
             else:
                 return HttpResponse('传输中网络中断。。')
 
