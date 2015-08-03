@@ -187,7 +187,7 @@
 					<h4>&nbsp;播放数：{{Playnum}}&nbsp;</h4>
 				</div>
                 <div class="form-group" style="border-left-color:white; border-right-color:silver; border-bottom-color:white; border-top-color:white; border-style:solid">
-					<h4>&nbsp;上传时间:{{Video_uptime}}&nbsp;</h4>
+					<h4>&nbsp;上传时间: {{Video_uptime}}&nbsp;</h4>
 				</div>
 				<div class="form-group">
 					<h4>&nbsp;视频类别:&nbsp;</h4>
@@ -315,11 +315,6 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
             success : function(json) {
-                console.log(json)
-                /*var a = document.getElementById('bulletscreentable')
-                for (i in json){
-                    a.innerHTML += "<tr><td>"+i.time+"</td><td>"+i.content+"</td> </tr>"
-                }*/
                 $('#bulletscreentable').append("<tr><td>"+json.time+"</td><td>"+json.content+"</td> </tr>")
                 $('#mybulletcontent').val('')
             },

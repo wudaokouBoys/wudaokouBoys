@@ -15,7 +15,7 @@ from django.db import models
 class CBulletscreen(models.Model):
     id = models.IntegerField(db_column='BId', primary_key=True)  # Field name made lowercase.
     video = models.IntegerField(db_column='BVideo', blank=True, null=True)  # Field name made lowercase.
-    time = models.CharField(db_column='BTime', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    time = models.FloatField(db_column='BTime', blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(db_column='BContent', max_length=100, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:

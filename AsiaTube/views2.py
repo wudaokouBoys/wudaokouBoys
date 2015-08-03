@@ -140,8 +140,6 @@ def videoPlayer(request):
         iuser = IUser()
         user = iuser.SelectById(video.upper)
         ivideo.AddPlaynum(videoId)
-        print(video.discribe)
-        print(82923696)
         return render_to_response("video.html", {
             'Video_title':video.title,
             'VideoUpper':user.name,
@@ -151,7 +149,7 @@ def videoPlayer(request):
             'LikeNum':video.likenum,
             'Video_src':video.path,
             'VideoDiscription':video.discribe,
-            'BulletScreens':CBulletscreen.objects.filter(video=videoId),
+            'BulletScreens':CBulletscreen.objects.order_by('time').filter(video=videoId),
             'videoType':CType.objects.filter(id=video.type)[0].content,
         }, context_instance=RequestContext(request))
     else:
@@ -160,26 +158,20 @@ def videoPlayer(request):
             response_dict.update({'likenum':video.likenum+1})
             ivideo.AddLikenum(videoId)
             return JsonResponse(response_dict)
+        elif 'bullettime' in request.POST:
+            ibscreen = IBulletscreen()
+            newbscreen = CBulletscreen(
+                id = ibscreen.GetlastBsreenId() + 1,
+                video = request.COOKIES['videoId'],
+                time = request.POST['bullettime'],
+                content = request.POST['bulletcontent'],
+            )
+            ibscreen.Insert(newbscreen)
+            ivideo.UpdateBsreen(request.COOKIES['videoId'], newbscreen)
+            response_dict = {"time":newbscreen.time, "content":newbscreen.content}
+            return JsonResponse(response_dict)
         else:
-            print(request.POST['bullettime'])
-            print(request.POST['bulletcontent'])
-            print("baba")
-            if 'bullettime' in request.POST:
-                ibscreen = IBulletscreen()
-                newbscreen = CBulletscreen(
-                    id = ibscreen.GetlastBsreenId() + 1,
-                    video = request.COOKIES['videoId'],
-                    time = request.POST['bullettime'],
-                    content = request.POST['bulletcontent'],
-                )
-                ibscreen.Insert(newbscreen)
-                ivideo.UpdateBsreen(request.COOKIES['videoId'], newbscreen)
-
-                response_dict = {"time":newbscreen.time, "content":newbscreen.content}
-
-                return JsonResponse(response_dict)
-            else:
-                return HttpResponse('传输中网络中断。。')
+            return HttpResponse('传输中网络中断。。')
 
 
 
