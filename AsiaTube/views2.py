@@ -161,6 +161,22 @@ def videoPlayer(request):
             ivideo.AddLikenum(videoId)
             return JsonResponse(response_dict)
         else:
-            print('fuahfha')
-            return HttpResponse('haha')
+            if 'bullettime' in request.POST:
+                ibscreen = IBulletscreen()
+                newbscreen = CBulletscreen(
+                    id = ibscreen.GetlastBsreenId() + 1,
+                    video = request.COOKIES['videoId'],
+                    time = request.POST['bullettime'],
+                    content = request.POST['bulletcontent'],
+                )
+                ibscreen.Insert(newbscreen)
+                ivideo.UpdateBsreen(request.COOKIES['videoId'], newbscreen)
+                allthebullets = CBulletscreen.objects.filter(video = request.COOKIES['videoId']).order_by('id')
+               # response_dict = {}
+               # response_dict.update({})
+
+                return JsonResponse(allthebullets)
+            else:
+                return HttpResponse('传输中网络中断。。')
+
 

@@ -127,7 +127,7 @@
 		<div class="col-lg-7" style="height:525px;">
 		<!--播放界面加弹幕输入-->
 			<div class="row" style="width:100%;">
-				<video width="652" height="489" controls="controls" preload="auto" >
+				<video id = "myvideo" width="652" height="489" controls="controls" preload="auto" >
                     <source src="/static/{{ Video_src }}">
                 </video>
                 <!--video id="MY_VIDEO_1" class="video-js vjs-default-skin" controls
@@ -137,9 +137,9 @@
  <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
             </video-->
 				<div class="input-group">
-					<input type="text" class="form-control">
+					<input id = "mybulletcontent" type="text" class="form-control">
 						<span class="input-group-btn">
-							<button class="btn btn-default" type="button">
+							<button id = "bscreengo" class="btn btn-default" type="button">
 								Go!
 							</button>
 						</span>
@@ -159,7 +159,7 @@
 							<th>Comment</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id = "bulletscreentable">
 						{% for BulletScreen in BulletScreens %}
 						<tr>
 							<td>{{ BulletScreen.time }}</td>
@@ -300,6 +300,34 @@
         })
     })
 </script>
+
+<script>
+    $('#bscreengo').click(function(){
+        $.ajax({
+            url:'/videoPlayer/',
+            type : "POST",
+            dataType: "json",
+            data : {
+                bullettime:document.getElementById('myvideo').currenttime,
+                buttletcontent:$("#mybulletcontent").val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+            success : function(json) {
+                alert("收到弹幕列表")
+                alert(json)
+                console.log(json)
+                var a = document.getElementById('bulletscreentable')
+                for (i in json){
+                    a.innerHTML += "<tr><td>"+i.time+"</td><td>"+i.content+"</td> </tr>"
+                }
+            },
+            error : function(xhr,errmsg,err) {
+                alert(xhr.status + ": " + xhr.responseText);
+            }
+        })
+    })
+</script>
+
 </body>
 <script type="text/javascript" language="javascript">
 	jQuery(document).ready(function($) {
