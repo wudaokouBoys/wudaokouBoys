@@ -136,7 +136,7 @@
  <source src="/static/{{Video_src }}" type='video/mp4'>
  <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
             </video-->
-				<div class="input-group">
+				<form class="input-group">
                     {% csrf_token %}
 					<input id = "mybulletcontent" type="text" class="form-control">
 						<span class="input-group-btn">
@@ -144,7 +144,7 @@
 								Go!
 							</button>
 						</span>
-				</div><!-- /input-group -->
+				</form><!-- /input-group -->
 			</div>
 		</div>
 		<div class="col-lg-3"  id="BulletScreen" style="height:525px; background:white; padding:10px; border-radius:5px; overflow:scroll; overflow-x:hidden">
