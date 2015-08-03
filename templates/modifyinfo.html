@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Modify User Info</title>
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<script src="navbar.js"></script>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<style>
@@ -16,28 +21,6 @@
     </style>
 </head>
 <body>
-	<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<div class="row">
-					<img src="image/AsiaTube.png" class="img-rounded">
-				</div>
-			</div>
-			<div class="collapse navbar-collapse">
-			<ul class="nav navbar-nav">
-				<li><a href = "#Home"><span class="glyphicon glyphicon-home">Home</span></a></li>
-				<li><a href="#Update"><span class="glyphicon glyphicon-upload">Update</span></a></li>
-				<li class="active"><a href="#"><span class="glyphicon glyphicon-user">User</span>   <span class="label label-default">{{UserID}}</span></a></li>
-			</ul>
-			</div><!-- /.nav-collapse -->
-		</div><!-- /.container -->
-    </div>
 	<div class="container">
 		<div class="col-lg-4" style="background:white; padding:20px; border-radius:5px; position:relative; left: 200px; height: 290px;">
 			<form method=POST enctype="multipart/form-data" action="/modifyInfo/">
