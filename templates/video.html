@@ -304,6 +304,7 @@
 
 <script>
     $('#bscreengo').click(function(){
+        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
             url:'/videoPlayer/',
             contentType: "application/json",
@@ -312,7 +313,7 @@
             data : {
                 bullettime:document.getElementById('myvideo').currenttime,
                 buttletcontent:$("#mybulletcontent").val(),
-                csrfmiddlewaretoken: '{{ csrf_token }}'
+                csrfmiddlewaretoken: csrfToken
                 },
             success : function(json) {
                 alert("收到弹幕列表")
