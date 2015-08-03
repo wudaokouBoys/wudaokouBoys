@@ -204,27 +204,27 @@
 		<!--输入评论-->
 			<div class="col-lg-2" style="height:160px; padding:15px;">
 				<div class="img-circle">
-					<img src="{{UserImage}}" class="circle" style="width:80px; height:80px;">
+					<img src="/static/{{UserImage}}" class="circle" style="width:80px; height:80px;">
 				</div>
 				<div style="top:20px;">
-					<h4>{{UserID}}</h4>
+					<h4>{{UserName}}</h4>
 				</div>
 			</div>
 			<div class="col-lg-10" style="height:160px; padding:15px;">
-				<textarea name="VideoDiscribe" rows="5" placeholder="Please Enter Your Commit" style="width:100%;"></textarea>
-				<button type="submit" class="btn btn-primary" style="float:right; position:relative; left:-10px;">Submit!</button>
+				<textarea id="input-comment" name="VideoDiscribe" rows="5" placeholder="输入评论……" style="width:100%;"></textarea>
+				<button id="comment" class="btn btn-primary" style="float:right; position:relative; left:-10px;">提交评论</button>
 			</div>
 		</div>
-		<div class="row" style="background:white; padding:8px; border-radius:5px; position:relative; top: 60px; height: 500px; width:800px; overflow:scroll; overflow-x:hidden;">
+		<div class="row" id="comment-area" style="background:white; padding:8px; border-radius:5px; position:relative; top: 60px; height: 500px; width:800px; overflow:scroll; overflow-x:hidden;">
 		<!--评论栏-->
 			{% for Comment in Comments %}
 			<div class="row" style="border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;">
 				<div class="col-lg-2" style="height:160px; padding:15px; left:15px;">
 					<div class="img-circle">
-						<img src="{{Comment.image}}" class="circle" style="width:80px; height:80px;">
+						<img src="/static/{{Comment.image}}" class="circle" style="width:80px; height:80px;">
 					</div>
 					<div style="top:20px;">
-						<h4>{{Comment.ID}}</h4>
+						<h4>{{Comment.name}}</h4>
 					</div>
 				</div>
 				<div class="col-lg-10" style="height:160px; padding:15px;">
@@ -265,23 +265,54 @@
 <script>
 
     $('#bscreengo').click(function(){
-        $.ajax({
-            url:'/videoPlayer/',
-            type : "POST",
-            dataType: "json",
-            data : {
-                bullettime:document.getElementById('myvideo').currentTime+"",
-                bulletcontent:$("#mybulletcontent").val(),
-                csrfmiddlewaretoken: '{{ csrf_token }}'
+        pos = document.cookie.search('id=')
+        if ($("#mybulletcontent").val() != '' && document.cookie[pos+3] > 0){
+            $.ajax({
+                url: '/videoPlayer/',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    bullettime: document.getElementById('myvideo').currentTime + "",
+                    bulletcontent: $("#mybulletcontent").val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
-            success : function(json) {
-                $('#bulletscreentable').append("<tr><td>"+json.time+"</td><td>"+json.content+"</td> </tr>")
-                $('#mybulletcontent').val('')
-            },
-            error : function(xhr,errmsg,err) {
-                alert(xhr.status + ": " + xhr.responseText);
-            }
-        })
+                success: function (json) {
+                    $('#bulletscreentable').append("<tr><td>" + json.time + "</td><td>" + json.content + "</td> </tr>")
+                    $('#mybulletcontent').val('')
+                },
+                error: function (xhr, errmsg, err) {
+                    alert(xhr.status + ": " + xhr.responseText);
+                }
+            })
+        }
+    })
+
+    $('#comment').click(function(){
+        pos = document.cookie.search('id=')
+        if($('#input-comment').val() != '' && document.cookie[pos+3] > 0) {
+            $.ajax({
+                url: '/videoPlayer/',
+                type: 'POST',
+                datatype: 'json',
+                data: {
+                    commentcontent: $('#input-comment').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (json) {
+                    str = "<div class='row' style='border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;'>"
+                    +"<div class='col-lg-2' style='height:160px; padding:15px; left:15px;'><div class='img-circle'><img src='/static/" + json.image
+                    + " ' class='circle' style='width:80px; height:80px;'></div><div style='top:20px;'><h4>" + json.name
+                    + "</h4></div></div><div class='col-lg-10' style='height:160px; padding:15px;'>"
+					+ "<textarea name='VideoDiscribe' rows='5' disabled style='width:100%; background-color:white;'>"+ json.content
+                    + "</textarea><p>#" + json.layer + "&nbsp;&nbsp;&nbsp;&nbsp;" + json.time +  "</p></div></div>"
+                    $('#comment-area').append(str)
+                    $('#input-comment').val('')
+                },
+                error: function (xhr, errmsg, err) {
+                    alert(xhr.status + ': ' + xhr.responseText);
+                }
+            })
+        }
     })
 </script>
 

@@ -7,6 +7,7 @@ from AsiaTube.models import *
 from AsiaTube.interface import *
 from django.http import JsonResponse
 import json
+import time
 
 def Login(request):  #用户登录
     if request.method == 'GET':
@@ -140,6 +141,18 @@ def videoPlayer(request):
         iuser = IUser()
         user = iuser.SelectById(video.upper)
         ivideo.AddPlaynum(videoId)
+        if 'id' in request.COOKIES:
+            viewer = iuser.SelectById(request.COOKIES['id'])
+            userImage = viewer.image
+            userName = viewer.name
+        else:
+            userImage = 'default.png'
+            userName = ''
+
+        print(videoId)
+        print(461876481)
+        comments = GetComment(videoId)
+
         return render_to_response("video.html", {
             'Video_title':video.title,
             'VideoUpper':user.name,
@@ -151,6 +164,9 @@ def videoPlayer(request):
             'VideoDiscription':video.discribe,
             'BulletScreens':CBulletscreen.objects.order_by('time').filter(video=videoId),
             'videoType':CType.objects.filter(id=video.type)[0].content,
+            'UserImage':userImage,
+            'UserName':userName,
+            'Comments':comments,
         }, context_instance=RequestContext(request))
     else:
         if 'likeit' in request.POST:
@@ -162,14 +178,35 @@ def videoPlayer(request):
             ibscreen = IBulletscreen()
             newbscreen = CBulletscreen(
                 id = ibscreen.GetlastBsreenId() + 1,
-                video = request.COOKIES['videoId'],
+                video = videoId,
                 time = request.POST['bullettime'],
                 content = request.POST['bulletcontent'],
             )
             ibscreen.Insert(newbscreen)
-            ivideo.UpdateBsreen(request.COOKIES['videoId'], newbscreen)
+            ivideo.UpdateBsreen(videoId, newbscreen.id)
             response_dict = {"time":newbscreen.time, "content":newbscreen.content}
             return JsonResponse(response_dict)
+        elif 'commentcontent' in request.POST:
+            icomment = IComment()
+            comment = CComment(
+                id = icomment.GetlastCommentId() + 1,
+                upper = request.COOKIES['id'],
+                time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                video = videoId,
+                content = request.POST['commentcontent'],
+            )
+            icomment.Insert(comment)
+
+            iuser = IUser()
+            user = iuser.SelectById(comment.upper)
+            ivideo.UpdateComments(videoId, comment.id, 'add')
+            return JsonResponse({
+                'image':user.image,
+                'name':user.name,
+                'layer':len(GetComment(videoId)),
+                'content':comment.content,
+                'time':comment.time,
+            })
         else:
             return HttpResponse('传输中网络中断。。')
 

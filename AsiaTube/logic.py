@@ -149,12 +149,20 @@ def DeleteComment(operator_id, comment_id): #删除评论
 
 def GetComment(video_id):  #获取视频评论
     commentLib = []
-    ivideo = IVideo()
-    video = ivideo.SelectById(video_id)
-    commentList = AnalysisString(video.comments)
-    icomment = IComment()
+    commentList = CComment.objects.filter(video=video_id)
+    iuser = IUser()
+    i = 1
     for comment in commentList:
-        content = icomment.SelectById(comment).content
+        user = iuser.SelectById(comment.upper)
+        content = {
+            'id':comment.id,
+            'image':user.image,
+            'name':user.name,
+            'layer':i,
+            'content':comment.content,
+            'time':comment.time,
+        }
+        i += 1
         commentLib.append(content)
     return commentLib
 
