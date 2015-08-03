@@ -14,14 +14,23 @@
 	<script src="/static/navbar_action.js"></script>
 </head>
 <body>
-<h3>User Log In</h3>
-<form method=POST action="/login/">
-	{% csrf_token %}
-	<table>
-		<tr><th><span class="glyphicon glyphicon-user"></span><b>id</b><td><input  type=text  name=id placeholder="id" value = {{oldid}}>
-		<tr><th><span class="glyphicon glyphicon-lock"></span><b>password</b><td><input  type=password  name=password placeholder="password">
-    </table>
-    <p><input type=submit value="Login" class="btn btn-default"  name=action></p>
-</form>
+	<div class="container">
+		<div class="col-xs-4 col-md-offset-2" style="top:20px; padding:10px; background:white; border-radius:5px; height:230px;">
+			<form method=POST action="/login/">
+				{% csrf_token %}
+				<div class="panel panel-primary" >
+					<div class="panel-heading">
+						<h3 class="panel-title">User Log In</h3>
+					</div>
+					<table class="table table-hover">
+						<tr><th><span class="glyphicon glyphicon-user"></span><b>id</b><td><input  type=text  name=id placeholder="id" value = {{oldid}}>
+						<tr><th><span class="glyphicon glyphicon-lock"></span><b>password</b><td><input  type=password  name=password placeholder="password">
+					</table>
+					<br>
+					<p><input type=submit value="Login" class="btn btn-default"  name=action>&nbsp;&nbsp;&nbsp;&nbsp;<input type=submit value="Register" class="btn btn-default"  name=action></p>
+				</div>
+			</form>
+		</div>
+	</div>
 </body>
 </html>
