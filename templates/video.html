@@ -316,10 +316,12 @@
                 },
             success : function(json) {
                 console.log(json)
-                var a = document.getElementById('bulletscreentable')
+                /*var a = document.getElementById('bulletscreentable')
                 for (i in json){
                     a.innerHTML += "<tr><td>"+i.time+"</td><td>"+i.content+"</td> </tr>"
-                }
+                }*/
+                $('#bulletscreentable').append("<tr><td>"+json.time+"</td><td>"+json.content+"</td> </tr>")
+                $('#mybulletcontent').val('')
             },
             error : function(xhr,errmsg,err) {
                 alert(xhr.status + ": " + xhr.responseText);
