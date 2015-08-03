@@ -62,12 +62,16 @@ def handle_uploaded_pic(f, x):#'F:/AsiaTube/Video/'+ str(12) + '_' +
         for chunk in f.chunks():
             info.write(chunk)
     return f
+
 def uploadvideo(request):
     #response = render_to_response("")
     if 'id' not in request.COOKIES:#用户没有登录
         return render_to_response("login.html", context_instance=RequestContext(request))
     if request.method == 'GET':
-        return render_to_response("update.html", context_instance=RequestContext(request))
+        itype = IType()
+        return render_to_response("update.html",{
+            'Types':itype.SelectAllType()
+        }, context_instance=RequestContext(request))
     else:
         if 'file' not in request.FILES:
             return render_to_response("update.html", context_instance=RequestContext(request))

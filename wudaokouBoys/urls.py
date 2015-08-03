@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^manageUser/$', 'AsiaTube.views2.manageUser', name='manageUser'),
     url(r'^manageVideo/$', 'AsiaTube.views.manageVideo', name='manageVideo'),
     url(r'^videoPlayer/$', 'AsiaTube.views2.videoPlayer', name='videoPlayer'),
+    url(r'^searchResult/$', 'AsiaTube.views.searchResult', name='searchResult'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

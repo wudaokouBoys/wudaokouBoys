@@ -1,7 +1,4 @@
 # -*- coding=utf-8 -*-
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, render_to_response
-from django.template import RequestContext
 from AsiaTube.interface import *
 
 """
