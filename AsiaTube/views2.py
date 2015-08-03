@@ -173,7 +173,6 @@ def videoPlayer(request):
                 ivideo.UpdateBsreen(request.COOKIES['videoId'], newbscreen)
                 allthebullets = CBulletscreen.objects.filter(video = request.COOKIES['videoId']).order_by('id')
                 response_dict = {}
-                response_dict.update({})
 
                 return JsonResponse(response_dict)
             else:
