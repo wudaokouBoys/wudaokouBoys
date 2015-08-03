@@ -303,8 +303,13 @@
 </script>
 
 <script>
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
     $('#bscreengo').click(function(){
-        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
             url:'/videoPlayer/',
             contentType: "application/json",
@@ -313,7 +318,7 @@
             data : {
                 bullettime:document.getElementById('myvideo').currenttime,
                 buttletcontent:$("#mybulletcontent").val(),
-                csrfmiddlewaretoken: csrfToken
+                csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
             success : function(json) {
                 alert("收到弹幕列表")
