@@ -8,8 +8,10 @@
     <title>Video Player</title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
 	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="http://vjs.zencdn.net/4.12/video.js"></script>
 	<style>
 		body {
 			padding-top: 60px;
@@ -125,7 +127,15 @@
 		<div class="col-lg-7" style="height:525px;">
 		<!--播放界面加弹幕输入-->
 			<div class="row" style="width:100%;">
-				<video src="/static/{{Video_src}}" width="652" height="489" controls autobuffer></video>
+				<video width="652" height="489" controls="controls" preload="auto" >
+                    <source src="/static/{{ Video_src }}">
+                </video>
+                <!--video id="MY_VIDEO_1" class="video-js vjs-default-skin" controls
+ preload="auto" width="652" height="489" poster="MY_VIDEO_POSTER.jpg"
+ data-setup="{}">
+ <source src="/static/{{Video_src }}" type='video/mp4'>
+ <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+            </video-->
 				<div class="input-group">
 					<input type="text" class="form-control">
 						<span class="input-group-btn">
@@ -176,7 +186,7 @@
 					<h4>&nbsp;播放数：{{Playnum}}&nbsp;</h4>
 				</div>
                 <div class="form-group" style="border-left-color:white; border-right-color:silver; border-bottom-color:white; border-top-color:white; border-style:solid">
-					<h4>&nbsp;上传时间{{Video_uptime}}&nbsp;</h4>
+					<h4>&nbsp;上传时间:{{Video_uptime}}&nbsp;</h4>
 				</div>
 				<div class="form-group">
 					<h4>&nbsp;视频类别:&nbsp;</h4>
@@ -266,7 +276,7 @@
 	</div>
 	<div class="back2top" >
         <a href="javascript:;">
-            <img src="image/back2top.jpg" alt="">
+            <img src="/static/back2top.jpg" alt="">
         </a>
 	</div>
 </object>
@@ -281,8 +291,8 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
             success : function(json) {
-                $('#likenum').html('获赞数：'+ json.likenum)
-                $('#like').attr('class', $('#like').attr('class') + ' disabled')
+                $('#likenum').html('&nbsp获赞数：'+ json.likenum + '&nbsp')
+                $('#like').attr('class', $('#like').attr('class') + ' disabled btn-success')
             },
             error : function(xhr,errmsg,err) {
                 alert(xhr.status + ": " + xhr.responseText);

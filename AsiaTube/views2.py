@@ -27,7 +27,7 @@ def Login(request):  #用户登录
         else:
             response = render_to_response("video.html",{}, context_instance=RequestContext(request))
             response.set_cookie('id', id)
-            response.set_cookie('videoId', 1)
+            response.set_cookie('videoId', 4)
             return response
             #return HttpResponse("Login successfully")
 
