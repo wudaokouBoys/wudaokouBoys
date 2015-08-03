@@ -310,7 +310,7 @@
             type : "POST",
             dataType: "json",
             data : {
-                bullettime:document.getElementById('myvideo').currenttime,
+                bullettime:document.getElementById('myvideo').currenttime+"",
                 buttletcontent:$("#mybulletcontent").val(),
                 csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
