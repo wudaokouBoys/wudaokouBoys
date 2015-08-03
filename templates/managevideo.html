@@ -1,37 +1,89 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-		<title>管理员审查视频</title>
-    </head>
-    <body>
-		<div style = "width:900px; margin:0px auto">
-			<div style = "display:block">
-				管理员你好，目前没有带审核的视频/管理员你好，这是下一个待审核的视频，共有{{x}}个待审核的视频
-			</div>
-			<div style = "display:block">
-				<video src = "http://192.168.1.103:8000/static/1.mp4"> </video>
+        <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="http://vjs.zencdn.net/4.12/video.js"></script>
+	<style>
+		body {
+			padding-top: 60px;
+			padding-left: 50px;
+			background:silver;
+		}
+		#banner-text { 
+			width: 100%; 
+			text-align:center;
+			position:relative;
+			font: 60px/1.1em 'opensans-bold', sans-serif;
+			color: black;
+			letter-spacing: -2px;
+			margin: 0 auto 18px auto;
+			text-shadow: 0px 1px 3px rgba(0, 0, 0, .8);
+		}
+		#wrap{white-space:normal; word-wrap:break-word;}
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		.back2top{
+			position: fixed;
+			bottom: 50px;
+			right: 50px;
+			width: 60px;
+			height: 60px;
+		}
+		.back2top a{
+			display: block;
+			width: 100%;
+		}
+		.back2top a img{width: 100%;}
+    </style>
+	<title>管理员审查视频</title>
+	<script src="navbar.js"></script>
+</head>
+<body>
+	<div class="col-xs-8 col-md-offset-2" style="padding:10px;background-color:white; border-radius:5px;">
+		<div class="row col-md-offset-3">
+            <div class="col-md-2">
+                <img src="/static/{{ manager_image }}" class="img-rounded">
+            </div>
+            <div class="col-md-4">
+                <h1>欢迎，管理员 {{ manager }}</h1>
+            </div>
+        </div>
+		<div style = "display:block">
+			管理员你好，目前没有带审核的视频/管理员你好，这是下一个待审核的视频，共有{{x}}个待审核的视频
+		</div>
+		<div style = "display:block">
+			<video src = "http://192.168.1.103:8000/static/1.mp4"> </video>
+			<div>
+				<div>上传者：{{video_upper}}</div>
+				<div>视频标题：{{video_title}}</div>
+				<div>视频类别：{{video_type}}</div>
+				<div>视频简介：{{video_discription}}</div>
 				<div>
-					<div>上传者：{{video_upper}}</div>
-					<div>视频标题：{{video_title}}</div>
-					<div>视频类别：{{video_type}}</div>
-					<div>视频简介：{{video_discription}}</div>
-					<div>
-						<button onclick = "m_accept()">接受</button>
-						<button onclick = "m_reject()">拒绝</button>
-					</div>
-					<form method = POST enctype = "multipart/form-data" action = "/manageVideo/">
-						{% csrf_token %}
-						<div>如果你接受了这个视频，请上传一张图片文件作为此视频的缩略图</div>
-						<div><input type="file" name = "file"></div>
-						<div><input type="submit" value = "提交" name = "action"></div>
-					</form>
-					<button><a href="http://www.baidu.com">审查此视频上传者</a></button>
+				<button onclick = "m_accept()">接受</button>
+					<button onclick = "m_reject()">拒绝</button>
 				</div>
+				<form method = POST enctype = "multipart/form-data" action = "/manageVideo/">
+					{% csrf_token %}
+					<div>如果你接受了这个视频，请上传一张图片文件作为此视频的缩略图</div>
+					<div><input type="file" name = "file"></div>
+					<div><input type="submit" value = "提交" name = "action"></div>
+				</form>
+				<button><a href="http://www.baidu.com">审查此视频上传者</a></button>
 			</div>
 		</div>
-	    
-    </body>
+	</div>
+</body>
 </html>
 <script language = "javascript">
 function m_accept(){
