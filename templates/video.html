@@ -310,13 +310,11 @@
             type : "POST",
             dataType: "json",
             data : {
-                bullettime:document.getElementById('myvideo').currenttime+"",
+                bullettime:document.getElementById('myvideo').currentTime+"",
                 bulletcontent:$("#mybulletcontent").val(),
                 csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
             success : function(json) {
-                alert("收到弹幕列表")
-                alert(json)
                 console.log(json)
                 var a = document.getElementById('bulletscreentable')
                 for (i in json){
