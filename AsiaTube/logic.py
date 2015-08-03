@@ -1,4 +1,11 @@
 # -*- coding=utf-8 -*-
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
+from AsiaTube.models import *
+from AsiaTube.interface import *
+from .forms import UploadFileForm
+#from django.forms import ModelForm
 from AsiaTube.interface import *
 
 """
@@ -164,12 +171,13 @@ def GetComment(video_id):  #获取视频评论
     return commentLib
 
 def GetBsreen(video_id):  #获取视频弹幕
-    bscreenLib = []
+    """bscreenLib = []
     ivideo = IVideo()
     video = ivideo.SelectById(video_id)
     bscreenList = AnalysisString(video.bsreen)
     ibsreen = IBulletscreen()
     for bsreen in bscreenList:
         content = ibsreen.SelectById(bsreen).content
-        bscreenLib.append(content)
+        bscreenLib.append(content)"""
+    bscreenLib = CBulletscreen.objects.filter(video=video_id)
     return bscreenLib

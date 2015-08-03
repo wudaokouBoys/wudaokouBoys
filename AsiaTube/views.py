@@ -75,6 +75,8 @@ def uploadvideo(request):
     else:
         if 'file' not in request.FILES:
             return render_to_response("update.html", context_instance=RequestContext(request))
+        print(request.POST)
+        print(6416499164)
         a = request.FILES['file']
         x = request.COOKIES['id']
         ivideo = IVideo()

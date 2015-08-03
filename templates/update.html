@@ -96,17 +96,23 @@
 						</div>
 						</span>
 					</div><!-- /input-group -->
-					{% for VideoType in Types %}
-						<div class="col-lg-3" style="float:true;">
+                <!--div class="col-lg-2" style="float:true;">
 							<div class="input-group">
 							<span class="input-group-addon">
-								<input type="radio" name="options" id={{VideoType.num}}>
+								<input type="radio" name="options" id=}>
 							</span>
-							<input type="text" class="form-control" onfocus=this.blur() value={{VideoType.content}}>
+							<input type="text" class="form-control" onfocus=this.blur() value=>
 						</div><!-- /input-group -->
-					</div><!-- /.col-lg-3 -->
+					<!-- /.col-lg-3 -->
+                <div class="btn-group" data-toggle="buttons">
+					{% for VideoType in Types %}
+                        <label class="btn btn-default" onclick="test(this)">
+                            <input type="radio" name="options"  id={{ VideoType }} >{{ VideoType }}
+                        </label>
+
 					{% endfor %}
-				</div>
+                </div>
+                </div>
 				<br>
 				<div class="form-group" style="top:0px; position:relative;">
 					<input type="file" id="exampleInputFile" name = "file" accept="video/*" value = {{UploadFile}} >
@@ -117,5 +123,10 @@
 	</div>	
     <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+        function test(e){
+            alert(this)
+        }
+    </script>
   </body>
 </html>
