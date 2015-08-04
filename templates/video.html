@@ -280,4 +280,18 @@
         });
 	});
 </script>
+
+<script language = "javascript">
+    var a = {{BulletScreens}}
+    console.log(a);
+    var b = a[0];
+    var c = [];
+    console(b);
+    for (i in a){
+        c[i].time = i.time;
+        c[i].content = i.content;
+    }
+    console.log(c);
+    console/log(c[0]);
+</script>
 </html>
