@@ -68,9 +68,9 @@
 		</div>
 		<div class="col-xs-8 col-md-offset-2" style="top:20px; padding:10px; background:white; border-radius:5px; height:500px; overflow:scroll; overflow-x:hidden">
 		<!--搜索结果界面-->
-			<h3>搜索结果：<h3/>
+			<h3>搜索结果：</h3>
+            {% for Video in Videos %}
 			<div class="row" style=" padding:5px;border-color:silver; border-width:2px; border-style:solid; height:160px; width:100%; left:13px; position:relative">
-				{% for Video in Videos %}
 				<div class="col-lg-2" style="height:160px; padding:5px; left:5px;">
 					<div class="img-circle">
 						<img src={{Video.image}} class="circle" style="width:100px; height:80px;">
@@ -81,7 +81,7 @@
 						<span class="badge">
 							<span class="glyphicon glyphicon-chevron-right" style="font-size:15px;" Title="类别">{{Video.type}}</span>
 						</span>
-						<span><a href="#">&nbsp;{{Video.title}}<!--em style="color:purple">legal</em--></a></span>
+						<span><a class="videoLink" id="{{ Video.id }}">&nbsp;{{Video.title}}<!--em style="color:purple">legal</em--></a></span>
 					</div>
 					<form class="form-inline" role="form" style="color:grey; position:relative; top:-3px; border-bottom-color: silver; border-bottom-width:1px; border-bottom-style:solid;">
 						<span class="glyphicon glyphicon-user" style="font-size:10px;" Title="up主">{{Video.upper}}&nbsp;</span>
@@ -92,15 +92,21 @@
 					</form>
 					<textarea name="VideoDiscribe" rows="3" disabled style="width:100%; position:relative; top:5px; background-color:white;">{{Video.discription}}</textarea>
 				</div>
-				{% endfor %}
-			</div>
-		</div>
-	</div>
+            </div>
+			{% endfor %}
+            </div>
 	<div class="back2top" >
         <a href="javascript:;">
             <img src="/static/back2top.jpg" alt="">
         </a>
 	</div>
+    </div>
+    <script>
+        $('.videoLink').click(function(){
+            document.cookie = "videoId="+this.id + "; path=/"
+            window.location.assign('/videoPlayer')
+        })
+    </script>
 </body>
 	<script type="text/javascript" language="javascript">
 	jQuery(document).ready(function($) {

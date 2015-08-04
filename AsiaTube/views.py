@@ -6,6 +6,7 @@ from AsiaTube.models import *
 from AsiaTube.interface import *
 from .forms import UploadFileForm
 #from django.forms import ModelForm
+from urllib.parse import unquote
 import time
 
 # Create your views here.
@@ -196,7 +197,16 @@ def manageVideo(request):#管理员审查视频界面
 
 def searchResult(request):
     if request.method == 'GET':
+        path = request.get_full_path()
+        pos1 = (path.find("condition="))
+        pos2 = path.find(';')
+        pos3 = path.find("content=")
+        condition = path[pos1+10:pos2]
+        content = unquote(path[pos3+8:len(path)])
+        ivideo = IVideo()
         return render_to_response("search.html", {
+            'SearchTarget':content,
+            'Videos':ivideo.Search(condition, content)
         },context_instance=RequestContext(request))
 
 def mainPage(request):
