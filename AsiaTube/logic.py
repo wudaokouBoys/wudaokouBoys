@@ -1,17 +1,6 @@
 # -*- coding=utf-8 -*-
 from AsiaTube.interface import *
 
-"""
-    remain to do:
-    Login
-    AddComment
-    AddBsreen
-    UpVideo
-    ModifyInfo
-    SetSensitiveWord
-    CalculateInfo
-"""
-
 def AnalysisString(string):  #解析字符串
     if string == None:
         return

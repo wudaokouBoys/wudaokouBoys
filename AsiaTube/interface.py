@@ -1,6 +1,7 @@
 # -*- coding=utf-8 -*-
 from AsiaTube.models import *
 from .logic import *
+import operator
 
 class IUser():
     def Insert(self, user): #新建用户
@@ -94,20 +95,41 @@ class IVideo():
             searchList = []
             for video in videos:
                 searchitem = {
+                    'id':video.id,
                     'title':video.title,
                     'playnum':video.playnum,
                     'comment':len(CComment.objects.filter(video=video.id)),
-                    'BScreen':len(GetBsreen(video.id)),
+                    'BScreen':len(CBulletscreen.objects.filter(video=video.id)),
                     'uptime':video.time,
                     'discription':video.discribe,
                     'type':CType.objects.filter(id=video.type)[0].content,
                     'image':'',
-                    'uppper':CUser.objects.filter(id=video.upper)[0].name,
+                    'upper':CUser.objects.filter(id=video.upper)[0].name,
                 }
                 searchList.append(searchitem)
             return searchList
         elif condition == 'keyword':
-            return
+            videos = CVideo.objects.all()
+            searchList = []
+            for video in videos:
+                string = video.title + video.discribe
+                if string.find(content) > -1:
+                    searchitem = {
+                        'id':video.id,
+                        'title':video.title,
+                        'playnum':video.playnum,
+                        'comment':len(CComment.objects.filter(video=video.id)),
+                        'BScreen':len(CBulletscreen.objects.filter(video=video.id)),
+                        'uptime':video.time,
+                        'discription':video.discribe,
+                        'type':CType.objects.filter(id=video.type)[0].content,
+                        'image':'',
+                        'upper':CUser.objects.filter(id=video.upper)[0].name,
+                    }
+                    searchList.append(searchitem)
+            searchList = sorted(searchList, key=operator.itemgetter('playnum'))
+            searchList.reverse()
+            return searchList
 
     def ModifyTitle(self, id, newTitle): #修改视频标题
         CVideo.objects.filter(id=id).update(title=newTitle)
