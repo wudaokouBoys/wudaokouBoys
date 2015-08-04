@@ -91,7 +91,7 @@
 							</button>
 						</span>
 				</form><!-- /input-group -->
-                <div id = "player" style = "position: absolute; width:652px; height:200px; top:0px; left:0px; overflow:hidden">
+                <div id = "player" style = "position: absolute; width:652px; height:200px; top:0px; left:0px; overflow-x:hidden">
 
                 </div>
 			</div>
@@ -438,7 +438,7 @@ function bulletchange(){
     }
 }
 function checkplay(){
-    if (document.getElementById('myvideo').paused == true){
+    if (document.getElementById('myvideo').paused == false){
         y = false;
     }
     else{
