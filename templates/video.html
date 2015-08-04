@@ -463,8 +463,8 @@ function checkfullscreen(){
 function getfull(){
     var a;
     var b;
-    if (isfull == true) {
-        isfull = false;
+    if (isfull == false) {
+        isfull = true;
         a = document.getElementById('playerbox');
         console.log("开启全屏模式！");
         a.webkitRequestFullScreen();
@@ -472,10 +472,11 @@ function getfull(){
         b.width = "100%";
         b.height = "90%";
     }
-    else if (isfull == false){
-        isfull = true;
+    else if (isfull == true){
+        isfull = false;
         console.log("关闭全屏模式！");
         document.webkitCancelFullScreen();
+        b = document.getElementById('myvideo');
         b.width = "652";
         b.height = "489";
     }
