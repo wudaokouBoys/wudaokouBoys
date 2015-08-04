@@ -294,7 +294,7 @@ var pause_flag = false;
 var y = false;
 var y2 = true;
 var timer;
-var table = document.getElementById('bulletscreentable')
+var table = document.getElementById('bulletscreentable');
 var bullet = [];
 var objbullet = {};
 var a = table.firstElementChild;
@@ -302,13 +302,21 @@ while (a != table.lastElementChild){
 	objbullet.time = a.firstElementChild.innerHTML;
 	objbullet.content = a.lastElementChild.innerHTML;
 	objbullet.speed = 1 + Math.random();
-	bullet.push(objbullet);
+	bullet.push({
+		"time":objbullet.time,
+		"content":objbullet.content,
+		"speed":objbullet.speed
+		})
 	a = a.nextElementSibling;
-}
+	}
 objbullet.time = a.firstElementChild.innerHTML;
 objbullet.content = a.lastElementChild.innerHTML;
 objbullet.speed = 1 + Math.random();
-bullet.push(objbullet);
+bullet.push({
+	"time":objbullet.time,
+	"content":objbullet.content,
+	"speed":objbullet.speed
+})
 startbullet(0);
 
 var bulletnumber = 0;
@@ -353,7 +361,7 @@ var player;
 		player.innerHTML += '<div id = "d' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width+1)+'px; top:'+(getheight(i)+50)+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
 		player.innerHTML += '<div id = "e' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width)+'px; top:'+(getheight(i)+49)+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
 		player.innerHTML += '<div id = "f' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width)+'px; top:'+(getheight(i)+51)+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
-		player.innerHTML += '<div id = "b' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+ m_width +'px; top:'+getheight(i)+'px"><p style = "color:#FF0000; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
+		player.innerHTML += '<div id = "b' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+ m_width +'px; top:'+(getheight(i)+50)+'px"><p style = "color:#FF0000; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
 		bulletnumber++;
 		m_column[parseInt(getheight(i)/m_h)] = i;
 	}
