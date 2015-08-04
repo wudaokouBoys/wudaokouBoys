@@ -72,7 +72,7 @@
 		<div class="row">
 		<div class="col-lg-7" style="height:525px;">
 		<!--播放界面加弹幕输入-->
-			<div id = "player" class="row" style="width:100%; overflow:hidden;">
+			<div id = "playerbox" class="row" style="width:100%; overflow:hidden; postion:relative">
 				<video id = "myvideo" width="652" height="489" controls="controls" preload="auto" >
                     <source src="/static/{{ Video_src }}">
                 </video>
@@ -91,6 +91,9 @@
 							</button>
 						</span>
 				</form><!-- /input-group -->
+                <div id = "player" style = "position: absolute; width:652px; top:0px; left:0px;">
+
+                </div>
 			</div>
 		</div>
 		<div class="col-lg-3"  id="BulletScreen" style="height:525px; background:white; padding:10px; border-radius:5px; overflow:scroll; overflow-x:hidden">
@@ -366,8 +369,8 @@ var player;
 		m_column[parseInt(getheight(i)/m_h)] = i;
 	}
 	else if (maptime == parseInt(bullet[i].time*1000/x + 2*m_width/bullet[i].speed)){
-		if (m_column[parseInt(document.getElementById('b'+i).style.top)/m_h] == i)
-			m_column[parseInt(document.getElementById('b'+i).style.top)/m_h] = -1;
+		if (m_column[parseInt(document.getElementById('b'+i).style.top - 50)/m_h] == i)
+			m_column[parseInt(document.getElementById('b'+i).style.top - 50)/m_h] = -1;
 		document.getElementById('b'+i).remove();
 		document.getElementById('c'+i).remove();
 		document.getElementById('d'+i).remove();
