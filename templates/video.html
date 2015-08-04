@@ -302,7 +302,7 @@ var table = document.getElementById('bulletscreentable');
 var bullet = [];
 var objbullet = {};
 timer2 = setInterval(checkplay, x);
-timer3 = setInterval(fullscreen, 500);
+timer3 = setInterval(checkfullscreen, 500);
 var a = table.firstElementChild;
 while (a != table.lastElementChild){
 	objbullet.time = a.firstElementChild.innerHTML;
@@ -451,7 +451,9 @@ function checkfullscreen(){
     a = document.getElementById('myvideo');
     if (document.webkitCurrentFullScreenElement === a){
         console.log("进入全屏模式");
-        a.webkitEnterFullScreen();
+        document.webkitExitFullscreen();
+        b = document.getElementById("playerbox")
+        b.webkitEnterFullScreen();
     }
 }
 
