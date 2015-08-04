@@ -91,7 +91,7 @@
 							</button>
 						</span>
 				</form><!-- /input-group -->
-                <div id = "player" style = "position: absolute; width:652px; top:0px; left:0px; overflow:hidden">
+                <div id = "player" style = "position: absolute; width:652px; height:520px; top:0px; left:0px; overflow:hidden">
 
                 </div>
 			</div>
@@ -287,6 +287,7 @@
 <script language = "javascript">
 var starttime = 0;
 var maptime = 0;
+var bulletstate = 0;
 var x = 10;
 var speed = 5;
 var m_width = 653;
@@ -320,8 +321,8 @@ bullet.push({
 	"content":objbullet.content,
 	"speed":objbullet.speed
 })
-startbullet(0);
 
+timer2 = setInterval(checkplay, x);
 var bulletnumber = 0;
 
 function startbullet(time){
@@ -416,5 +417,32 @@ function closebullet(){
             document.getElementById('f'+i).remove();
 		}
 	}
+}
+
+function bulletchange(){
+    bulletstate = 1 - bulletstate;
+    if (bulletstate == 0){
+        closebullet();
+        return;
+    }//guanbi
+    else if (bulletstate == 0){//开启弹幕
+        if (y2 == true){
+            startbullet(document.getElementById('myvideo').currentTime)
+            return;
+        }//正在播放
+        else{
+            startbullet(document.getElementById('myvideo').currentTime)
+            return;
+        }
+    }
+}
+
+function checkplay(){
+    if (document.getElementById('myvideo').paused == true){
+        y = false;
+    }
+    else{
+        y = true;
+    }
 }
 </script>
