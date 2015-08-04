@@ -72,7 +72,7 @@
 		<div class="row">
 		<div class="col-lg-7" style="height:525px;">
 		<!--播放界面加弹幕输入-->
-			<div class="row" style="width:100%;">
+			<div id = "player" class="row" style="width:100%;">
 				<video id = "myvideo" width="652" height="489" controls="controls" preload="auto" >
                     <source src="/static/{{ Video_src }}">
                 </video>
@@ -282,16 +282,111 @@
 </script>
 
 <script language = "javascript">
-    var a = {{BulletScreens}}
-    console.log(a);
-    var b = a[0];
-    var c = [];
-    console(b);
-    for (i in a){
-        c[i].time = i.time;
-        c[i].content = i.content;
-    }
-    console.log(c);
-    console/log(c[0]);
+var starttime = 0;
+var maptime = 0;
+var x = 10;
+var speed = 5;
+var m_width = 653;
+var m_height = 528;
+var m_h = 24;//每一条弹幕的高度
+var m_column = [];
+var pause_flag = false;
+var y = false;
+var y2 = true;
+var timer;
+startbullet(0);
+
+var bulletnumber = 0;
+
+function startbullet(time){
+var i;
+	//starttime = time;
+	timer = setInterval(refresh, x);
+	for (i = 0; i < parseInt(m_height/m_h); i++){
+		m_column[i] = -1;
+	}
+	maptime = parseInt(time*1000/x);
+	starttime = parseInt(time*1000/x);
+}
+function getheight(x){//获取编号为x的弹幕的高度
+var ans;
+var i;
+	for (i = 0; i < parseInt(m_height/m_h); i++){
+		if (m_column[i] == -1)
+			return (m_h*i);
+		else if (parseInt(document.getElementById('b'+m_column[i]).style.left) + m_h*bullet[m_column[i]].content.length < m_width && m_width - 30 > bullet[x].speed * ( parseInt(document.getElementById('b'+m_column[i]).style.left) + m_h*bullet[m_column[i]].content.length)/bullet[m_column[i]].speed)
+			return (m_h*i);
+	}
+	ans = parseInt(Math.random()*m_height/m_h)
+	if (y == parseInt(m_height/m_h))
+		return (m_h*(ans-1))
+	return (m_h*ans)
+}
+function m_show(i){
+var player;
+	if (starttime > bullet[i].time*1000/x)
+		return;
+	if (maptime < bullet[i].time*1000/x){
+		return;
+	}
+	else if (maptime > bullet[i].time*1000/x + 2*m_width/bullet[i].speed){
+		return;
+	}
+	else if (maptime == parseInt(bullet[i].time*1000/x)){
+		player = document.getElementById("player");
+		player.innerHTML += '<div id = "c' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width-1)+'px; top:'+(getheight(i)+50)+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
+		player.innerHTML += '<div id = "d' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width+1)+'px; top:'+(getheight(i)+50)+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
+		player.innerHTML += '<div id = "e' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width)+'px; top:'+(getheight(i)+49)+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
+		player.innerHTML += '<div id = "f' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width)+'px; top:'+(getheight(i)+51)+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
+		player.innerHTML += '<div id = "b' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+ m_width +'px; top:'+getheight(i)+'px"><p style = "color:#FF0000; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
+		bulletnumber++;
+		m_column[parseInt(getheight(i)/m_h)] = i;
+	}
+	else if (maptime == parseInt(bullet[i].time*1000/x + 2*m_width/bullet[i].speed)){
+		if (m_column[parseInt(document.getElementById('b'+i).style.top)/m_h] == i)
+			m_column[parseInt(document.getElementById('b'+i).style.top)/m_h] = -1;
+		document.getElementById('b'+i).remove();
+		document.getElementById('c'+i).remove();
+		document.getElementById('d'+i).remove();
+		document.getElementById('e'+i).remove();
+		document.getElementById('f'+i).remove();
+		bulletnumber--;
+	}
+	else{
+		document.getElementById('b'+i).style.left = m_width - (bullet[i].speed*(maptime - bullet[i].time*1000/x))+'px';
+		document.getElementById('c'+i).style.left = m_width - (bullet[i].speed*(maptime - bullet[i].time*1000/x)) - 1 +'px';
+		document.getElementById('d'+i).style.left = m_width - (bullet[i].speed*(maptime - bullet[i].time*1000/x)) + 1 +'px';
+		document.getElementById('e'+i).style.left = m_width - (bullet[i].speed*(maptime - bullet[i].time*1000/x)) +'px';
+		document.getElementById('f'+i).style.left = m_width - (bullet[i].speed*(maptime - bullet[i].time*1000/x)) +'px';
+	}
+}
+function refresh(){
+var i;
+	if (y && y2){//zanting
+		y2 = false;//y2是播放状态
+		//clearInterval(timer);
+		return;
+	}
+	else if (y == false && y2 == false){//再次播放
+		//timer = setInterval(refresh, x);
+		y2 = true;
+		return;
+	}
+	else if (y2 == false)
+		return;
+	for (i in bullet){
+		m_show(i);
+	}
+	maptime++;
+}
+function closebullet(){
+	clearInterval(timer);
+	for (i in bullet){
+		if (!!document.getElementById('b'+i)){
+			document.getElementById('b'+i).remove();
+			document.getElementById('c'+i).remove();
+		}
+	}
+}
 </script>
 </html>
