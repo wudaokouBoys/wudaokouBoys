@@ -73,7 +73,7 @@
 		<div class="col-lg-7" style="height:525px;">
 		<!--播放界面加弹幕输入-->
 			<div id = "playerbox" class="row" style="width:100%; overflow:hidden; postion:relative; bgcolor:#000000">
-				<video id = "myvideo" width="652" height="489" controls="controls" preload="auto" >
+				<video id = "myvideo" style = "width:652px; height:489px" controls="controls" preload="auto" >
                     <source src="/static/{{ Video_src }}">
                 </video>
                 <!--video id="MY_VIDEO_1" class="video-js vjs-default-skin" controls
@@ -469,16 +469,16 @@ function getfull(){
         console.log("开启全屏模式！");
         a.webkitRequestFullScreen();
         b = document.getElementById('myvideo');
-        b.width = "100%";
-        b.height = "90%";
+        b.style.width = "100%";
+        b.style.height = "90%";
     }
     else if (isfull == true){
         isfull = false;
         console.log("关闭全屏模式！");
         document.webkitCancelFullScreen();
         b = document.getElementById('myvideo');
-        b.width = "652";
-        b.height = "489";
+        b.style.width = "652";
+        b.style.height = "489";
     }
 
 }
