@@ -88,8 +88,26 @@ class IVideo():
         else:
             return None
 
-    def Search(self, condition): #搜索视频
-        return
+    def Search(self, condition, content): #搜索视频
+        if condition == 'type':
+            videos = CVideo.objects.filter(type=content).order_by('-playnum')
+            searchList = []
+            for video in videos:
+                searchitem = {
+                    'title':video.title,
+                    'playnum':video.playnum,
+                    'comment':len(CComment.objects.filter(video=video.id)),
+                    'BScreen':len(GetBsreen(video.id)),
+                    'uptime':video.time,
+                    'discription':video.discribe,
+                    'type':CType.objects.filter(id=video.type)[0].content,
+                    'image':'',
+                    'uppper':CUser.objects.filter(id=video.upper)[0].name,
+                }
+                searchList.append(searchitem)
+            return searchList
+        elif condition == 'keyword':
+            return
 
     def ModifyTitle(self, id, newTitle): #修改视频标题
         CVideo.objects.filter(id=id).update(title=newTitle)

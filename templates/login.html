@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="gb2312">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Log In</title>
@@ -27,10 +27,15 @@
 						<tr><th><span class="glyphicon glyphicon-lock"></span><b>password</b><td><input  type=password  name=password placeholder="password">
 					</table>
 					<br>
-					<p><input type=submit value="Login" class="btn btn-default"  name=action>&nbsp;&nbsp;&nbsp;&nbsp;<input type=submit value="Register" class="btn btn-default"  name=action></p>
+					<p><input type=submit value="登录" class="btn btn-default"  name=action>&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id="Register" value="注册" class="btn btn-default"  name=action></p>
 				</div>
 			</form>
 		</div>
 	</div>
+    <script>
+        $('#Register').click(function () {
+            window.location.assign('/register')
+        })
+    </script>
 </body>
 </html>

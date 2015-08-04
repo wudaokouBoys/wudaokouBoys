@@ -43,13 +43,6 @@ def SignUp(request):
                 'oldemail':email
             }, context_instance=RequestContext(request))
 
-       # p = person(
-       #     name=person_name,
-       #     id=person_id,
-        #    job=person_job,
-       #     pay=person_pay
-     #   )
-     #   p.save()
 
 def handle_uploaded_file(f, x):#'F:/AsiaTube/Video/'+ str(12) + '_' +
     with open('F:/AsiaTube/Video/'+ str(x) + '_v.'+ f.name.split('.')[-1], 'wb+') as info:
@@ -75,8 +68,6 @@ def uploadvideo(request):
     else:
         if 'file' not in request.FILES:
             return render_to_response("update.html", context_instance=RequestContext(request))
-        print(request.POST)
-        print(6416499164)
         a = request.FILES['file']
         x = request.COOKIES['id']
         ivideo = IVideo()
@@ -103,17 +94,9 @@ def uploadvideo(request):
         ivideo.Insert(newvideo)
         x = m_video_id
         handle_uploaded_file(a, x)
-        #form = UploadFileForm(request.POST, request.FILES)
-        #if form.is_valid():
-        #    return HttpResponse("You have upload your file successfully")
-        #print
-        #print(form.title)
 
-        return render_to_response("video.html",{
-            'UserID':x,
-            'Video_title':'萌杰打飞机',
-            'Video_src':'http://192.168.1.103:8000/static/1.mp4'
-        }, context_instance=RequestContext(request))
+        response =  HttpResponseRedirect('/')
+        return response
 
 def ModifyInfo(request):
     if 'id' not in request.COOKIES:
@@ -214,14 +197,9 @@ def manageVideo(request):#管理员审查视频界面
 def searchResult(request):
     if request.method == 'GET':
         return render_to_response("search.html", {
-            'UserID':1,
-            'UserName':'haha',
         },context_instance=RequestContext(request))
 
 def mainPage(request):
     if request.method == 'GET':
         return render_to_response("index.html", {
-            'UserID':1,
-            'UserName':'haha',
-            'DisplayLogin':'block',
         },context_instance=RequestContext(request))
