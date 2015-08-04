@@ -72,7 +72,7 @@
 		<div class="row">
 		<div class="col-lg-7" style="height:525px;">
 		<!--播放界面加弹幕输入-->
-			<div id = "player" class="row" style="width:100%;">
+			<div id = "player" class="row" style="width:100%; overflow:hidden;">
 				<video id = "myvideo" width="652" height="489" controls="controls" preload="auto" >
                     <source src="/static/{{ Video_src }}">
                 </video>
@@ -294,6 +294,21 @@ var pause_flag = false;
 var y = false;
 var y2 = true;
 var timer;
+var table = document.getElementById('bulletscreentable')
+var bullet = [];
+var objbullet = {};
+var a = table.firstElementChild;
+while (a != table.lastElementChild){
+	objbullet.time = a.firstElementChild.innerHTML;
+	objbullet.content = a.lastElementChild.innerHTML;
+	objbullet.speed = 1 + Math.random();
+	bullet.push(objbullet);
+	a = a.nextElementSibling;
+}
+objbullet.time = a.firstElementChild.innerHTML;
+objbullet.content = a.lastElementChild.innerHTML;
+objbullet.speed = 1 + Math.random();
+bullet.push(objbullet);
 startbullet(0);
 
 var bulletnumber = 0;
