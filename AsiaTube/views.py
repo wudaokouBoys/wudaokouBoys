@@ -209,3 +209,19 @@ def manageVideo(request):#管理员审查视频界面
                 return response
             print("asdfg")
             return HttpResponse("shenmedongxi?")
+
+
+def searchResult(request):
+    if request.method == 'GET':
+        return render_to_response("search.html", {
+            'UserID':1,
+            'UserName':'haha',
+        },context_instance=RequestContext(request))
+
+def mainPage(request):
+    if request.method == 'GET':
+        return render_to_response("index.html", {
+            'UserID':1,
+            'UserName':'haha',
+            'DisplayLogin':'block',
+        },context_instance=RequestContext(request))

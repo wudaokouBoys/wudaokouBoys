@@ -14,7 +14,7 @@ def Login(request):  #用户登录
         print(request.COOKIES)
         return render_to_response("login.html", context_instance=RequestContext(request))
     else:
-        id = request.POST.get('id')
+        id = int(request.POST.get('id'))
         password = request.POST.get('password')
         iuser = IUser()
         user = iuser.SelectById(id)
@@ -26,8 +26,10 @@ def Login(request):  #用户登录
                  'oldid':id,
             }, context_instance=RequestContext(request))
         else:
-            response = render_to_response("video.html",{}, context_instance=RequestContext(request))
+            response = HttpResponseRedirect('/')
             response.set_cookie('id', id)
+            response.set_cookie('name', user.name)
+            response.set_cookie('admin', user.admin)
             response.set_cookie('videoId', 4)
             return response
             #return HttpResponse("Login successfully")
@@ -141,7 +143,7 @@ def videoPlayer(request):
         iuser = IUser()
         user = iuser.SelectById(video.upper)
         ivideo.AddPlaynum(videoId)
-        if 'id' in request.COOKIES:
+        if 'id' in request.COOKIES and int(request.COOKIES['id']) > 0:
             viewer = iuser.SelectById(request.COOKIES['id'])
             userImage = viewer.image
             userName = viewer.name

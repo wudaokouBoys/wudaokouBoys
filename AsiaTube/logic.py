@@ -1,11 +1,4 @@
 # -*- coding=utf-8 -*-
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, render_to_response
-from django.template import RequestContext
-from AsiaTube.models import *
-from AsiaTube.interface import *
-from .forms import UploadFileForm
-#from django.forms import ModelForm
 from AsiaTube.interface import *
 
 """

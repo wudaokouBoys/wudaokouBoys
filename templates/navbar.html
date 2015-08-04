@@ -46,10 +46,10 @@
 			<form class="navbar-form navbar-right" role="search">
 				<button type="button" class="btn btn-primary" id="LogIn" style="display:{{DisplayLogin}}">登录</button>
 			</form>
-			<form class="navbar-form nav navbar-nav navbar-right" role="search" style="display:{{DisplayUser}}">
+			<form id="user-option" class="navbar-form nav navbar-nav navbar-right" role="search">
 				<div class="form-group">
 					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown" style="height:44px"><span class="glyphicon glyphicon-user">{{UserName}}<b class="caret"></b></a>
+						<a class="dropdown-toggle" data-toggle="dropdown" style="height:44px"><span id="UserName" class="glyphicon glyphicon-user"><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a id="UploadVideo"><font color="red"><b>上传视频</b></font></a></li>
 							<li class="divider"></li>
@@ -59,14 +59,14 @@
 							<li><a id="WatchHistory">观看历史</a></li>
 							<li><a id="UploadHistory">上传历史</a></li>
 							<li class="divider"></li>
-							<li style="display:{{Display}}"><a id="VerifyUser">审查用户</a></li>
-							<li style="display:{{Display}}"><a id="VerifyVideo">审查视频</a></li>
-							<li class="divider" style="display:{{Display}}"></li>
+							<li  id="VerifyUser"><a>审查用户</a></li>
+							<li  id="VerifyVideo"><a>审查视频</a></li>
+							<li class="divider" id = "Administrator"></li>
 							<li><a id="LogOut">登出</a></li>
 						</ul>
 					</li>
 				</div>
-				<span class="label label-default">ID: {{UserID}}</span>
+				<span id="UserID" class="label label-default"></span>
 			</form>  
 			<form class="navbar-form navbar-right" role="search">
 				<div class="form-group">
