@@ -339,13 +339,13 @@ function getheight(x){//获取编号为x的弹幕的高度
 var ans;
 var i;
 	for (i = 0; i < parseInt(m_height/m_h); i++){
-		if (m_column[i] == -1)
+		if (m_column[i] === -1)
 			return (m_h*i);
 		else if (parseInt(document.getElementById('b'+m_column[i]).style.left) + m_h*bullet[m_column[i]].content.length < m_width && m_width - 30 > bullet[x].speed * ( parseInt(document.getElementById('b'+m_column[i]).style.left) + m_h*bullet[m_column[i]].content.length)/bullet[m_column[i]].speed)
 			return (m_h*i);
 	}
 	ans = parseInt(Math.random()*m_height/m_h)
-	if (ans == parseInt(m_height/m_h))
+	if (ans === parseInt(m_height/m_h))
 		return (m_h*(ans-1))
 	return (m_h*ans)
 }
@@ -359,7 +359,7 @@ var player;
 	else if (maptime > parseInt(bullet[i].time*1000/x + 2*m_width/bullet[i].speed)){
 		return;
 	}
-	else if (maptime == parseInt(bullet[i].time*1000/x)){
+	else if (maptime === parseInt(bullet[i].time*1000/x)){
 		player = document.getElementById("player");
 		player.innerHTML += '<div id = "c' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width-1)+'px; top:'+(getheight(i)+50)+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
 		player.innerHTML += '<div id = "d' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width+1)+'px; top:'+(getheight(i)+50)+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
@@ -369,8 +369,8 @@ var player;
 		bulletnumber++;
 		m_column[parseInt(getheight(i)/m_h)] = i;
 	}
-	else if (maptime == parseInt(bullet[i].time*1000/x + 2*m_width/bullet[i].speed)){
-		if (m_column[(parseInt(document.getElementById('b'+i).style.top) - 50)/m_h] == i)
+	else if (maptime === parseInt(bullet[i].time*1000/x + 2*m_width/bullet[i].speed)){
+		if (m_column[(parseInt(document.getElementById('b'+i).style.top) - 50)/m_h] === i)
 			m_column[(parseInt(document.getElementById('b'+i).style.top) - 50)/m_h] = -1;
 		document.getElementById('b'+i).remove();
 		document.getElementById('c'+i).remove();
@@ -394,12 +394,12 @@ var i;
 		//clearInterval(timer);
 		return;
 	}
-	else if (y == false && y2 == false){//再次播放
+	else if (y === false && y2 === false){//再次播放
 		//timer = setInterval(refresh, x);
 		y2 = true;
 		return;
 	}
-	else if (y2 == false)
+	else if (y2 === false)
 		return;
 	for (i in bullet){
 		m_show(i);
@@ -421,12 +421,12 @@ function closebullet(){
 
 function bulletchange(){
     bulletstate = 1 - bulletstate;
-    if (bulletstate == 0){
+    if (bulletstate === 0){
         closebullet();
         return;
     }//guanbi
-    else if (bulletstate == 0){//开启弹幕
-        if (y2 == true){
+    else if (bulletstate === 0){//开启弹幕
+        if (y2 === true){
             startbullet(document.getElementById('myvideo').currentTime)
             return;
         }//正在播放
@@ -436,13 +436,13 @@ function bulletchange(){
         }
     }
 }
-
 function checkplay(){
-    if (document.getElementById('myvideo').paused == true){
+    if (document.getElementById('myvideo').paused === true){
         y = false;
     }
     else{
         y = true;
     }
 }
+
 </script>
