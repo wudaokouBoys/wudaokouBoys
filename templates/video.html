@@ -347,12 +347,12 @@ var i;
 }
 function m_show(i){
 var player;
-	if (starttime > bullet[i].time*1000/x)
+	if (starttime > parseInt(bullet[i].time*1000/x))
 		return;
-	if (maptime < bullet[i].time*1000/x){
+	if (maptime < parseInt(bullet[i].time*1000/x)){
 		return;
 	}
-	else if (maptime > bullet[i].time*1000/x + 2*m_width/bullet[i].speed){
+	else if (maptime > parseInt(bullet[i].time*1000/x + 2*m_width/bullet[i].speed)){
 		return;
 	}
 	else if (maptime == parseInt(bullet[i].time*1000/x)){
