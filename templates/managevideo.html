@@ -51,36 +51,73 @@
 	<script src="/static/navbar_action.js"></script>
 </head>
 <body>
-	<div class="col-xs-8 col-md-offset-2" style="padding:10px;background-color:white; border-radius:5px;">
-		<div class="row col-md-offset-3">
-            <div class="col-md-2">
-                <img src="/static/{{ manager_image }}" class="img-rounded">
-            </div>
-            <div class="col-md-4">
-                <h1>欢迎，管理员 {{ manager }}</h1>
-            </div>
+	<div class="col-xs-4 col-md-offset-4" style="background-color:white; border-radius:5px;">
+		<div class="col-xs-3" style="padding:10px;">
+            <img src={{manager_image}} class="img-circle" style="width:80px; height:80px;">
         </div>
-		<div style = "display:block">
-			管理员你好，目前没有带审核的视频/管理员你好，这是下一个待审核的视频，共有{{x}}个待审核的视频
+        <div class="col-xs-9">
+            <h1>欢迎, 管理员 {{ manager }}</h1>
+        </div>
+	</div>
+	<div class="col-lg-8 col-md-offset-2" style="padding:10px;background-color:white; border-radius:5px; top:40px;">
+		<div style = "display:{{DisplayNoVideo}}">
+			<p>管理员你好，目前没有带审核的视频</p>
 		</div>
-		<div style = "display:block">
-			<video src = "http://192.168.1.103:8000/static/1.mp4"> </video>
-			<div>
-				<div>上传者：{{video_upper}}</div>
-				<div>视频标题：{{video_title}}</div>
-				<div>视频类别：{{video_type}}</div>
-				<div>视频简介：{{video_discription}}</div>
-				<div>
-				<button onclick = "m_accept()">接受</button>
-					<button onclick = "m_reject()">拒绝</button>
+		<div style = "display:{{DisplayVideo}}">
+			<p>管理员你好，这是下一个待审核的视频，共有{{x}}个待审核的视频</p>
+		</div>
+		<div style = "display:{{DisplayVideo}}">
+			<video src = {{VideoSrc}}> </video>
+			<div class="row">
+				<div class="col-lg-12" style="height:20px;">
 				</div>
-				<form method = POST enctype = "multipart/form-data" action = "/manageVideo/">
-					{% csrf_token %}
-					<div>如果你接受了这个视频，请上传一张图片文件作为此视频的缩略图</div>
-					<div><input type="file" name = "file"></div>
+				<div class="col-lg-12">
+					<div class="input-group">
+						<span class="input-group-addon">视频标题：</span>
+						<input type="text" class="form-control" name="VideoTitle" value="{{video_title}}" onfocus=this.blur()>
+					</div>
+				</div>
+				<div class="col-lg-12" style="height:20px;">
+				</div>
+				<div class="col-lg-6" style="float:true;">
+					<div class="input-group">
+						<span class="input-group-addon">上传者：</span>
+						<input type="text" class="form-control" name="VideoTitle" value="{{video_upper}}" onfocus=this.blur()>
+					</div>
+				</div>
+				<div class="col-lg-6" style="float:true;">
+					<div class="input-group">
+						<span class="input-group-addon">视频类别：</span>
+						<input type="text" class="form-control" name="VideoTitle" value="{{video_type}}" onfocus=this.blur()>
+					</div>
+				</div>
+				<div class="col-lg-12" style="height:20px;">
+				</div>
+				<div class="col-lg-12">
+					<span style="font-size:20px;"><b>视频描述:</b></span>
+					<div class="form-group" style="padding:5px; position:relative; top:10px;">
+						<textarea name="VideoDiscribe" rows="5" style="width:100%;" disabled>{{video_discription}}</textarea>
+					</div>
+				</div>
+				<div class="col-lg-12">
+					<p><b>请审核该视频：</b>&nbsp;
+						<button onclick = "m_accept()">接受</button>
+						<button onclick = "m_reject()">拒绝</button>
+					</p>
+				</div>
+				<div class="col-lg-12">
+					<form method = POST enctype = "multipart/form-data" action = "/manageVideo/">
+						{% csrf_token %}
+						<div><b style="color:red">如果你接受了这个视频，请上传一张图片文件作为此视频的缩略图</b></div>
+						<div><input type="file" name = "file"></div>
+						
+					</form>
+				</div>
+				<div class="col-lg-12" style="height:20px;">
+				</div>
+				<div class="col-lg-12">
 					<div><input type="submit" value = "提交" name = "action"></div>
-				</form>
-				<button><a href="http://www.baidu.com">审查此视频上传者</a></button>
+				</div>
 			</div>
 		</div>
 	</div>
