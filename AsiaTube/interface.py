@@ -1,6 +1,5 @@
 # -*- coding=utf-8 -*-
 from AsiaTube.models import *
-from .logic import *
 import operator
 
 class IUser():
@@ -54,7 +53,11 @@ class IUser():
     def UpdateViewhistory(self, id, newView): #更新观看历史
         if len(CUser.objects.filter(id=id)) != 0:
             history = CUser.objects.get(id=id).viewhistory
-            history += str(newView) + ' '
+            historyList = AnalysisString(history)
+            if newView in historyList:
+                history =str(newView) + ' ' + history.split(str(newView)+' ')[0]+history.split(str(newView)+' ')[1]
+            else:
+                history += str(newView) + ' '
             CUser.objects.filter(id=id).update(viewhistory=history)
 
     def UpdateFollow(self, id, leader): #更新关注列表
@@ -98,6 +101,7 @@ class IVideo():
                     'id':video.id,
                     'title':video.title,
                     'playnum':video.playnum,
+                    'likenum':video.likenum,
                     'comment':len(CComment.objects.filter(video=video.id)),
                     'BScreen':len(CBulletscreen.objects.filter(video=video.id)),
                     'uptime':video.time,
@@ -263,11 +267,12 @@ class IType():
         CType.objects.filter(id=id).delete()
 
     def SelectAllType(self): #获取类别列表
-        typelist = []
+        """typelist = []
         objlist = CType.objects.all()
         for obj in objlist:
             typelist.append(obj.content)
-        return typelist
+        return typelist"""
+        return CType.objects.all()
 
     def SelectById(self, id): #用id获取类别
         if len(CType.objects.filter(id=id)) != 0:
@@ -284,6 +289,13 @@ class IType():
         else:
             return 0
 
+def AnalysisString(string):  #split string into list
+    if string == None:
+        return
+    splitList = string.split(' ')
+    if  len(splitList) != 0:
+        splitList.pop()
+    return splitList
 
 """
 user = CUser(

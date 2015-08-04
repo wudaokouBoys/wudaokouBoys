@@ -6,6 +6,7 @@ from AsiaTube.logic import *
 from AsiaTube.models import *
 from AsiaTube.interface import *
 from django.http import JsonResponse
+import urllib
 import json
 import time
 
@@ -28,9 +29,8 @@ def Login(request):  #用户登录
         else:
             response = HttpResponseRedirect('/')
             response.set_cookie('id', id)
-            response.set_cookie('name', user.name)
+            response.set_cookie('name', urllib.parse.quote(user.name))
             response.set_cookie('admin', user.admin)
-            response.set_cookie('videoId', 4)
             return response
             #return HttpResponse("Login successfully")
 
@@ -145,14 +145,13 @@ def videoPlayer(request):
         ivideo.AddPlaynum(videoId)
         if 'id' in request.COOKIES and int(request.COOKIES['id']) > 0:
             viewer = iuser.SelectById(request.COOKIES['id'])
+            iuser.UpdateViewhistory(viewer.id, videoId)
             userImage = viewer.image
             userName = viewer.name
         else:
             userImage = 'default.png'
             userName = ''
 
-        print(videoId)
-        print(461876481)
         comments = GetComment(videoId)
 
         return render_to_response("video.html", {

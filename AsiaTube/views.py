@@ -7,6 +7,7 @@ from AsiaTube.interface import *
 from .forms import UploadFileForm
 #from django.forms import ModelForm
 from urllib.parse import unquote
+from django.http import JsonResponse
 import time
 
 # Create your views here.
@@ -51,8 +52,8 @@ def handle_uploaded_file(f, x):#'F:/AsiaTube/Video/'+ str(12) + '_' +
             info.write(chunk)
     return f
 
-def handle_uploaded_pic(f, x):#'F:/AsiaTube/Video/'+ str(12) + '_' +
-    with open('F:/AsiaTube/Icon/'+ str(x) + '_'+ f.name, 'wb+') as info:
+def handle_uploaded_pic(f):#'F:/AsiaTube/Video/'+ str(12) + '_' +
+    with open('F:/AsiaTube/Icon/' + f.name, 'wb+') as info:
         for chunk in f.chunks():
             info.write(chunk)
     return f
@@ -61,26 +62,36 @@ def uploadvideo(request):
     #response = render_to_response("")
     if 'id' not in request.COOKIES:#用户没有登录
         return render_to_response("login.html", context_instance=RequestContext(request))
+    itype = IType()
     if request.method == 'GET':
-        itype = IType()
         return render_to_response("update.html",{
             'Types':itype.SelectAllType()
         }, context_instance=RequestContext(request))
     else:
         if 'file' not in request.FILES:
-            return render_to_response("update.html", context_instance=RequestContext(request))
+            return render_to_response("update.html", {
+                'Types':itype.SelectAllType()
+            }, context_instance=RequestContext(request))
+
+        m_title = request.POST['VideoTitle']
+        m_discription = request.POST['VideoDiscribe']
+        if m_title == '' or m_discription == '' or 'choosedType' not in request.COOKIES:
+            return render_to_response("update.html", {
+                'VideoTitle':m_title,
+                'VideoDiscribe':m_discription,
+                'Types':itype.SelectAllType(),
+            }, context_instance=RequestContext(request))
+
         a = request.FILES['file']
         x = request.COOKIES['id']
         ivideo = IVideo()
         m_video_id = ivideo.GetlastVideoId() + 1
-        m_title = request.POST['VideoTitle']
-        m_discription = request.POST['VideoDiscribe']
         newvideo = CVideo(
             id = m_video_id,
             title = m_title,
             discribe = m_discription,
             keyword = "",
-            type = 1,
+            type = request.COOKIES['choosedType'],
             upper = x,
             time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
             path = str(m_video_id)+"_v."+a.name.split('.')[-1],
@@ -90,8 +101,6 @@ def uploadvideo(request):
             likenum = 0,
             playnum = 0,
         )
-        print(newvideo.path)
-        print('asdfg')
         ivideo.Insert(newvideo)
         x = m_video_id
         handle_uploaded_file(a, x)
@@ -122,8 +131,10 @@ def ModifyInfo(request):
         if 'file' not in request.FILES:
             return HttpResponse("you have modified your information except for your image")
         file = request.FILES['file']
+        suffix = file.name.split('.')[-1]
+        file.name = str(id) +'.' +  suffix
         a.ModifyImg(id, file.name)
-        handle_uploaded_pic(file, id)
+        handle_uploaded_pic(file)
         return HttpResponse("You have modified successfully!1")
         #upload image
 
@@ -137,7 +148,6 @@ def manageVideo(request):#管理员审查视频界面
         return HttpResponse("You have been deleted")
     if user.admin == 0:
         return HttpResponse("You have no right to visit this page!!!")
-    iuser = IUser()
     ivideo = IVideo()
     videonum = ivideo.GetUnckeckVideoNum()
     if videonum == 0:
@@ -148,6 +158,8 @@ def manageVideo(request):#管理员审查视频界面
     upper_id = video.upper
     upper = iuser.SelectById(upper_id)
     response = render_to_response("managevideo.html" ,{
+        'manager_image':user.image,
+        'manager':user.name,
         'video_title':video.title,
         'video_discription':video.discribe,
         'video_upper':upper.name,
@@ -174,7 +186,7 @@ def manageVideo(request):#管理员审查视频界面
             if request.COOKIES['checkstate'] == '1':
                 print("你允许了视频.")
                 ivideo.ModifyState(video.id, 1)#设置数据库里的数据
-
+                iuser.UpdateUphistory(video.upper, video.id, 'add')
                 iuser = IUser()
                 videonum = ivideo.GetUnckeckVideoNum()
                 if (videonum == 0):
@@ -204,12 +216,74 @@ def searchResult(request):
         condition = path[pos1+10:pos2]
         content = unquote(path[pos3+8:len(path)])
         ivideo = IVideo()
+        tcontent = ''
+        if condition == "keyword":
+            tcontent = content
         return render_to_response("search.html", {
-            'SearchTarget':content,
+            'SearchTarget':tcontent,
             'Videos':ivideo.Search(condition, content)
         },context_instance=RequestContext(request))
 
 def mainPage(request):
     if request.method == 'GET':
         return render_to_response("index.html", {
+        },context_instance=RequestContext(request))
+
+def upHistory(request):
+    if 'id' not in request.COOKIES:
+        return render_to_response("login.html", context_instance=RequestContext(request))
+    id = request.COOKIES['id']
+    iuser = IUser()
+    user = iuser.SelectById(id)
+    if user == None:
+        return HttpResponse("用户不存在")
+    if request.method == 'GET':
+        videos = CVideo.objects.filter(upper=id)
+        videoList = []
+        for video in videos:
+            videoItem = {
+                'Image':'',
+                'id':video.id,
+                'title':video.title,
+                'playnum':video.playnum,
+                'likenum':video.likenum
+            }
+            videoList.append(videoItem)
+        return render_to_response("uphistory.html", {
+            'UserImage':user.image,
+            'UserName':user.name,
+            'Videos':videoList
+        },context_instance=RequestContext(request))
+
+def viewHistory(request):
+    if 'id' not in request.COOKIES:
+        return render_to_response("login.html", context_instance=RequestContext(request))
+    id = request.COOKIES['id']
+    iuser = IUser()
+    user = iuser.SelectById(id)
+    if user == None:
+        return HttpResponse("用户不存在")
+    if request.method == 'GET':
+        viewList = AnalysisString(user.viewhistory)
+        Videos = []
+        ivideo = IVideo()
+        for view in viewList:
+            video = ivideo.SelectById(view)
+            upper = iuser.SelectById(video.upper)
+            type = CType.objects.filter(id=video.type)[0].content
+            video = {
+                'image':'',
+                'type':type,
+                'id':video.id,
+                'title':video.title,
+                'upper':user.name,
+                'time':video.time,
+                'playnum':video.playnum,
+                'likenum':video.likenum,
+                'comment':len(CComment.objects.filter(video=video.id)),
+                'BScreen':len(CBulletscreen.objects.filter(video=video.id)),
+            }
+            Videos.append(video)
+        return render_to_response("viewhistory.html", {
+            'Videos':Videos
         },context_instance=RequestContext(request))
