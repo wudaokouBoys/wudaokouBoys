@@ -341,7 +341,7 @@ var i;
 			return (m_h*i);
 	}
 	ans = parseInt(Math.random()*m_height/m_h)
-	if (y == parseInt(m_height/m_h))
+	if (ans == parseInt(m_height/m_h))
 		return (m_h*(ans-1))
 	return (m_h*ans)
 }
@@ -408,6 +408,9 @@ function closebullet(){
 		if (!!document.getElementById('b'+i)){
 			document.getElementById('b'+i).remove();
 			document.getElementById('c'+i).remove();
+            document.getElementById('d'+i).remove();
+            document.getElementById('e'+i).remove();
+            document.getElementById('f'+i).remove();
 		}
 	}
 }
