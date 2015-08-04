@@ -63,6 +63,7 @@ def DeleteUser(operator_id, user_id): #delete user
         videoList = AnalysisString(user.uphistory)
         for video in videoList:
             ivideo.Delete(video)
+        CComment.objects.filter(upper=user_id).delete()
         iuser.Delete(user_id)
         return True
 
@@ -127,6 +128,7 @@ def DeleteComment(operator_id, comment_id): #delete comment
 
 
 #video operation
+
 
 def GetComment(video_id):  #get video's comment
     commentLib = []

@@ -15,6 +15,7 @@
     <script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<script src="/static/navbar.js"></script>
 	<script src="/static/navbar_action.js"></script>
+    <script src="/static/prefixfree.min.js"></script>
 	<style>
 		#banner-text { 
 			width: 100%; 
@@ -43,6 +44,65 @@
 			width: 100%;
 		}
 		.back2top a img{width: 100%;}
+        .toggle {
+              position: relative;
+              display: block;
+              margin: 0 auto;
+              width: 80px;
+              height: 32px;
+              color: white;
+              outline: 0;
+              text-decoration: none;
+              border-radius: 100px;
+              border: 2px solid #546E7A;
+              background-color: #263238;
+              transition: all 500ms;
+            }
+            .toggle:active {
+              background-color: #1c2429;
+            }
+            .toggle:hover:not(.toggle--moving):after {
+              background-color: #455A64;
+            }
+            .toggle:after {
+              display: block;
+              position: absolute;
+              top: 4px;
+              bottom: 4px;
+              left: 4px;
+              width: calc(50% - 4px);
+              line-height: 20px;
+              text-align: center;
+              text-transform: uppercase;
+              font-size: 15px;
+              color: white;
+              background-color: #37474F;
+              border: 2px solid;
+              transition: all 500ms;
+            }
+
+            .toggle--on:after {
+              content: 'On';
+              border-radius: 50px 5px 5px 50px;
+              color: #66BB6A;
+            }
+
+            .toggle--off:after {
+              content: 'Off';
+              border-radius: 5px 50px 50px 5px;
+              transform: translate(100%, 0);
+              color: #f44336;
+            }
+
+            .toggle--moving {
+              background-color: #1c2429;
+            }
+            .toggle--moving:after {
+              color: transparent;
+              border-color: #435862;
+              background-color: #222c31;
+              transition: color 0s, transform 500ms, border-radius 500ms,           background-color 500ms;
+            }
     </style>
 	<!--[if lt IE 9]>
 		<script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
@@ -72,30 +132,35 @@
 		<div class="row">
 		<div class="col-lg-7" style="height:525px;">
 		<!--播放界面加弹幕输入-->
-			<div id = "playerbox" class="row" style="width:100%; overflow:hidden; postion:relative; bgcolor:#000000">
-				<video id = "myvideo" style = "width:652px; height:489px" controls="controls" preload="auto" >
-                    <source src="/static/{{ Video_src }}">
-                </video>
+			<div id = "playerbox" class="row" style="width:100%; overflow:hidden; postion:relative; background-color: black">
+                <div id = "videocontainer" style="width:652px; height:489px; margin:0 auto;">
+				    <video id = "myvideo" style ="width:652px; height:489px" controls="controls" preload="auto" >
+                        <source src="/static/{{ Video_src }}">
+                    </video>
+                </div>
                 <!--video id="MY_VIDEO_1" class="video-js vjs-default-skin" controls
  preload="auto" width="652" height="489" poster="MY_VIDEO_POSTER.jpg"
  data-setup="{}">
  <source src="/static/{{Video_src }}" type='video/mp4'>
  <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
             </video-->
-				<form class="input-group" method = POST role = "form" action="/videoPlayer/">
+				<form id = "bscreeninput" class="input-group" method = POST role = "form" action="/videoPlayer/">
                     {% csrf_token %}
 					<input id = "mybulletcontent" type="text" class="form-control">
 						<span class="input-group-btn">
 							<button id = "bscreengo" class="btn btn-default" type="button">
-								Go!
+								发送弹幕
 							</button>
 						</span>
+                        <a id='bulletControl' class="toggle toggle--off" style="position:relative; top:0px;left:20px;"></a>
+                        <script src="/static/index.js"></script>
+                        <script src="/static/jquery.js"></script>
 				</form><!-- /input-group -->
                 <div id = "player" style = "position: absolute; width:652px; height:450px; top:0px; left:0px; overflow-x:hidden">
 
                 </div>
-                <div id = "buttondiv" style = "position:absolute; width:50px; height:50px; bottom:40px; right:40px">
-                    <button id = "screenbutton" style = "width:50px; height:50px;" onclick = "getfull()">全屏</button>
+                <div id = "buttondiv" style = "position:absolute; width:50px; height:50px; bottom: 16px; right:20px">
+                    <img id = "screenbutton" style = "width:23px; height:22px;" onclick = "getfull()" src="/static/fullscreen.png">
                 </div>
 			</div>
 		</div>
@@ -291,7 +356,7 @@
 var starttime = 0;
 var maptime = 0;
 var bulletstate = 0;
-var x = 10;
+var x = 30;
 var speed = 5;
 var m_width = 653;
 var m_height = 450;
@@ -300,18 +365,21 @@ var m_column = [];
 var pause_flag = false;
 var y = false;
 var y2 = true;
+var y3 = false;//shifou全屏
+
 var timer;
 var table = document.getElementById('bulletscreentable');
 var bullet = [];
 var objbullet = {};
 var isfull = false;
 timer2 = setInterval(checkplay, x);
+timer3 = setInterval(judgefull, x);
 
 var a = table.firstElementChild;
 while (a != table.lastElementChild){
 	objbullet.time = a.firstElementChild.innerHTML;
 	objbullet.content = a.lastElementChild.innerHTML;
-	objbullet.speed = 1 + Math.random();
+	objbullet.speed = 3*(1 + Math.random());
 	bullet.push({
 		"time":objbullet.time,
 		"content":objbullet.content,
@@ -321,7 +389,7 @@ while (a != table.lastElementChild){
 	}
 objbullet.time = a.firstElementChild.innerHTML;
 objbullet.content = a.lastElementChild.innerHTML;
-objbullet.speed = 1 + Math.random();
+objbullet.speed = 3*(1 + Math.random());
 bullet.push({
 	"time":objbullet.time,
 	"content":objbullet.content,
@@ -335,7 +403,7 @@ function startbullet(time){
 var i;
 	//starttime = time;
 	timer = setInterval(refresh, x);
-	for (i = 0; i < parseInt(m_height/m_h); i++){
+	for (i = 0; i < parseInt(m_height/m_h+20); i++){
 		m_column[i] = -1;
 	}
 	maptime = parseInt(time*1000/x);
@@ -357,6 +425,13 @@ var i;
 }
 function m_show(i){
 var player;
+var t;
+    var m_color = [];
+    m_color[0] = "FFFFFF";
+    m_color[1] = "FFFFFF";
+    m_color[2] = "FFFFFF";
+    m_color[3] = "FF0000";
+    m_color[4] = "00FF00";
 	if (starttime > parseInt(bullet[i].time*1000/x))
 		return;
 	if (maptime < parseInt(bullet[i].time*1000/x)){
@@ -367,13 +442,14 @@ var player;
 	}
 	else if (maptime === parseInt(bullet[i].time*1000/x)){
 		player = document.getElementById("player");
-		player.innerHTML += '<div id = "c' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width-1)+'px; top:'+(getheight(i))+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
-		player.innerHTML += '<div id = "d' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width+1)+'px; top:'+(getheight(i))+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
-		player.innerHTML += '<div id = "e' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width)+'px; top:'+(getheight(i)-1)+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
-		player.innerHTML += '<div id = "f' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width)+'px; top:'+(getheight(i)+1)+'px"><p style = "color:#00FFFF; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
-		player.innerHTML += '<div id = "b' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+ m_width +'px; top:'+(getheight(i))+'px"><p style = "color:#FF0000; font-size:24px; font-weight:bold;">' + bullet[i].content + '</p></div>';
+        t = getheight(i);
+		player.innerHTML += '<div id = "c' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width-2)+'px; top:'+(t)+'px"><p style = "color:#000000; font-size:'+m_h+'px; font-weight:bold;">' + bullet[i].content + '</p></div>';
+		player.innerHTML += '<div id = "d' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width+2)+'px; top:'+(t)+'px"><p style = "color:#000000; font-size:'+m_h+'px; font-weight:bold;">' + bullet[i].content + '</p></div>';
+		player.innerHTML += '<div id = "e' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width)+'px; top:'+(t-2)+'px"><p style = "color:#000000; font-size:'+m_h+'px; font-weight:bold;">' + bullet[i].content + '</p></div>';
+		player.innerHTML += '<div id = "f' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+(m_width)+'px; top:'+(t+2)+'px"><p style = "color:#000000; font-size:'+m_h+'px; font-weight:bold;">' + bullet[i].content + '</p></div>';
+		player.innerHTML += '<div id = "b' + i + '" style = "position:absolute; height:'+m_h+'px; width:'+ m_width +'px; left:'+ m_width +'px; top:'+(t)+'px"><p style = "color:#'+m_color[parseInt(Math.random()*5)]+'; font-size:'+m_h+'px; font-weight:bold;">' + bullet[i].content + '</p></div>';
 		bulletnumber++;
-		m_column[parseInt(getheight(i)/m_h)] = i;
+		m_column[parseInt(t/m_h)] = i;
 	}
 	else if (maptime === parseInt(bullet[i].time*1000/x + 2*m_width/bullet[i].speed)){
 		if (m_column[(parseInt(document.getElementById('b'+i).style.top) )/m_h] === i)
@@ -387,8 +463,8 @@ var player;
 	}
 	else{
 		document.getElementById('b'+i).style.left = m_width - (bullet[i].speed*(maptime - bullet[i].time*1000/x))+'px';
-		document.getElementById('c'+i).style.left = m_width - (bullet[i].speed*(maptime - bullet[i].time*1000/x)) - 1 +'px';
-		document.getElementById('d'+i).style.left = m_width - (bullet[i].speed*(maptime - bullet[i].time*1000/x)) + 1 +'px';
+		document.getElementById('c'+i).style.left = m_width - (bullet[i].speed*(maptime - bullet[i].time*1000/x)) - 2 +'px';
+		document.getElementById('d'+i).style.left = m_width - (bullet[i].speed*(maptime - bullet[i].time*1000/x)) + 2 +'px';
 		document.getElementById('e'+i).style.left = m_width - (bullet[i].speed*(maptime - bullet[i].time*1000/x)) +'px';
 		document.getElementById('f'+i).style.left = m_width - (bullet[i].speed*(maptime - bullet[i].time*1000/x)) +'px';
 	}
@@ -443,43 +519,101 @@ function bulletchange(){
     }
 }
 function checkplay(){
-    if (document.getElementById('myvideo').paused == false){
+    if (document.getElementById('myvideo').paused === false){
         y = false;
     }
     else{
         y = true;
     }
 }
-function checkfullscreen(){
-    var a;
-    a = document.getElementById('myvideo');
-    if (document.webkitCurrentFullScreenElement === a){
-        console.log("进入全屏模式");
-        document.webkitExitFullscreen();
-        b = document.getElementById("playerbox")
-        //a.webkitRequestFullScreen();
-    }
-}
+
 function getfull(){
     var a;
     var b;
-    if (isfull == false) {
+    if (isfull === false) {
         isfull = true;
         a = document.getElementById('playerbox');
         console.log("开启全屏模式！");
-        a.webkitRequestFullScreen();
         b = document.getElementById('myvideo');
-        b.style.width = "100%";
-        b.style.height = "90%";
+        c = document.getElementById('videocontainer');
+        d = document.getElementById('player');
+        b.style.width = window.screen.height*652/489+"px";
+        b.style.height = window.screen.height+"px";
+        c.style.width = window.screen.height*652/489+"px";
+        c.style.height = window.screen.height+"px";
+        d.style.width = "1024px";
+        d.style.height = "728px";
+        d.style.left = "171px";
+        m_width = 1024;
+        m_height = 728;
+        m_h = 30;
+        bulletchange();
+        a.webkitRequestFullScreen();
+        bulletchange();
+
+        $('#buttondiv').css('top', 737);
+        $('#buttondiv').css('left',1043);
+        $('#buttondiv').css('position','fixed');
     }
-    else if (isfull == true){
+    else if (isfull === true){
         isfull = false;
         console.log("关闭全屏模式！");
+        bulletchange();
         document.webkitCancelFullScreen();
+        bulletchange();
+        c = document.getElementById('videocontainer');
         b = document.getElementById('myvideo');
-        b.style.width = "652";
-        b.style.height = "489";
+        d = document.getElementById('player');
+        b.style.width = "652px";
+        b.style.height = "489px";
+        c.style.width = "652px";
+        c.style.height = "489px";
+        d.style.width = "652px";
+        d.style.height = "450px";
+        d.style.left = "0px";
+        m_width = 652;
+        m_height = 450;
+        m_h = 24;
+
+        $('#buttondiv').css('bottom', 16);
+        $('#buttondiv').css('right',20);
+        $('#buttondiv').css('position','absolute');
     }
 
 }
+
+function judgefull(){
+    if (y3 === false && document.webkitIsFullScreen === true){// 窗口变成全屏
+        y3 = true;
+        return;
+    }
+    else if (y3 === true && document.webkitIsFullScreen === false){
+        y3 = false;
+        bulletchange();
+        c = document.getElementById('videocontainer');
+        b = document.getElementById('myvideo');
+        d = document.getElementById('player');
+        b.style.width = "652px";
+        b.style.height = "489px";
+        c.style.width = "652px";
+        c.style.height = "489px";
+        d.style.width = "652px";
+        d.style.height = "450px";
+        d.style.left = "0px";
+        m_width = 652;
+        m_height = 450;
+        m_h = 24;
+        bulletchange();
+        isfull = false;
+    }//esc exit()
+}
+/*document.onkeydown=function(event) {
+var e = event || window.event || arguments.callee.caller.arguments[0];
+    if (e && e.keyCode == 75) { // 按 K
+        bulletchange();
+    }
+}*/
+    $('#bulletControl').click(function(){
+        bulletchange()
+    })
 </script>

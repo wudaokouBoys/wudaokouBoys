@@ -26,7 +26,7 @@ def SignUp(request):
             name = nick_name,
             password = password,
             email = email,
-            image = "",
+            image = "default.png",
             likenum = 0,
             uphistory = "",
             viewhistory = "",
@@ -36,8 +36,10 @@ def SignUp(request):
         )
         if (password == password1 and password != ''):
             a.Insert(person)
-            response = HttpResponse("You have registered successfully")
-            response.set_cookie('id', id)
+            response = HttpResponseRedirect('/')
+            response.set_cookie('id', person.id)
+            response.set_cookie('name', person.name)
+            response.set_cookie('admin', person.admin)
             return response
         else:
             return render_to_response("register.html",{
@@ -59,9 +61,14 @@ def handle_uploaded_pic(f):#'F:/AsiaTube/Video/'+ str(12) + '_' +
     return f
 
 def uploadvideo(request):
-    #response = render_to_response("")
-    if 'id' not in request.COOKIES:#用户没有登录
+    if 'id' not in request.COOKIES:
         return render_to_response("login.html", context_instance=RequestContext(request))
+    id = request.COOKIES['id']
+    iuser = IUser()
+    user = iuser.SelectById(id)
+    if user == None:
+        return HttpResponse("You have been deleted")
+
     itype = IType()
     if request.method == 'GET':
         return render_to_response("update.html",{
@@ -129,13 +136,13 @@ def ModifyInfo(request):
         a.ModifyEmail(id, email)
         a.ModifyName(id, nick_name)
         if 'file' not in request.FILES:
-            return HttpResponse("you have modified your information except for your image")
+            return HttpResponseRedirect('/')
         file = request.FILES['file']
         suffix = file.name.split('.')[-1]
-        file.name = str(id) +'.' +  suffix
+        file.name = str(id) +'_u.' +  suffix
         a.ModifyImg(id, file.name)
         handle_uploaded_pic(file)
-        return HttpResponse("You have modified successfully!1")
+        return HttpResponseRedirect('/')
         #upload image
 
 def manageVideo(request):#管理员审查视频界面
@@ -150,16 +157,23 @@ def manageVideo(request):#管理员审查视频界面
         return HttpResponse("You have no right to visit this page!!!")
     ivideo = IVideo()
     videonum = ivideo.GetUnckeckVideoNum()
-    if videonum == 0:
-        return HttpResponse("No video to be checked, go to sleep.")
     firstvideo_id = ivideo.GetUnckeckVideo()
     ivideo = IVideo()
     video = ivideo.SelectById(firstvideo_id)
     upper_id = video.upper
     upper = iuser.SelectById(upper_id)
+    DisplayVideo = ''
+    DisplayNoVideo = ''
+    if videonum == 0:
+        DisplayVideo = 'none'
+    else:
+        DisplayNoVideo = 'none'
     response = render_to_response("managevideo.html" ,{
+        'DisplayNoVideo':DisplayNoVideo,
+        'DisplayVideo':DisplayVideo,
         'manager_image':user.image,
         'manager':user.name,
+        'VideoSrc':video.path,
         'video_title':video.title,
         'video_discription':video.discribe,
         'video_upper':upper.name,
