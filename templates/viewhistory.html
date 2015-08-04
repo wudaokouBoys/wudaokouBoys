@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>观看历史</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+	<script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<script src="/static/navbar.js"></script>
+	<script src="/static/navbar_action.js"></script>
+    <!--[if lt IE 9]>
+      <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <![endif]-->
+  </head>
+<body>
+	<div class="col-xs-8 col-md-offset-2" style="top:20px; padding:10px; background:white; border-radius:5px; height:500px; overflow:scroll; overflow-x:hidden">
+		<!--搜索结果界面-->
+		<h3><b>历史播放列表：</b></h3>
+		{% for Video in Videos %}
+			<div class="row" style=" padding:5px;border-color:silver; border-width:2px; border-style:solid; height:160px; width:100%; left:13px; position:relative">
+				<div class="col-lg-2" style="height:160px; padding:5px; left:5px;">
+					<div class="img-circle">
+						<img src={{Video.image}} class="circle" style="width:100px; height:80px;">
+					</div>
+				</div>
+				<div class="col-lg-10" style="height:140px; padding:5px;">
+					<div>
+						<span class="badge">
+							<span class="glyphicon glyphicon-chevron-right" style="font-size:15px;" Title="类别">{{Video.type}}</span>
+						</span>
+						<span><a class="videoLink" id="{{ Video.id }}">&nbsp;{{Video.title}}<!--em style="color:purple">legal</em--></a></span>
+					</div>
+					<form class="form-inline" role="form" style="color:grey; position:relative; top:-3px; border-bottom-color: silver; border-bottom-width:1px; border-bottom-style:solid;">
+						<span class="glyphicon glyphicon-user" style="font-size:10px;" Title="up主">{{Video.upper}}&nbsp;</span>
+						<span class="glyphicon glyphicon-play-circle" style="font-size:10px;" Title="播放数">{{Video.playnum}}&nbsp;</span>
+						<span class="glyphicon glyphicon-comment" style="font-size:10px;" Title="评论数">{{Video.comment}}&nbsp;</span>
+						<span class="glyphicon glyphicon-tasks" style="font-size:10px;" Title="弹幕数">{{Video.BScreen}}&nbsp;</span>
+						<span class="glyphicon glyphicon-time" style="font-size:10px;" Title="上传时间">{{Video.uptime}}</span>
+					</form>
+					<textarea name="VideoDiscribe" rows="3" disabled style="width:100%; position:relative; top:5px; background-color:white;">{{Video.discription}}</textarea>
+				</div>
+            </div>
+			{% endfor %}
+	</div>
+</body>
+</html>
