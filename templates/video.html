@@ -152,15 +152,15 @@
 								发送弹幕
 							</button>
 						</span>
-                        <a id='bulletControl' class="toggle toggle--off" style="position:relative; top:0px;left:20px;"></a>
+                        <a id='bulletControl' class="toggle toggle--on" style="position:relative; top:0px;left:20px;"></a>
                         <script src="/static/index.js"></script>
                         <script src="/static/jquery.js"></script>
 				</form><!-- /input-group -->
                 <div id = "player" style = "position: absolute; width:652px; height:450px; top:0px; left:0px; overflow-x:hidden">
 
                 </div>
-                <div id = "buttondiv" style = "position:absolute; width:50px; height:50px; bottom: 16px; right:20px">
-                    <img id = "screenbutton" style = "width:23px; height:22px;" onclick = "getfull()" src="/static/fullscreen.png">
+                <div id = "buttondiv" onmouseover="showImg(this)" onMouseOut="hideImg(this)" style = "position:absolute; width:50px; height:50px; top: 448px; left:602px;">
+                    <img id = "screenbutton"  style = "width:23px; height:22px; left:10px; top:10px; position:absolute; display:none;" onclick = "getfull()" src="/static/fullscreen.png">
                 </div>
 			</div>
 		</div>
@@ -235,7 +235,7 @@
 		<div class="row" id="comment-area" style="background:white; padding:8px; border-radius:5px; position:relative; top: 60px; height: 500px; width:800px; overflow:scroll; overflow-x:hidden;">
 		<!--评论栏-->
 			{% for Comment in Comments %}
-			<div class="row" style="border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;">
+			<div class="row" style="border-bottom-color:silver; border-bottom-style:solid; height:180px;">
 				<div class="col-lg-2" style="height:160px; padding:15px; left:15px;">
 					<div class="img-circle">
 						<img src="/static/{{Comment.image}}" class="circle" style="width:80px; height:80px;">
@@ -277,61 +277,17 @@
             }
         })
     })
+
+    function showImg(){
+        $('#screenbutton').css('display', 'block')
+    }
+
+    function hideImg(){
+        $('#screenbutton').css('display', 'none')
+    }
 </script>
 
-<script>
 
-    $('#bscreengo').click(function(){
-        pos = document.cookie.search('id=')
-        if ($("#mybulletcontent").val() != '' && document.cookie[pos+3] > 0){
-            $.ajax({
-                url: '/videoPlayer/',
-                type: "POST",
-                dataType: "json",
-                data: {
-                    bullettime: document.getElementById('myvideo').currentTime + "",
-                    bulletcontent: $("#mybulletcontent").val(),
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function (json) {
-                    $('#bulletscreentable').append("<tr><td>" + json.time + "</td><td>" + json.content + "</td> </tr>")
-                    $('#mybulletcontent').val('')
-                },
-                error: function (xhr, errmsg, err) {
-                    alert(xhr.status + ": " + xhr.responseText);
-                }
-            })
-        }
-    })
-
-    $('#comment').click(function(){
-        pos = document.cookie.search('id=')
-        if($('#input-comment').val() != '' && document.cookie[pos+3] > 0) {
-            $.ajax({
-                url: '/videoPlayer/',
-                type: 'POST',
-                datatype: 'json',
-                data: {
-                    commentcontent: $('#input-comment').val(),
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function (json) {
-                    str = "<div class='row' style='border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;'>"
-                    +"<div class='col-lg-2' style='height:160px; padding:15px; left:15px;'><div class='img-circle'><img src='/static/" + json.image
-                    + " ' class='circle' style='width:80px; height:80px;'></div><div style='top:20px;'><h4>" + json.name
-                    + "</h4></div></div><div class='col-lg-10' style='height:160px; padding:15px;'>"
-					+ "<textarea name='VideoDiscribe' rows='5' disabled style='width:100%; background-color:white;'>"+ json.content
-                    + "</textarea><p>#" + json.layer + "&nbsp;&nbsp;&nbsp;&nbsp;" + json.time +  "</p></div></div>"
-                    $('#comment-area').append(str)
-                    $('#input-comment').val('')
-                },
-                error: function (xhr, errmsg, err) {
-                    alert(xhr.status + ': ' + xhr.responseText);
-                }
-            })
-        }
-    })
-</script>
 </body>
 <script type="text/javascript" language="javascript">
 	jQuery(document).ready(function($) {
@@ -398,7 +354,7 @@ bullet.push({
 
 
 var bulletnumber = 0;
-
+bulletchange();
 function startbullet(time){
 var i;
 	//starttime = time;
@@ -551,8 +507,8 @@ function getfull(){
         a.webkitRequestFullScreen();
         bulletchange();
 
-        $('#buttondiv').css('top', 737);
-        $('#buttondiv').css('left',1043);
+        $('#buttondiv').css('top', 727);
+        $('#buttondiv').css('left',1033);
         $('#buttondiv').css('position','fixed');
     }
     else if (isfull === true){
@@ -575,8 +531,8 @@ function getfull(){
         m_height = 450;
         m_h = 24;
 
-        $('#buttondiv').css('bottom', 16);
-        $('#buttondiv').css('right',20);
+        $('#buttondiv').css('top', 448);
+        $('#buttondiv').css('left',602);
         $('#buttondiv').css('position','absolute');
     }
 
@@ -605,6 +561,9 @@ function judgefull(){
         m_h = 24;
         bulletchange();
         isfull = false;
+        $('#buttondiv').css('top', 448);
+        $('#buttondiv').css('left',602);
+        $('#buttondiv').css('position','absolute');
     }//esc exit()
 }
 /*document.onkeydown=function(event) {
@@ -614,6 +573,82 @@ var e = event || window.event || arguments.callee.caller.arguments[0];
     }
 }*/
     $('#bulletControl').click(function(){
-        bulletchange()
+        bulletchange();
+    })
+    function harmony(string){
+    	var str = string;
+    	var minganstr = ["我草","你妈", "傻逼", "智障", "习近平", "江泽民", "温家宝", "我操", "艹", "屌"];
+    	var repstr = '□';
+    	var retstr = '';
+    	for (var j = 0; j < minganstr.length; j++){
+    		retstr = str.replace(minganstr[j], repstr.repeat(minganstr[j].length))
+    		if (retstr != -1){
+    			str = retstr;
+    		}
+    	}
+    	return retstr;
+    }
+
+    $('#bscreengo').click(function(){
+        pos = document.cookie.search('id=')
+        if ($("#mybulletcontent").val() != '' && document.cookie[pos+3] > 0){
+            objbullet.time = document.getElementById('myvideo').currentTime;
+            objbullet.content = harmony($("#mybulletcontent").val());
+            objbullet.speed = 3*(1 + Math.random());
+            bullet.push({
+            	"time":objbullet.time+0.1,
+            	"content":objbullet.content,
+            	"speed":objbullet.speed
+            });
+
+            $.ajax({
+                url: '/videoPlayer/',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    bullettime: document.getElementById('myvideo').currentTime + "",
+                    bulletcontent: harmony($("#mybulletcontent").val()),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (json) {
+                    $('#bulletscreentable').append("<tr><td>" + json.time + "</td><td>" + json.content + "</td> </tr>")
+                    $('#mybulletcontent').val('')
+                },
+                error: function (xhr, errmsg, err) {
+                    alert(xhr.status + ": " + xhr.responseText);
+                }
+            })
+        }
+    })
+
+    $('#comment').click(function(){
+        pos = document.cookie.search('id=')
+        if($('#input-comment').val() != '' && document.cookie[pos+3] > 0) {
+            $.ajax({
+                url: '/videoPlayer/',
+                type: 'POST',
+                datatype: 'json',
+                data: {
+                    commentNum:$('#comment-area').children().length,
+                    commentcontent: harmony($('#input-comment').val()),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (json) {
+                    for (i in json){
+                        str = "<div class='row' style='border-bottom-color:silver; border-bottom-style:solid; height:180px; padding:px;'>"
+                        +"<div class='col-lg-2' style='height:160px; padding:15px; left:15px;'><div class='img-circle'><img src='/static/" + json[i].image
+                        + " ' class='circle' style='width:80px; height:80px;'></div><div style='top:20px;'><h4>" + json[i].name
+                        + "</h4></div></div><div class='col-lg-10' style='height:160px; padding:15px;'>"
+					    + "<textarea name='VideoDiscribe' rows='5' disabled style='width:100%; background-color:white;'>"+ json[i].content
+                        + "</textarea><p>#" + json[i].layer + "&nbsp;&nbsp;&nbsp;&nbsp;" + json[i].time +  "</p></div></div>"
+                        $('#comment-area').append(str)
+                        $('#input-comment').val('')
+                    }
+                },
+                error: function (xhr, errmsg, err) {
+                    alert(xhr.status + ': ' + xhr.responseText);
+                }
+            })
+        }
     })
 </script>

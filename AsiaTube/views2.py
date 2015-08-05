@@ -197,17 +197,14 @@ def videoPlayer(request):
                 content = request.POST['commentcontent'],
             )
             icomment.Insert(comment)
-
-            iuser = IUser()
-            user = iuser.SelectById(comment.upper)
             ivideo.UpdateComments(videoId, comment.id, 'add')
-            return JsonResponse({
-                'image':user.image,
-                'name':user.name,
-                'layer':len(GetComment(videoId)),
-                'content':comment.content,
-                'time':comment.time,
-            })
+
+            response = {}
+            num = int(request.POST['commentNum'])
+            newComments = GetComment(videoId)[num:len(GetComment(videoId))]
+            for newComment in newComments:
+                response[str(int(newComment['layer']) - num)] = newComment
+            return JsonResponse(response)
         else:
             return HttpResponse('传输中网络中断。。')
 
