@@ -7,6 +7,7 @@ from AsiaTube.interface import *
 from .forms import UploadFileForm
 #from django.forms import ModelForm
 from urllib.parse import unquote
+import urllib
 from django.http import JsonResponse
 import time
 
@@ -50,6 +51,12 @@ def SignUp(request):
 
 def handle_uploaded_file(f, x):#'F:/AsiaTube/Video/'+ str(12) + '_' +
     with open('F:/AsiaTube/Video/'+ str(x) + '_v.'+ f.name.split('.')[-1], 'wb+') as info:
+        for chunk in f.chunks():
+            info.write(chunk)
+    return f
+
+def handle_uploaded_videopic(f, x):#'F:/AsiaTube/Video/'+ str(12) + '_' +
+    with open('F:/AsiaTube/Icon/'+ str(x) + '_v.'+ 'png', 'wb+') as info:
         for chunk in f.chunks():
             info.write(chunk)
     return f
@@ -135,14 +142,16 @@ def ModifyInfo(request):
         a = IUser()
         a.ModifyEmail(id, email)
         a.ModifyName(id, nick_name)
+        response = render_to_response("index.html", context_instance=RequestContext(request))
+        response.set_cookie('name', urllib.parse.quote(nick_name))
         if 'file' not in request.FILES:
-            return HttpResponseRedirect('/')
+            return response
         file = request.FILES['file']
         suffix = file.name.split('.')[-1]
         file.name = str(id) +'_u.' +  suffix
         a.ModifyImg(id, file.name)
         handle_uploaded_pic(file)
-        return HttpResponseRedirect('/')
+        return response
         #upload image
 
 def manageVideo(request):#管理员审查视频界面
@@ -157,17 +166,21 @@ def manageVideo(request):#管理员审查视频界面
         return HttpResponse("You have no right to visit this page!!!")
     ivideo = IVideo()
     videonum = ivideo.GetUnckeckVideoNum()
-    firstvideo_id = ivideo.GetUnckeckVideo()
-    ivideo = IVideo()
-    video = ivideo.SelectById(firstvideo_id)
-    upper_id = video.upper
-    upper = iuser.SelectById(upper_id)
     DisplayVideo = ''
     DisplayNoVideo = ''
     if videonum == 0:
         DisplayVideo = 'none'
+        return render_to_response("managevideo.html" ,{
+            'DisplayVideo':DisplayVideo,
+            'manager_image':user.image,
+            'manager':user.name,
+        },context_instance=RequestContext(request))
     else:
         DisplayNoVideo = 'none'
+    firstvideo_id = ivideo.GetUnckeckVideo()
+    video = ivideo.SelectById(firstvideo_id)
+    upper_id = video.upper
+    upper = iuser.SelectById(upper_id)
     response = render_to_response("managevideo.html" ,{
         'DisplayNoVideo':DisplayNoVideo,
         'DisplayVideo':DisplayVideo,
@@ -177,6 +190,7 @@ def manageVideo(request):#管理员审查视频界面
         'video_title':video.title,
         'video_discription':video.discribe,
         'video_upper':upper.name,
+        'video_type':CType.objects.filter(id=video.type)[0].content,
         'x':videonum,
     }, context_instance=RequestContext(request))
     if request.method == 'GET':
@@ -184,6 +198,10 @@ def manageVideo(request):#管理员审查视频界面
     else:
         if request.method == 'POST':
         #异常处理
+            print("vv12345")
+            if 'file' in request.FILES:
+                file = request.FILES['file']
+                handle_uploaded_videopic(file, video.id)
             if 'id' not in request.COOKIES:
                 return render_to_response("login.html", context_instance=RequestContext(request))
             id = request.COOKIES['id']
@@ -252,11 +270,11 @@ def upHistory(request):
     if user == None:
         return HttpResponse("用户不存在")
     if request.method == 'GET':
-        videos = CVideo.objects.filter(upper=id)
+        videos = CVideo.objects.filter(state=1).filter(upper=id)
         videoList = []
         for video in videos:
             videoItem = {
-                'Image':'',
+                'Image':str(video.id)+'_v.png',
                 'id':video.id,
                 'title':video.title,
                 'playnum':video.playnum,
@@ -286,7 +304,7 @@ def viewHistory(request):
             upper = iuser.SelectById(video.upper)
             type = CType.objects.filter(id=video.type)[0].content
             video = {
-                'image':'',
+                'image':str(video.id)+'_v.png',
                 'type':type,
                 'id':video.id,
                 'title':video.title,
@@ -296,6 +314,7 @@ def viewHistory(request):
                 'likenum':video.likenum,
                 'comment':len(CComment.objects.filter(video=video.id)),
                 'BScreen':len(CBulletscreen.objects.filter(video=video.id)),
+                'discription':video.discribe
             }
             Videos.append(video)
         return render_to_response("viewhistory.html", {

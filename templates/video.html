@@ -168,7 +168,7 @@
 		<!--弹幕列表栏-->
 			<div class="panel panel-primary" >
    				<div class="panel-heading">
-      				<h3 class="panel-title">BulletScreen</h3>
+      				<h3 class="panel-title">弹幕列表</h3>
    				</div>
 				<table class="table table-hover">
 					<thead>
@@ -332,25 +332,28 @@ timer2 = setInterval(checkplay, x);
 timer3 = setInterval(judgefull, x);
 
 var a = table.firstElementChild;
-while (a != table.lastElementChild){
-	objbullet.time = a.firstElementChild.innerHTML;
-	objbullet.content = a.lastElementChild.innerHTML;
-	objbullet.speed = 3*(1 + Math.random());
-	bullet.push({
-		"time":objbullet.time,
-		"content":objbullet.content,
-		"speed":objbullet.speed
-		})
-	a = a.nextElementSibling;
-	}
-objbullet.time = a.firstElementChild.innerHTML;
-objbullet.content = a.lastElementChild.innerHTML;
-objbullet.speed = 3*(1 + Math.random());
-bullet.push({
-	"time":objbullet.time,
-	"content":objbullet.content,
-	"speed":objbullet.speed
-})
+if (a != null){
+    while (a != table.lastElementChild){
+        objbullet.time = a.firstElementChild.innerHTML;
+    	objbullet.content = a.lastElementChild.innerHTML;
+    	objbullet.speed = 3*(1 + Math.random());
+    	bullet.push({
+    		"time":objbullet.time,
+    		"content":objbullet.content,
+    		"speed":objbullet.speed
+    		});
+    	a = a.nextElementSibling;
+    	}
+    objbullet.time = a.firstElementChild.innerHTML;
+    objbullet.content = a.lastElementChild.innerHTML;
+    objbullet.speed = 3*(1 + Math.random());
+    bullet.push({
+    	"time":objbullet.time,
+    	"content":objbullet.content,
+    	"speed":objbullet.speed
+    })
+}
+
 
 
 var bulletnumber = 0;
@@ -439,9 +442,12 @@ var i;
 	}
 	else if (y2 === false)
 		return;
-	for (i in bullet){
-		m_show(i);
-	}
+    if (bullet.length > 0){
+        for (i in bullet){
+		    m_show(i);
+	    }
+    }
+
 	maptime++;
 }
 function closebullet(){

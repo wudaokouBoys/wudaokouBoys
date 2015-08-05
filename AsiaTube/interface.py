@@ -94,7 +94,7 @@ class IVideo():
 
     def Search(self, condition, content): #搜索视频
         if condition == 'type':
-            videos = CVideo.objects.filter(type=content).order_by('-playnum')
+            videos = CVideo.objects.filter(state=1).filter(type=content).order_by('-playnum')
             searchList = []
             for video in videos:
                 searchitem = {
@@ -107,13 +107,13 @@ class IVideo():
                     'uptime':video.time,
                     'discription':video.discribe,
                     'type':CType.objects.filter(id=video.type)[0].content,
-                    'image':'',
+                    'image':str(video.id) + '_v.png',
                     'upper':CUser.objects.filter(id=video.upper)[0].name,
                 }
                 searchList.append(searchitem)
             return searchList
         elif condition == 'keyword':
-            videos = CVideo.objects.all()
+            videos = CVideo.objects.filter(state=1)
             searchList = []
             for video in videos:
                 string = video.title + video.discribe
@@ -122,12 +122,13 @@ class IVideo():
                         'id':video.id,
                         'title':video.title,
                         'playnum':video.playnum,
+                        'likenum':video.likenum,
                         'comment':len(CComment.objects.filter(video=video.id)),
                         'BScreen':len(CBulletscreen.objects.filter(video=video.id)),
                         'uptime':video.time,
                         'discription':video.discribe,
                         'type':CType.objects.filter(id=video.type)[0].content,
-                        'image':'',
+                        'image':str(video.id) + '_v.png',
                         'upper':CUser.objects.filter(id=video.upper)[0].name,
                     }
                     searchList.append(searchitem)

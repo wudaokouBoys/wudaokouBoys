@@ -24,7 +24,7 @@
 			<div class="row" style=" padding:5px;border-color:silver; border-width:2px; border-style:solid; height:160px; width:100%; left:13px; position:relative">
 				<div class="col-lg-2" style="height:160px; padding:5px; left:5px;">
 					<div class="img-circle">
-						<img src={{Video.image}} class="circle" style="width:100px; height:80px;">
+						<img src="/static/{{Video.image}}" onerror="imageError(this)" class="circle" style="width:100px; height:80px;">
 					</div>
 				</div>
 				<div class="col-lg-10" style="height:140px; padding:5px;">
@@ -47,5 +47,11 @@
             </div>
 			{% endfor %}
 	</div>
+    <script>
+        $('.videoLink').click(function(){
+            document.cookie = "videoId="+this.id + "; path=/"
+            window.location.assign('/videoPlayer')
+        })
+    </script>
 </body>
 </html>
