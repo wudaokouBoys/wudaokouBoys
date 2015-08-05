@@ -36,16 +36,16 @@
 		<!-- 轮播（Carousel）项目 -->
 		<div class="carousel-inner">
 			<div class="item active">
-				<a href="#"><img src={{Video1Image}} alt="First slide"></a>
-				<div class="carousel-caption"><a href="#">{{Video1Title}}</a></div>
+				<a class='videoLink' id="{{ Video1Id }}"><img  onerror="imageError(this)" alt="First slide" src="/static/{{Video1Image}}" ></a>
+				<div class="carousel-caption"><a>{{Video1Title}}</a></div>
 			</div>
 			<div class="item">
-				<a href="#"><img src={{Video2Image}} alt="Second slide"></a>
-				<div class="carousel-caption"><a href="#">{{Video2Title}}</a></div>
+				<a class='videoLink' id="{{ Video2Id }}"><img class='videoLink' onerror="imageError(this)" alt="Second slide" src="/static/{{Video2Image}}"></a>
+				<div class="carousel-caption"><a>{{Video2Title}}</a></div>
 			</div>
 			<div class="item">
-				<a href="#"><img src={{Video3Image}} alt="Third slide"></a>
-				<div class="carousel-caption"><a href="#">{{Video3Title}}</a></div>
+				<a class='videoLink' id="{{ Video3Id }}"><img class='videoLink' onerror="imageError(this)" alt="Third slide" src="/static/{{Video3Image}}"></a>
+				<div class="carousel-caption"><a>{{Video3Title}}</a></div>
 			</div>
 		</div>
 		<!-- 轮播（Carousel）导航 -->
@@ -53,5 +53,11 @@
 		<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
 	</div> 
 	</div>
+    <script>
+        $('.videoLink').click(function(e){
+            document.cookie = "videoId="+this.id + "; path=/";
+            window.location.assign('/videoPlayer');
+        })
+    </script>
 </body>
 </html>

@@ -145,7 +145,7 @@ def videoPlayer(request):
         ivideo.AddPlaynum(videoId)
         if 'id' in request.COOKIES and int(request.COOKIES['id']) > 0:
             viewer = iuser.SelectById(request.COOKIES['id'])
-            iuser.UpdateViewhistory(viewer.id, videoId)
+            iuser.UpdateViewhistory(viewer.id, videoId, 'add')
             userImage = viewer.image
             userName = viewer.name
         else:

@@ -50,15 +50,18 @@ class IUser():
                     CUser.objects.filter(id=id).update(uphistory=newhistory)
 
 
-    def UpdateViewhistory(self, id, newView): #更新观看历史
+    def UpdateViewhistory(self, id, newView, operate): #更新观看历史
         if len(CUser.objects.filter(id=id)) != 0:
-            history = CUser.objects.get(id=id).viewhistory
-            historyList = AnalysisString(history)
-            if newView in historyList:
-                history =str(newView) + ' ' + history.split(str(newView)+' ')[0]+history.split(str(newView)+' ')[1]
-            else:
-                history += str(newView) + ' '
-            CUser.objects.filter(id=id).update(viewhistory=history)
+            if operate == 'add':
+                history = CUser.objects.get(id=id).viewhistory
+                historyList = AnalysisString(history)
+                if newView in historyList:
+                    history =str(newView) + ' ' + history.split(str(newView)+' ')[0]+history.split(str(newView)+' ')[1]
+                else:
+                    history += str(newView) + ' '
+                CUser.objects.filter(id=id).update(viewhistory=history)
+            elif operate == 'delete':
+                return
 
     def UpdateFollow(self, id, leader): #更新关注列表
         if len(CUser.objects.filter(id=id)) != 0:

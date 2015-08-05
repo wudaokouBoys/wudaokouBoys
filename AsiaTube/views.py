@@ -37,6 +37,15 @@ def SignUp(request):
         )
         if (password == password1 and password != ''):
             a.Insert(person)
+            print(request.FILES)
+            if 'file2' in request.FILES:
+                file = request.FILES['file2']
+                suffix = file.name.split('.')[-1]
+                file.name = str(person.id) +'_u.' +  suffix
+                print(file.name)
+                a.ModifyImg(person.id, file.name)
+                handle_uploaded_pic(file)
+
             response = HttpResponseRedirect('/')
             response.set_cookie('id', person.id)
             response.set_cookie('name', person.name)
@@ -258,7 +267,19 @@ def searchResult(request):
 
 def mainPage(request):
     if request.method == 'GET':
+        videos = CVideo.objects.filter(state=1).order_by('-playnum')[0:3]
+        print(videos[0].id)
+        print(78164761274)
         return render_to_response("index.html", {
+            'Video1Image':str(videos[0].id)+'_v.png',
+            'Video1Title':videos[0].title,
+            'Video1Id':videos[0].id,
+            'Video2Image':str(videos[1].id)+'_v.png',
+            'Video2Title':videos[1].title,
+            'Video2Id':videos[1].id,
+            'Video3Image':str(videos[2].id)+'_v.png',
+            'Video3Title':videos[2].title,
+            'Video3Id':videos[2].id,
         },context_instance=RequestContext(request))
 
 def upHistory(request):

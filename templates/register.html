@@ -24,7 +24,7 @@
 <body>
 <div class="container">
 		<div class="col-xs-4 col-md-offset-4" style="top:20px; padding:10px; background:white; border-radius:5px;">
-			<form method=POST action="/register/">
+			<form method=POST enctype="multipart/form-data" action="/register/">
 				{% csrf_token %}
 				<div class="panel panel-success" >
 					<div class="panel-heading">
@@ -39,7 +39,7 @@
 					<br>
 					<div class="form-group">
 						<label for="exampleInputFile">选择用户头像</label>
-						<input type="file" id="exampleInputFile" name = "file" accept="image/*" value = {{UploadFile}} >
+						<input type="file" id="exampleInputFile" name = "file2"  value = {{UploadFile}} >
 					</div>
 
 					<p><input type=submit value="注册" class="btn btn-default" name=action></p>
