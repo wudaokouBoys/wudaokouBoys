@@ -58,9 +58,14 @@ class IUser():
                 if newView in historyList:
                     history =str(newView) + ' ' + history.split(str(newView)+' ')[0]+history.split(str(newView)+' ')[1]
                 else:
-                    history += str(newView) + ' '
+                    history = str(newView) + ' ' + history
                 CUser.objects.filter(id=id).update(viewhistory=history)
             elif operate == 'delete':
+                history = CUser.objects.get(id=id).viewhistory
+                historyList = AnalysisString(history)
+                if newView in historyList:
+                    history = history.split(str(newView)+' ')[0]+history.split(str(newView)+' ')[1]
+                CUser.objects.filter(id=id).update(viewhistory=history)
                 return
 
     def UpdateFollow(self, id, leader): #更新关注列表
@@ -87,6 +92,10 @@ class IVideo():
         video.save()
 
     def Delete(self, id):  #删除视频
+        users = CUser.objects.all()
+        iuser = IUser()
+        for user in users:
+            iuser.UpdateViewhistory(user.id, id, 'delete')
         CVideo.objects.filter(id=id).delete()
 
     def SelectById(self, id): #用id选择视频

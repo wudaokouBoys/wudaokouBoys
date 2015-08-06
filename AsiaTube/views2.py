@@ -12,7 +12,6 @@ import time
 
 def Login(request):  #用户登录
     if request.method == 'GET':
-        print(request.COOKIES)
         return render_to_response("login.html", context_instance=RequestContext(request))
     else:
         id = int(request.POST.get('id'))
@@ -78,7 +77,6 @@ def manageUser(request):
         }, context_instance=RequestContext(request))
     elif request.method == 'POST':
         if 'search' in request.POST:
-            print(1)
             user_id = request.POST.get('user_id')
             if user_id == '':
                 return render_to_response("manageUser.html",{
@@ -114,12 +112,8 @@ def manageUser(request):
             return response
         elif 'setAdmin' in request.POST:
             user_id = int(request.COOKIES['manageUser'])
-            print(manager.id)
-            print(user_id)
-            print('fiywhfhaeughaweg')
             SetAdmin(manager.id, user_id)
         elif 'deleteUser' in request.POST:
-            print(3)
             user_id = request.COOKIES['manageUser']
             DeleteUser(manager.id, user_id)
         return render_to_response("manageUser.html",{
@@ -174,6 +168,8 @@ def videoPlayer(request):
             response_dict = {}
             response_dict.update({'likenum':video.likenum+1})
             ivideo.AddLikenum(videoId)
+            iuser = IUser()
+            iuser.AddLikenum(video.upper)
             return JsonResponse(response_dict)
         elif 'bullettime' in request.POST:
             ibscreen = IBulletscreen()

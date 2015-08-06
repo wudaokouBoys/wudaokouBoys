@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Video Player</title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
@@ -124,6 +123,7 @@
 					</div>
 				</div>
 				<div  style = "position: absolute; top :7px; left: 90px;">
+                    <h6>UP主：</h6>
 					<h2>{{VideoUpper}}</h2>
 				</div>
 		</div>
@@ -146,13 +146,13 @@
             </video-->
 				<form id = "bscreeninput" class="input-group" method = POST role = "form" action="/videoPlayer/">
                     {% csrf_token %}
-					<input id = "mybulletcontent" type="text" class="form-control">
+					<input id = "mybulletcontent" type="text" class="form-control" style="width:493px;">
 						<span class="input-group-btn">
 							<button id = "bscreengo" class="btn btn-default" type="button">
 								发送弹幕
 							</button>
 						</span>
-                        <a id='bulletControl' class="toggle toggle--on" style="position:relative; top:0px;left:20px;"></a>
+                        <a id='bulletControl' class="toggle toggle--on" style="position:relative; top:0px;left:0px;"></a>
                         <script src="/static/index.js"></script>
                         <script src="/static/jquery.js"></script>
 				</form><!-- /input-group -->

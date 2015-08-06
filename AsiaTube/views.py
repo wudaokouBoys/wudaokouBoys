@@ -13,7 +13,7 @@ import time
 
 # Create your views here.
 
-def SignUp(request):
+def SignUp(request): #登录函数
     if request.method == 'GET':
         return render_to_response("register.html", context_instance=RequestContext(request))
     else:
@@ -42,7 +42,6 @@ def SignUp(request):
                 file = request.FILES['file2']
                 suffix = file.name.split('.')[-1]
                 file.name = str(person.id) +'_u.' +  suffix
-                print(file.name)
                 a.ModifyImg(person.id, file.name)
                 handle_uploaded_pic(file)
 
@@ -76,7 +75,7 @@ def handle_uploaded_pic(f):#'F:/AsiaTube/Video/'+ str(12) + '_' +
             info.write(chunk)
     return f
 
-def uploadvideo(request):
+def uploadvideo(request): #上传视频
     if 'id' not in request.COOKIES:
         return render_to_response("login.html", context_instance=RequestContext(request))
     id = request.COOKIES['id']
@@ -207,7 +206,6 @@ def manageVideo(request):#管理员审查视频界面
     else:
         if request.method == 'POST':
         #异常处理
-            print("vv12345")
             if 'file' in request.FILES:
                 file = request.FILES['file']
                 handle_uploaded_videopic(file, video.id)
@@ -244,7 +242,6 @@ def manageVideo(request):#管理员审查视频界面
                 ivideo.Delete(video.id)
                 response.set_cookie('checkstate', -1)#check = -1 未检查 check = 1通过 check=0 拒绝
                 return response
-            print("asdfg")
             return HttpResponse("shenmedongxi?")
 
 
@@ -268,8 +265,6 @@ def searchResult(request):
 def mainPage(request):
     if request.method == 'GET':
         videos = CVideo.objects.filter(state=1).order_by('-playnum')[0:3]
-        print(videos[0].id)
-        print(78164761274)
         return render_to_response("index.html", {
             'Video1Image':str(videos[0].id)+'_v.png',
             'Video1Title':videos[0].title,
